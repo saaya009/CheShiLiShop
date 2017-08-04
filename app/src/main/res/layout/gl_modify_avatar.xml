@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+	<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1000" 
+    android:background="#737373">
+    <com.jiker.brickuser.photochoose.CropImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/gl_modify_avatar_image"
+        android:layout_gravity="center"
+        />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:id="@+id/gl_modify_avatar_bottom"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="#Fafafa"
+        >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/gl_modify_avatar_cancel"
+            android:text="取消"
+            android:background="@drawable/grey_btn"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            />
+        <Button
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:id="@+id/gl_modify_avatar_rotate_right"
+            android:background="@mipmap/gl_rotate_right"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/gl_modify_avatar_save"
+            android:text="保存"
+            android:background="@drawable/blue_btn"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:textColor="@android:color/white"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            />
+
+    </LinearLayout>
+</LinearLayout>
