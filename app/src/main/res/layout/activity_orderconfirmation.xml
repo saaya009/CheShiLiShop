@@ -283,6 +283,7 @@
     </LinearLayout>
     
     <RelativeLayout
+        android:id="@+id/layout_confirm"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
         android:layout_width="match_parent"

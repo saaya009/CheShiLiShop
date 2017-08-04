@@ -98,7 +98,7 @@ public class OrderConfirmationActivity extends BaseActivity {
 
     @Override
     protected void processLogic() {
-
+        id = getIntent().getStringExtra("id");
     }
 
     @Override
@@ -137,6 +137,9 @@ public class OrderConfirmationActivity extends BaseActivity {
                         mTvOrder.setText(bookingBean.OrderID);
                         mTvOdertime.setText(DateUtil.stampToDate(bookingBean.AddTime));
                         mTvBookingtime.setText(DateUtil.stampToDate3(bookingBean.AppointDate));
+                        mTvAmount.setText(bookingBean.Price);
+                        mTvOffer.setText(bookingBean.ServiceGapPrice);
+                        mTvPreferential.setText(Double.parseDouble(bookingBean.Price)-Double.parseDouble(bookingBean.ServiceGapPrice)+"");
                     }else {
                         ToastUtils.show(OrderConfirmationActivity.this,jsonObject.getString("Data"));
                     }
