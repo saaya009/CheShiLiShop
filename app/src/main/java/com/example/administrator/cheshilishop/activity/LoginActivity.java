@@ -185,7 +185,8 @@ public class LoginActivity extends BaseActivity {
                 ToastUtils.show(LoginActivity.this, "登录成功");
                 JSONObject data = object.getJSONObject("Data");
                 CheShiLiShopApplication.wtoken = data.getString("WToken");
-                finish();
+                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                startActivity(intent);
             } else {
                 ToastUtils.show(LoginActivity.this, "手机号或密码错误");
             }

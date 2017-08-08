@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 
 
+import com.example.administrator.cheshilishop.bean.StoreBean;
 import com.example.administrator.cheshilishop.bean.UserInfoBean;
 import com.mob.MobApplication;
 
@@ -19,6 +20,7 @@ public class CheShiLiShopApplication extends MobApplication {
     public static String wtoken = "";
     public static String storeID = "";
     public static UserInfoBean user = new UserInfoBean();
+    public static StoreBean store = new StoreBean();
     public static Context applicationContext;
     public static int pic_limit = 5;
 

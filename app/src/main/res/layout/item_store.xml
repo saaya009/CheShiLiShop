@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:background="@drawable/bg_store_style"
+        android:id="@+id/layout_store"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="140dp">
+        
+        <TextView
+            android:id="@+id/tv_"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:text="连锁店"
+            android:textSize="13dp"
+            android:textColor="@color/white"
+            android:layout_width="50dp"
+            android:layout_height="25dp"/>
+
+        <ImageView
+            android:id="@+id/img_right"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/icon_point"
+            android:layout_width="18dp"
+            android:layout_height="18dp"/>
+        
+        <ImageView
+            android:id="@+id/img_store"
+            android:layout_marginTop="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="55dp"
+            android:layout_height="20dp"/>
+
+        <TextView
+            android:id="@+id/tv_store"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:text="卡诺嘉一站式汽车维护"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/img_store"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_Address"
+            android:textSize="14dp"
+            android:text="山东济南历下区高新区奥体西路158号"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/tv_store"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

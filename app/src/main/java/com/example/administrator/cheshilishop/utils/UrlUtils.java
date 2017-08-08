@@ -102,4 +102,24 @@ public class UrlUtils {
         url = uribBuilder.build().toString();
         return url;
     }
+
+    /**
+     * 获取Store列表
+     */
+    public static String queryStoreList() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/Store/QueryStoreList").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
+
+    /**
+     * 获取Store列表
+     */
+    public static String updateDefaultStore() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/LeagueInfo/UpdateDefaultStore").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
 }

@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.bean.BookingBean;
+import com.example.administrator.cheshilishop.bean.StoreBean;
 import com.example.administrator.cheshilishop.net.RestClient;
 import com.example.administrator.cheshilishop.utils.DateUtil;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                     String Status = jsonObject.getString("Status");
                     if ("0".equals(Status)){
                         String data = jsonObject.getString("Data");
-
+                        CheShiLiShopApplication.store = JSON.parseObject(data, StoreBean.class);
                     }else {
                         ToastUtils.show(MainActivity.this,jsonObject.getString("Data"));
                     }
