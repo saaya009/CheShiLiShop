@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 注册
+ * 修改密码
  * Created by Administrator on 2017/7/26.
  */
 public class GetPwdActivity extends BaseActivity {

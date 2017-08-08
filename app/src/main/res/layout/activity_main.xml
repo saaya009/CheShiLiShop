@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.administrator.cheshilishop.MainActivity">
+    tools:context="com.example.administrator.cheshilishop.activity.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

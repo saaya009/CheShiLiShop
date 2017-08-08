@@ -95,7 +95,7 @@ public class BookingAllFragment extends Fragment {
     private void getData(final int page) {
         RequestParams params = new RequestParams();
         params.add("WToken",CheShiLiShopApplication.wtoken);
-        params.add("StoreID","108");
+        params.add("StoreID",CheShiLiShopApplication.storeID);
         params.add("N",page+"");
         params.add("Rows",size+"");
         params.add("Status","-1");

@@ -17,7 +17,7 @@ public class CheShiLiShopApplication extends MobApplication {
     private List<Activity> activityList = new LinkedList<Activity>();
     private static CheShiLiShopApplication instance;
     public static String wtoken = "";
-    public static String url = "";
+    public static String storeID = "";
     public static UserInfoBean user = new UserInfoBean();
     public static Context applicationContext;
     public static int pic_limit = 5;

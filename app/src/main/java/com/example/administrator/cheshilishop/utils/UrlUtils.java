@@ -15,20 +15,11 @@ public class UrlUtils {
      */
     public static String login() {
         String url = null;
-        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/CSL/Login/LG").buildUpon();
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/Login/LG").buildUpon();
         url = uribBuilder.build().toString();
         return url;
     }
 
-    /**
-     * 注册
-     */
-    public static String reg() {
-        String url = null;
-        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/CSL/Login/RegisterUser").buildUpon();
-        url = uribBuilder.build().toString();
-        return url;
-    }
 
     /**
      * 获取验证码
@@ -45,7 +36,7 @@ public class UrlUtils {
      */
     public static String getPwd() {
         String url = null;
-        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/CSL/Login/ResetPwdByPhone").buildUpon();
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/Login/ResetPwdByPhone").buildUpon();
         url = uribBuilder.build().toString();
         return url;
     }
@@ -71,16 +62,6 @@ public class UrlUtils {
         return url;
     }
 
-    /**
-     * 获取我的成功返回页面
-     */
-    public static String queryOrder(String json) {
-        String url = null;
-        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/CSL/A_Pay/QueryOrder").buildUpon()
-                .appendEncodedPath(json);
-        url = uribBuilder.build().toString();
-        return url;
-    }
 
     /**
      * 查询服务预约List
@@ -98,6 +79,26 @@ public class UrlUtils {
     public static String getInfoByToken() {
         String url = null;
         Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/LeagueInfo/GetInfoByToken").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
+
+    /**
+     * 获取Service列表
+     */
+    public static String queryServiceList() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/StoreService/QueryServiceList").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
+
+    /**
+     * 获取默认Store
+     */
+    public static String queryDefaultStore() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/LeagueInfo/QueryDefaultStore").buildUpon();
         url = uribBuilder.build().toString();
         return url;
     }

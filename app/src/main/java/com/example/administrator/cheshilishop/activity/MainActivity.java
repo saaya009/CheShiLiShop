@@ -1,4 +1,4 @@
-package com.example.administrator.cheshilishop;
+package com.example.administrator.cheshilishop.activity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -8,12 +8,27 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.example.administrator.cheshilishop.activity.BookingManagementActivity;
+import com.alibaba.fastjson.JSON;
+import com.bumptech.glide.Glide;
+import com.example.administrator.cheshilishop.CheShiLiShopApplication;
+import com.example.administrator.cheshilishop.R;
+import com.example.administrator.cheshilishop.bean.BookingBean;
+import com.example.administrator.cheshilishop.net.RestClient;
+import com.example.administrator.cheshilishop.utils.DateUtil;
+import com.example.administrator.cheshilishop.utils.ToastUtils;
+import com.example.administrator.cheshilishop.utils.UrlUtils;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.yanzhenjie.permission.AndPermission;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.util.TextUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,12 +58,46 @@ public class MainActivity extends AppCompatActivity {
                 .requestCode(101)
                 .permission(Manifest.permission.CAMERA)
                 .send();
+        getStore();
         initView();
+    }
+
+    /**
+     * 获取默认店铺
+     */
+    private void getStore() {
+        RequestParams params = new RequestParams();
+        params.add("WToken", CheShiLiShopApplication.wtoken);
+        RestClient.post(UrlUtils.queryDefaultStore(), params, this, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    String result = new String(responseBody);
+                    JSONObject jsonObject = new JSONObject(result);
+                    String Status = jsonObject.getString("Status");
+                    if ("0".equals(Status)){
+                        String data = jsonObject.getString("Data");
+
+                    }else {
+                        ToastUtils.show(MainActivity.this,jsonObject.getString("Data"));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
     }
 
     private void initView() {
         mLayoutScan.setOnClickListener(mOnClickListener);
         mLayoutBooking.setOnClickListener(mOnClickListener);
+        mLayoutManager.setOnClickListener(mOnClickListener);
     }
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -64,6 +113,11 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.layout_booking://预约管理
                     intent = new Intent(MainActivity.this,
                             BookingManagementActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.layout_manager://服务管理
+                    intent = new Intent(MainActivity.this,
+                            ProductActivity.class);
                     startActivity(intent);
                     break;
             }

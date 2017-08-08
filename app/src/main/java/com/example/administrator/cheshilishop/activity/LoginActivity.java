@@ -45,7 +45,6 @@ public class LoginActivity extends BaseActivity {
     private Button btn_clear;
     private Button btn_clear2;
 
-    private String page;
     private String mVal;
     private Intent mIntent;
 
@@ -140,7 +139,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void processLogic() {
-        page = getIntent().getStringExtra("page");
+        setTopTitle("登录");
     }
 
     @Override
@@ -186,24 +185,11 @@ public class LoginActivity extends BaseActivity {
                 ToastUtils.show(LoginActivity.this, "登录成功");
                 JSONObject data = object.getJSONObject("Data");
                 CheShiLiShopApplication.wtoken = data.getString("WToken");
-                String url = "";
-                if (!page.contains("?")) {
-                    url = page + "&code=0&str=" + CheShiLiShopApplication.wtoken;
-                } else {
-                    url = page + "?code=0&str=" + CheShiLiShopApplication.wtoken;
-                }
-                int index = url.indexOf("R=") + 2;
-                String encode = URLEncoder.encode(url.substring(index),"utf8");
-                CheShiLiShopApplication.url = url.substring(0, index) + encode;
-                Log.d("encode",CheShiLiShopApplication.url);
-                setResult(7);
                 finish();
             } else {
                 ToastUtils.show(LoginActivity.this, "手机号或密码错误");
             }
         } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
     }
@@ -237,7 +223,6 @@ public class LoginActivity extends BaseActivity {
             Bundle data = new Bundle();
             data.putString("value", result);
             msg.setData(data);
-            handler.sendMessage(msg);
         }
     };
 

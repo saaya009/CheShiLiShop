@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CheShiLiShop</string>
+    <string name="app_name">车势力商户端</string>
     <integer-array name="material_colors">
         <item>@color/material_red</item>
         <item>@color/material_green</item>
