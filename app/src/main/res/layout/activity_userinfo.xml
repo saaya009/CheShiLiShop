@@ -26,7 +26,7 @@
             android:textSize="16dp"
             android:gravity="center"
             android:textColor="@color/black"
-            android:text="15318519876"
+            android:text=""
             android:drawableLeft="@mipmap/icon_username"
             android:layout_centerVertical="true"
             android:layout_width="150dp"

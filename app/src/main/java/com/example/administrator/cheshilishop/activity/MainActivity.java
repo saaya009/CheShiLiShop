@@ -7,15 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
-import com.example.administrator.cheshilishop.bean.BookingBean;
 import com.example.administrator.cheshilishop.bean.StoreBean;
 import com.example.administrator.cheshilishop.net.RestClient;
-import com.example.administrator.cheshilishop.utils.DateUtil;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -29,7 +28,7 @@ import org.json.JSONObject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.util.TextUtils;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,6 +45,14 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout mLayoutManager;
     @BindView(R.id.layout_booking)
     LinearLayout mLayoutBooking;
+    @BindView(R.id.layout_commission)
+    LinearLayout mLayoutCommission;
+    @BindView(R.id.layout_change)
+    LinearLayout mLayoutChange;
+    @BindView(R.id.img_logo)
+    CircleImageView mImgLogo;
+    @BindView(R.id.tv_descri)
+    TextView mTvDescri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         AndPermission.with(this)
                 .requestCode(101)
                 .permission(Manifest.permission.CAMERA)
+                .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .send();
         getStore();
         initView();
@@ -74,13 +82,19 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
                     String result = new String(responseBody);
+                    Log.d("默认店铺", result);
                     JSONObject jsonObject = new JSONObject(result);
                     String Status = jsonObject.getString("Status");
-                    if ("0".equals(Status)){
+                    if ("0".equals(Status)) {
                         String data = jsonObject.getString("Data");
                         CheShiLiShopApplication.store = JSON.parseObject(data, StoreBean.class);
-                    }else {
-                        ToastUtils.show(MainActivity.this,jsonObject.getString("Data"));
+                        CheShiLiShopApplication.storeID = CheShiLiShopApplication.store.ID;
+                        Glide.with(MainActivity.this)
+                                .load(CheShiLiShopApplication.store.Img)
+                                .into(mImgLogo);
+                        mTvDescri.setText(CheShiLiShopApplication.store.Name);
+                    } else {
+                        ToastUtils.show(MainActivity.this, jsonObject.getString("Data"));
                     }
 
                 } catch (JSONException e) {
@@ -99,6 +113,9 @@ public class MainActivity extends AppCompatActivity {
         mLayoutScan.setOnClickListener(mOnClickListener);
         mLayoutBooking.setOnClickListener(mOnClickListener);
         mLayoutManager.setOnClickListener(mOnClickListener);
+        mLayoutCommission.setOnClickListener(mOnClickListener);
+        mLayoutUserinfo.setOnClickListener(mOnClickListener);
+        mLayoutChange.setOnClickListener(mOnClickListener);
     }
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -121,6 +138,21 @@ public class MainActivity extends AppCompatActivity {
                             ProductActivity.class);
                     startActivity(intent);
                     break;
+                case R.id.layout_userinfo://账户信息
+                    intent = new Intent(MainActivity.this,
+                            UserInfoActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.layout_commission://佣金管理
+                    intent = new Intent(MainActivity.this,
+                            CommissionActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.layout_change://更改店面
+                    intent = new Intent(MainActivity.this,
+                            SetStoreActivity.class);
+                    startActivity(intent);
+                    break;
             }
         }
     };
@@ -135,5 +167,11 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Qcode", content);
             }
         }
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        getStore();
     }
 }

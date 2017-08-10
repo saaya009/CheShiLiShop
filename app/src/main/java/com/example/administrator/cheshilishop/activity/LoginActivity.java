@@ -18,9 +18,12 @@ import com.example.administrator.cheshilishop.BaseActivity;
 import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.TopView;
+import com.example.administrator.cheshilishop.net.RestClient;
 import com.example.administrator.cheshilishop.utils.HttpUtils;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,6 +32,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * 登录
@@ -151,7 +156,7 @@ public class LoginActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_login://登录
-                new Thread(networkTask).start();
+                login();
                 break;
             case R.id.img_back://返回
                 setResult(9);
@@ -176,63 +181,48 @@ public class LoginActivity extends BaseActivity {
      * 登录
      */
     private void login() {
-        try {
-            JSONObject object = new JSONObject(mVal);
-            Log.d("登录", mVal);
-            int status = 0;
-            status = object.getInt("Status");
-            if (status == 0) {
-                ToastUtils.show(LoginActivity.this, "登录成功");
-                JSONObject data = object.getJSONObject("Data");
-                CheShiLiShopApplication.wtoken = data.getString("WToken");
-                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                startActivity(intent);
-            } else {
-                ToastUtils.show(LoginActivity.this, "手机号或密码错误");
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
+        String username = et_username.getText().toString().trim();
+        String password = et_password.getText().toString().trim();
+        if (username.length() != 11) {
+            ToastUtils.show(LoginActivity.this, "请输入正确的手机号码");
+            return;
         }
-    }
-
-    /**
-     * 网络操作相关的子线程
-     */
-    Runnable networkTask = new Runnable() {
-
-        @Override
-        public void run() {
-            String username = et_username.getText().toString().trim();
-            final String password = et_password.getText().toString().trim();
-            if (username.length() != 11) {
-                ToastUtils.show(LoginActivity.this, "请输入正确的手机号码");
-                return;
-            }
-            if (password.length() == 0) {
-                ToastUtils.show(LoginActivity.this, "密码不能为空");
-                return;
-            }
-
-            Map<String, String> map = new HashMap<String, String>();
-            map.put("Mobile", username);
-            map.put("Password", password);
-            map.put("Platform", "11");
-            String json = JSON.toJSONString(map);
-            String result = HttpUtils.loginByPost(UrlUtils.login(), json);
-            Log.d("返回", result);
-            Message msg = new Message();
-            Bundle data = new Bundle();
-            data.putString("value", result);
-            msg.setData(data);
+        if (password.length() == 0) {
+            ToastUtils.show(LoginActivity.this, "密码不能为空");
+            return;
         }
-    };
+        RequestParams params = new RequestParams();
+        params.add("Mobile", username);
+        params.add("Password", password);
+        params.add("Platform", "31");
+        RestClient.post(UrlUtils.login(), params, this, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    String result = new String(responseBody);
+                    JSONObject object = new JSONObject(result);
+                    Log.d("登录", result);
+                    int status = 0;
+                    status = object.getInt("Status");
+                    if (status == 0) {
+                        ToastUtils.show(LoginActivity.this, "登录成功");
+                        JSONObject data = object.getJSONObject("Data");
+                        CheShiLiShopApplication.wtoken = data.getString("WToken");
+                        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                        startActivity(intent);
+                    } else {
+                        ToastUtils.show(LoginActivity.this, "手机号或密码错误");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
-    @Override
-    protected void onActivityResult(int arg0, int arg1, Intent arg2) {
-        super.onActivityResult(arg0, arg1, arg2);
-        if (arg0 == 7 && arg1 == 7){
-            setResult(7);
-            finish();
-        }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+
     }
 }

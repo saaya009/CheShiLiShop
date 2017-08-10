@@ -1,6 +1,7 @@
 package com.example.administrator.cheshilishop.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -15,7 +16,6 @@ import com.example.administrator.cheshilishop.bean.StoreBean;
 import com.example.administrator.cheshilishop.net.RestClient;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
-import com.example.administrator.cheshilishop.widget.PinnedHeaderListView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -66,15 +66,10 @@ public class SetStoreActivity extends BaseActivity {
 
     @Override
     protected void setListener() {
-        lv_store.setOnItemClickListener(new PinnedHeaderListView.OnItemClickListener() {
+        lv_store.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int section, int position, long id) {
-                updateDefaultStore(position+"");
-            }
-
-            @Override
-            public void onSectionClick(AdapterView<?> adapterView, View view, int section, long id) {
-
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                updateDefaultStore(list.get(i).ID);
             }
         });
     }
@@ -109,6 +104,7 @@ public class SetStoreActivity extends BaseActivity {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
                     String result = new String(responseBody);
+                    Log.d("更改店铺",result);
                     JSONObject jsonObject = new JSONObject(result);
                     String Status = jsonObject.getString("Status");
                     if ("0".equals(Status)) {
@@ -118,6 +114,7 @@ public class SetStoreActivity extends BaseActivity {
                         list = JSON.parseArray(rows,StoreBean.class);
                         adapter = new SetStoreAdapter(SetStoreActivity.this,list);
                         lv_store.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
                     } else {
                         ToastUtils.show(SetStoreActivity.this, jsonObject.getString("Data"));
                     }
@@ -137,7 +134,7 @@ public class SetStoreActivity extends BaseActivity {
     /**
      * 更改默认
      */
-    private void updateDefaultStore(String id) {
+    private void updateDefaultStore(final String id) {
         RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
         params.add("StoreID",id);
@@ -150,6 +147,7 @@ public class SetStoreActivity extends BaseActivity {
                     String Status = jsonObject.getString("Status");
                     if ("0".equals(Status)) {
                         ToastUtils.show(SetStoreActivity.this,"更改成功");
+                        CheShiLiShopApplication.storeID = id;
                         getData();
                     }
 

@@ -1,5 +1,6 @@
 package com.example.administrator.cheshilishop.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.ListView;
 
 import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
+import com.example.administrator.cheshilishop.activity.MainActivity;
 import com.example.administrator.cheshilishop.adapter.BookingAllAdapter;
 import com.example.administrator.cheshilishop.bean.BookingBean;
 import com.example.administrator.cheshilishop.net.RestClient;
@@ -55,8 +57,14 @@ public class BookingEndFragment extends Fragment {
     private void initView(View view) {
         lv_Booking = (ListView) view.findViewById(R.id.lv_Booking);
         refreshLayout = (MaterialRefreshLayout) view.findViewById(R.id.mrl_experience);
-        ;
         layout_null = (LinearLayout) view.findViewById(R.id.layout_null);
+        layout_null.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
         lv_Booking.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> view, View view1, int i, long l) {

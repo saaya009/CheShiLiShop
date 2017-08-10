@@ -10,12 +10,14 @@
     tools:context="com.example.administrator.cheshilishop.activity.MainActivity">
 
     <LinearLayout
+        android:id="@+id/layout_change"
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:background="@mipmap/bg_logo"
         android:orientation="vertical">
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_logo"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
@@ -23,6 +25,7 @@
             android:src="@mipmap/icon_logo"/>
 
         <TextView
+            android:id="@+id/tv_descri"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -203,6 +206,7 @@
             android:background="@color/gray"/>
 
         <LinearLayout
+            android:id="@+id/layout_commission"
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"

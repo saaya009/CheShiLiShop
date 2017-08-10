@@ -1,6 +1,7 @@
 package com.example.administrator.cheshilishop.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -49,6 +50,7 @@ public class SetStoreAdapter extends BaseAdapter {
 			holder.img_store= convertView.findViewById(R.id.img_store);
 			holder.img_right= convertView.findViewById(R.id.img_right);
 			holder.tv_store=convertView.findViewById(R.id.tv_store);
+			holder.tv_type=convertView.findViewById(R.id.tv_type);
 			holder.tv_Address=convertView.findViewById(R.id.tv_Address);
 			holder.layout_store = convertView.findViewById(R.id.layout_store);
 			convertView.setTag(holder);
@@ -62,11 +64,24 @@ public class SetStoreAdapter extends BaseAdapter {
 			holder.layout_store.setBackgroundResource(R.drawable.bg_store_style);
 			holder.img_right.setVisibility(View.GONE);
 		}
-		Glide.with(context)
-				.load(list.get(position).Img)
-				.into(holder.img_store);
+		if (!TextUtils.isEmpty(list.get(position).Img)){
+			Glide.with(context)
+					.load(list.get(position).Img)
+					.into(holder.img_store);
+		}
 		holder.tv_store.setText(list.get(position).Name);
 		holder.tv_Address.setText(list.get(position).Address);
+		switch (list.get(position).Type){
+			case "0":
+				holder.tv_type.setText("旗舰店");
+				break;
+			case "1":
+				holder.tv_type.setText("综合店");
+				break;
+			case "2":
+				holder.tv_type.setText("专营店");
+				break;
+		}
 		return convertView;
 	}
 
@@ -75,6 +90,7 @@ public class SetStoreAdapter extends BaseAdapter {
 		private ImageView img_right;
 		private TextView tv_store;
 		private TextView tv_Address;
+		private TextView tv_type;
 		private RelativeLayout layout_store;
 	}
 }

@@ -14,7 +14,7 @@
         android:layout_height="140dp">
         
         <TextView
-            android:id="@+id/tv_"
+            android:id="@+id/tv_type"
             android:background="@color/colorPrimaryDark"
             android:gravity="center"
             android:text="连锁店"

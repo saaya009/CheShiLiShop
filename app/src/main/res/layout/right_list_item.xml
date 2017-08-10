@@ -1,21 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:padding="6dp">
-
-    <ImageView
-        android:id="@+id/imageItem"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:scaleType="fitXY"/>
+                android:orientation="vertical"
+                android:background="@color/white">
 
     <TextView
-        android:id="@+id/textItem"
+        android:id="@+id/tv_name"
+        android:textSize="15dp"
+        android:text="小车普洗"
+        android:layout_margin="10dp"
         android:layout_width="wrap_content"
-        android:layout_height="15dp"
-        android:gravity="center_vertical"
-        android:paddingLeft="6dp"
-        android:layout_toRightOf="@+id/imageItem"
-        android:textColor="@color/black" /></RelativeLayout>
+        android:layout_height="wrap_content"
+        android:textColor="@color/black" />
+    <TextView
+        android:id="@+id/tv_context"
+        android:textSize="13dp"
+        android:text="小车普洗小车普洗小车普洗小车普洗小车普洗小车普洗小车普洗小车普洗小车普洗小车普洗小车普洗小车普洗小车普洗"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/tv_money"
+        android:textSize="15dp"
+        android:text="¥500.00"
+        android:layout_margin="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/orange" />
+
+</LinearLayout>

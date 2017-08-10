@@ -65,7 +65,6 @@ public class CropImageActivity extends Activity implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gl_modify_avatar);
-        
         init();
     }
     @Override

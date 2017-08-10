@@ -122,4 +122,14 @@ public class UrlUtils {
         url = uribBuilder.build().toString();
         return url;
     }
+
+    /**
+     * 查询商店的佣金记录
+     */
+    public static String queryCmnList() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/Cmn/QueryCmnList").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
 }

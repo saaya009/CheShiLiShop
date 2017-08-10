@@ -1,6 +1,7 @@
 package com.example.administrator.cheshilishop.activity;
 
 import android.content.ActivityNotFoundException;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -112,6 +113,7 @@ public class UserInfoActivity extends BaseActivity {
     @Override
     protected void setListener() {
         mLayoutImg.setOnClickListener(this);
+        mLayoutChangepassword.setOnClickListener(this);
     }
 
     @Override
@@ -129,7 +131,7 @@ public class UserInfoActivity extends BaseActivity {
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
             case R.id.layout_changepassword://修改密码
-                Intent intent = new Intent(UserInfoActivity.this,GetPwdActivity.class);
+                Intent intent = new Intent(UserInfoActivity.this, GetPwdActivity.class);
                 startActivity(intent);
                 break;
         }
@@ -166,9 +168,10 @@ public class UserInfoActivity extends BaseActivity {
                                     MediaStore.ACTION_IMAGE_CAPTURE);
                             File f = new File(filePath, localTempImageFileName);
                             // localTempImgDir和localTempImageFileName是自己定义的名字
-                            Uri u = Uri.fromFile(f);
-                            intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
-                            intent.putExtra(MediaStore.EXTRA_OUTPUT, u);
+                            ContentValues contentValues = new ContentValues(1);
+                            contentValues.put(MediaStore.EXTRA_OUTPUT, String.valueOf(f));
+                            Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                             startActivityForResult(intent, FLAG_CHOOSE_PHONE);
                         } catch (ActivityNotFoundException e) {
                             //
@@ -198,13 +201,16 @@ public class UserInfoActivity extends BaseActivity {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);
                 try {
+                    Log.d("个人信息",result);
                     JSONObject json = new JSONObject(result);
                     String Status = json.getString("Status");
                     if ("0".equals(Status)) {
                         CheShiLiShopApplication.user = JSON.parseObject(json.getString("Data"), UserInfoBean.class);
-                        Glide.with(UserInfoActivity.this)
-                                .load(CheShiLiShopApplication.user.Img)
-                                .into(mImgAvatar);
+                        if (TextUtils.isEmpty(CheShiLiShopApplication.user.Img)) {
+                            Glide.with(UserInfoActivity.this)
+                                    .load(CheShiLiShopApplication.user.Img)
+                                    .into(mImgAvatar);
+                        }
                         mTvUsername.setText(CheShiLiShopApplication.user.NickName);
                     } else {
                         ToastUtils.show(UserInfoActivity.this, json.getString("Data"));
@@ -263,18 +269,19 @@ public class UserInfoActivity extends BaseActivity {
 
     /**
      * 上传头像
+     *
      * @param path
      */
     private void uploadPic(String path) {
         RequestParams params = new RequestParams();
         try {
             params.put("avatar", new File(path));
-            Log.d("头像",path);
+            Log.d("头像", path);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        params.add("WToken",CheShiLiShopApplication.wtoken);
-        params.add("Platform","3");
+        params.add("WToken", CheShiLiShopApplication.wtoken);
+        params.add("Platform", "3");
         RestClient.post(UrlUtils.UploaImg(), params, UserInfoActivity.this, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -283,11 +290,11 @@ public class UserInfoActivity extends BaseActivity {
                     Log.d("刷新", result);
                     JSONObject jsonObject = new JSONObject(result);
                     String Status = jsonObject.getString("Status");
-                    if ("0".equals(Status)){
+                    if ("0".equals(Status)) {
                         getData();
-                        ToastUtils.show(UserInfoActivity.this,"上传成功");
-                    }else {
-                        ToastUtils.show(UserInfoActivity.this,jsonObject.getString("Data"));
+                        ToastUtils.show(UserInfoActivity.this, "上传成功");
+                    } else {
+                        ToastUtils.show(UserInfoActivity.this, jsonObject.getString("Data"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -10,6 +10,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.cheshilishop.R;
+import com.example.administrator.cheshilishop.bean.ProductBean;
+
+import java.util.List;
 
 /**
  * 作者：Ayase on 2017/8/7 14:48
@@ -20,17 +23,17 @@ public class MainSectionedAdapter extends SectionedBaseAdapter {
 
     private Context mContext;
     private String[] leftStr;
-    private String[][] rightStr;
+    private List<List<ProductBean>> rlist;
 
-    public MainSectionedAdapter(Context context, String[] leftStr, String[][] rightStr) {
+    public MainSectionedAdapter(Context context, String[] leftStr, List<List<ProductBean>> rlist) {
         this.mContext = context;
         this.leftStr = leftStr;
-        this.rightStr = rightStr;
+        this.rlist = rlist;
     }
 
     @Override
     public Object getItem(int section, int position) {
-        return rightStr[section][position];
+        return rlist.get(section).get(position);
     }
 
     @Override
@@ -45,26 +48,28 @@ public class MainSectionedAdapter extends SectionedBaseAdapter {
 
     @Override
     public int getCountForSection(int section) {
-        return rightStr[section].length;
+        return rlist.get(section).size();
     }
 
     @Override
     public View getItemView(final int section, final int position, View convertView, ViewGroup parent) {
-        RelativeLayout layout = null;
+        LinearLayout layout = null;
         if (convertView == null) {
             LayoutInflater inflator = (LayoutInflater) parent.getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            layout = (RelativeLayout) inflator.inflate(R.layout.right_list_item, null);
+            layout = (LinearLayout) inflator.inflate(R.layout.right_list_item, null);
         } else {
-            layout = (RelativeLayout) convertView;
+            layout = (LinearLayout) convertView;
         }
-        ((TextView) layout.findViewById(R.id.textItem)).setText(rightStr[section][position]);
-        layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                Toast.makeText(mContext, rightStr[section][position], Toast.LENGTH_SHORT).show();
-            }
-        });
+        ((TextView) layout.findViewById(R.id.tv_name)).setText(rlist.get(section).get(position).ProductName);
+        ((TextView) layout.findViewById(R.id.tv_context)).setText(rlist.get(section).get(position).Descri);
+        ((TextView) layout.findViewById(R.id.tv_money)).setText("¥"+rlist.get(section).get(position).GapPrice);
+//        layout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View arg0) {
+//                Toast.makeText(mContext, rlistrlist.get(section).get(position), Toast.LENGTH_SHORT).show();
+//            }
+//        });
         return layout;
     }
 
