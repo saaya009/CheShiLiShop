@@ -18,7 +18,7 @@
             android:layout_margin="15dp"
             android:padding="5dp"
             android:drawableRight="@mipmap/icon_setting"
-            android:text="2017-07"
+            android:text="2017-08"
             android:textSize="15dp"
             android:background="@drawable/bg_button_commission_style"
             android:layout_width="110dp"

@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.example.administrator.cheshilishop.BaseActivity;
 import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
@@ -50,7 +51,6 @@ public class ProductActivity extends BaseActivity {
 
     private String[] leftStr;
     private boolean[] flagArray = {true, false, false, false, false, false, false, false, false};
-    private String[][] rightStr;
     private List<ProductBean> mList;
     private List<String> list;
     private List<List<ProductBean>> lists;
@@ -115,25 +115,23 @@ public class ProductActivity extends BaseActivity {
                     list = new ArrayList<String>();
                     JSONObject jsonObject = new JSONObject(result);
                     String status = jsonObject.getString("Status");
+                    List<String> rlist = new ArrayList<String>();
                     if ("0".equals(status)) {
-                        JSONObject data = jsonObject.getJSONObject("Data");
-                        String rows = data.getString("Rows");
-                        mList = JSON.parseArray(rows, ProductBean.class);
-                        lists = new ArrayList<List<ProductBean>>();
-                        for(ProductBean product : mList) {
-                          list.add(product.CategoryName);
+                        org.json.JSONArray data = jsonObject.getJSONArray("Data");
+                        for (int i = 0;i<data.length();i++){
+                            JSONObject object = data.getJSONObject(i);
+                            rlist.add(object.getString("CategoryName"));
                         }
-                        List<String> rlist = new ArrayList<String>();
-                        rlist = removeDuplicate(list);
                         leftStr = new String[rlist.size()];
                         rlist.toArray(leftStr);
+
                         List<ProductBean> beanList = null;
                         for (int i = 0;i<leftStr.length;i++){
+                            JSONObject object = data.getJSONObject(i);
                             beanList = new ArrayList<ProductBean>();
-                            for (int j = 0;j<mList.size();j++){
-                                if (mList.get(j).CategoryName.equals(rlist.get(i))){
-                                    beanList.add(mList.get(j));
-                                }
+                            org.json.JSONArray Children = object.getJSONArray("Children");
+                            for (int j = 0;j<Children.length();j++){
+
                             }
                             lists.add(beanList);
                         }
