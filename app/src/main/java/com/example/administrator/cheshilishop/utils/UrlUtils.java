@@ -88,7 +88,7 @@ public class UrlUtils {
      */
     public static String queryServiceList() {
         String url = null;
-        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/StoreService/QueryServiceList").buildUpon();
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/StoreService/QueryServiceJson").buildUpon();
         url = uribBuilder.build().toString();
         return url;
     }

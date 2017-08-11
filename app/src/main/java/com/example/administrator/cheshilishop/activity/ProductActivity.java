@@ -1,6 +1,7 @@
 package com.example.administrator.cheshilishop.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -105,7 +106,6 @@ public class ProductActivity extends BaseActivity {
     private void getData() {
         RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
-        params.add("Rows", "1000");
         params.add("StoreID", CheShiLiShopApplication.storeID);
         RestClient.post(UrlUtils.queryServiceList(), params, this, new AsyncHttpResponseHandler() {
             @Override
@@ -114,24 +114,28 @@ public class ProductActivity extends BaseActivity {
                 try {
                     list = new ArrayList<String>();
                     JSONObject jsonObject = new JSONObject(result);
+                    Log.d("服务", result);
                     String status = jsonObject.getString("Status");
                     List<String> rlist = new ArrayList<String>();
                     if ("0".equals(status)) {
+                        lists = new ArrayList<List<ProductBean>>();
                         org.json.JSONArray data = jsonObject.getJSONArray("Data");
-                        for (int i = 0;i<data.length();i++){
+                        for (int i = 0; i < data.length(); i++) {
                             JSONObject object = data.getJSONObject(i);
                             rlist.add(object.getString("CategoryName"));
                         }
                         leftStr = new String[rlist.size()];
                         rlist.toArray(leftStr);
 
-                        List<ProductBean> beanList = null;
-                        for (int i = 0;i<leftStr.length;i++){
-                            JSONObject object = data.getJSONObject(i);
-                            beanList = new ArrayList<ProductBean>();
-                            org.json.JSONArray Children = object.getJSONArray("Children");
-                            for (int j = 0;j<Children.length();j++){
-
+                        for (int i = 0; i < leftStr.length; i++) {
+                            JSONObject object2 = data.getJSONObject(i);
+                            List<ProductBean> beanList = new ArrayList<ProductBean>();
+                            org.json.JSONArray Children = object2.getJSONArray("Children");
+                            for (int j = 0; j < Children.length(); j++) {
+                                String product = Children.getString(j);
+                                Log.d("服务2", product);
+                                ProductBean productBean = JSON.parseObject(product, ProductBean.class);
+                                beanList.add(productBean);
                             }
                             lists.add(beanList);
                         }
@@ -239,10 +243,11 @@ public class ProductActivity extends BaseActivity {
 
     /**
      * 去除数组里面相同的元素
+     *
      * @param list
      * @return
      */
-    public static List<String> removeDuplicate(List<String> list){
+    public static List<String> removeDuplicate(List<String> list) {
         HashSet<String> hashSet = new HashSet<String>(list);
         list.clear();
         list.addAll(hashSet);
