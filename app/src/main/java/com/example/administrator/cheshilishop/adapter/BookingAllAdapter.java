@@ -14,6 +14,7 @@ import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.activity.UserInfoActivity;
 import com.example.administrator.cheshilishop.bean.BookingBean;
 import com.example.administrator.cheshilishop.utils.DateUtil;
+import com.example.administrator.cheshilishop.utils.UrlUtils;
 
 import java.util.List;
 
@@ -81,10 +82,10 @@ public class BookingAllAdapter extends BaseAdapter {
             holder.mTvShopname.setText(list.get(position).ProductName);
             holder.mTvMoney.setText("¥"+list.get(position).ServiceGapPrice);
             holder.mTvBookingtime.setText("预约时间: "+DateUtil.stampToDate3(list.get(position).AddTime));
-            holder.mTvService.setText(list.get(position).ServiceDescri);
+            holder.mTvService.setText(list.get(position).ProductDescri);
             if (!TextUtils.isEmpty(list.get(position).Imgs)){
                 Glide.with(context)
-                        .load(list.get(position).Imgs)
+                        .load(UrlUtils.BASE_URL+"/Img/"+list.get(position).Imgs)
                         .into(holder.mImgLogo);
             }
         }

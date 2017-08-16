@@ -5,33 +5,29 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.example.administrator.cheshilishop.BaseActivity;
 import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.TopView;
+import com.example.administrator.cheshilishop.dialog.TwoButtonAndContentCustomDialog;
 import com.example.administrator.cheshilishop.net.RestClient;
-import com.example.administrator.cheshilishop.utils.HttpUtils;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.orhanobut.hawk.Hawk;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -42,7 +38,6 @@ import cz.msebera.android.httpclient.Header;
 
 public class LoginActivity extends BaseActivity {
 
-    private ImageView img_back;
     private EditText et_username;
     private EditText et_password;
     private Button btn_login;
@@ -64,7 +59,6 @@ public class LoginActivity extends BaseActivity {
     };
 
 
-
     @Override
     protected void loadViewLayout(Bundle savedInstanceState) {
         setContentView(R.layout.activity_login);
@@ -77,12 +71,11 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected TopView getTopViews() {
-        return null;
+        return new TopView(topbar_tv_title);
     }
 
     @Override
     protected void findViewById() {
-        img_back = findViewById(R.id.img_back);
         et_username = findViewById(R.id.et_username);
         et_password = findViewById(R.id.et_password);
         btn_login = findViewById(R.id.btn_login);
@@ -136,7 +129,6 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void setListener() {
         btn_login.setOnClickListener(this);
-        img_back.setOnClickListener(this);
         tv_getpwd.setOnClickListener(this);
         btn_clear.setOnClickListener(this);
         btn_clear2.setOnClickListener(this);
@@ -145,6 +137,14 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void processLogic() {
         setTopTitle("登录");
+        Hawk.init(LoginActivity.this).build();
+        String wtoken = Hawk.get("wtoken","");
+        if (!TextUtils.isEmpty(wtoken)){
+            CheShiLiShopApplication.wtoken = wtoken;
+            Intent intent = new Intent(this,MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     @Override
@@ -163,7 +163,7 @@ public class LoginActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_getpwd://找回密码
-                mIntent = new Intent(LoginActivity.this,GetPwdActivity.class);
+                mIntent = new Intent(LoginActivity.this, GetPwdActivity.class);
                 startActivity(mIntent);
                 break;
             case R.id.btn_clear://清除手机号
@@ -208,8 +208,10 @@ public class LoginActivity extends BaseActivity {
                         ToastUtils.show(LoginActivity.this, "登录成功");
                         JSONObject data = object.getJSONObject("Data");
                         CheShiLiShopApplication.wtoken = data.getString("WToken");
-                        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                        Hawk.put("wtoken",CheShiLiShopApplication.wtoken);
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
+                        finish();
                     } else {
                         ToastUtils.show(LoginActivity.this, "手机号或密码错误");
                     }
@@ -224,5 +226,30 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            TwoButtonAndContentCustomDialog dialog2 = new TwoButtonAndContentCustomDialog(
+                    this, R.style.Translucent_NoTitle) {
+                @Override
+                public void doConfirm() {
+                    // TODO Auto-generated method stub
+                    super.doConfirm();
+                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                    intent.addCategory(Intent.CATEGORY_HOME);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                }
+            };
+            dialog2.show();
+            dialog2.setContent("确定退出？");
+            dialog2.setTitle("退出");
+            dialog2.setCancel("取消");
+            dialog2.setConfirm("确认");
+        }
+        return true;
     }
 }

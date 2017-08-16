@@ -1,5 +1,6 @@
 package com.example.administrator.cheshilishop.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.TopView;
 import com.example.administrator.cheshilishop.adapter.BookingAllAdapter;
 import com.example.administrator.cheshilishop.bean.BookingBean;
+import com.example.administrator.cheshilishop.bean.ServiceBean;
 import com.example.administrator.cheshilishop.net.RestClient;
 import com.example.administrator.cheshilishop.utils.DateUtil;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
@@ -68,7 +70,9 @@ public class OrderConfirmationActivity extends BaseActivity {
     @BindView(R.id.btn_confirm)
     Button mBtnConfirm;
 
-    private String id;
+    private String appointID;
+    private String serviceID;
+    private String confirmCode;
 
     @Override
     protected void loadViewLayout(Bundle savedInstanceState) {
@@ -98,7 +102,16 @@ public class OrderConfirmationActivity extends BaseActivity {
 
     @Override
     protected void processLogic() {
-        id = getIntent().getStringExtra("id");
+        setTopTitle("预约详情");
+        appointID = getIntent().getStringExtra("AppointID");
+        serviceID = getIntent().getStringExtra("ServiceID");
+        confirmCode =  getIntent().getStringExtra("ConfirmCode");
+        if ("0".equals(appointID)){
+            getAppointData();
+        }else {
+            getServiceData();
+        }
+
     }
 
     @Override
@@ -107,16 +120,17 @@ public class OrderConfirmationActivity extends BaseActivity {
     }
 
     /**
-     * 获取用户数据
+     * 根据预约ID获取数据
      */
-    private void getData() {
+    private void getAppointData() {
         RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
-        params.add("ID",id);
-        RestClient.post(UrlUtils.queryServiceAppointList(), params,this, new AsyncHttpResponseHandler() {
+        params.add("ID",appointID);
+        RestClient.post(UrlUtils.queryServiceAppointDetail(), params,this, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);
+                Log.d("预约详情",result);
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     String Status = jsonObject.getString("Status");
@@ -124,22 +138,26 @@ public class OrderConfirmationActivity extends BaseActivity {
                         String data = jsonObject.getString("Data");
                         BookingBean bookingBean = JSON.parseObject(data,BookingBean.class);
                         mTvTel.setText(bookingBean.UserMobile);
-                        if (!TextUtils.isEmpty(bookingBean.Imgs)){
+                        if (!TextUtils.isEmpty(bookingBean.ProductImg)){
                             Glide.with(context)
-                                    .load(bookingBean.Imgs)
+                                    .load(UrlUtils.BASE_URL+"/Img/"+bookingBean.ProductImg)
                                     .into(mImgLogo);
                         }
-                        mTvShopname.setText(bookingBean.StoreName);
-                        mTvMoney.setText(bookingBean.Price);
-                        mTvStatus.setText(bookingBean.Descri);
+                        mTvShopname.setText(bookingBean.ProductName);
+                        mTvMoney.setText(bookingBean.ServiceGapPrice);
+                        mTvStatus.setText(bookingBean.ProductDescri);
                         mTvNumber.setText("x1");
                         mTvNumber2.setText("共1件商品");
                         mTvOrder.setText(bookingBean.OrderID);
                         mTvOdertime.setText(DateUtil.stampToDate(bookingBean.AddTime));
                         mTvBookingtime.setText(DateUtil.stampToDate3(bookingBean.AppointDate));
-                        mTvAmount.setText(bookingBean.Price);
-                        mTvOffer.setText(bookingBean.ServiceGapPrice);
-                        mTvPreferential.setText(Double.parseDouble(bookingBean.Price)-Double.parseDouble(bookingBean.ServiceGapPrice)+"");
+                        mTvAmount.setText(bookingBean.AllMoney);
+                        mTvOffer.setText(bookingBean.Price);
+                        mTvPreferential.setText(bookingBean.OrderOutPocket);
+                    }else if ("-1".equals(Status)){
+                        Intent intent = new Intent(OrderConfirmationActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                        finish();
                     }else {
                         ToastUtils.show(OrderConfirmationActivity.this,jsonObject.getString("Data"));
                     }
@@ -157,4 +175,55 @@ public class OrderConfirmationActivity extends BaseActivity {
         });
     }
 
+    /**
+     * 根据服务ID获取数据
+     */
+    public void getServiceData() {
+        RequestParams params = new RequestParams();
+        params.add("WToken", CheShiLiShopApplication.wtoken);
+        params.add("ID",serviceID);
+        RestClient.post(UrlUtils.queryUserServiceDetail(), params,this, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String result = new String(responseBody);
+                Log.d("预约详情",result);
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    String Status = jsonObject.getString("Status");
+                    if ("0".equals(Status)){
+                        String data = jsonObject.getString("Data");
+                        ServiceBean service = JSON.parseObject(data,ServiceBean.class);
+                        mTvTel.setText(service.UserMobile);
+                        if (!TextUtils.isEmpty(service.ProductImg)){
+                            Glide.with(context)
+                                    .load(UrlUtils.BASE_URL+"/Img/"+service.ProductImg)
+                                    .into(mImgLogo);
+                        }
+                        mTvShopname.setText(service.ProductName);
+                        mTvMoney.setText(service.ServiceGapPrice);
+                        mTvStatus.setText(service.ProductDescri);
+                        mTvNumber.setText("x1");
+                        mTvNumber2.setText("共1件商品");
+                        mTvOrder.setText(service.OrderID);
+                        mTvOdertime.setText(DateUtil.stampToDate(service.AddTime));
+                        mTvBookingtime.setVisibility(View.GONE);
+                        mTvAmount.setText(service.AllMoney);
+                        mTvOffer.setVisibility(View.GONE);
+                        mTvPreferential.setText(service.OrderOutPocket);
+                    }else {
+                        ToastUtils.show(OrderConfirmationActivity.this,jsonObject.getString("Data"));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+
+            }
+        });
+    }
 }

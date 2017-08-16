@@ -1,17 +1,24 @@
 package com.example.administrator.cheshilishop.activity;
 
+import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -24,16 +31,16 @@ import com.example.administrator.cheshilishop.BaseActivity;
 import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.TopView;
-import com.example.administrator.cheshilishop.adapter.BookingAllAdapter;
-import com.example.administrator.cheshilishop.bean.BookingBean;
 import com.example.administrator.cheshilishop.bean.UserInfoBean;
 import com.example.administrator.cheshilishop.dialog.SelectImgPopupWindow;
 import com.example.administrator.cheshilishop.net.RestClient;
 import com.example.administrator.cheshilishop.photochoose.CropImageActivity;
+import com.example.administrator.cheshilishop.utils.DownloadService;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.orhanobut.hawk.Hawk;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,7 +48,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Date;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -76,6 +82,8 @@ public class UserInfoActivity extends BaseActivity {
     RelativeLayout mLayoutVersion;
     @BindView(R.id.layout_userinfo)
     LinearLayout mLayoutUserinfo;
+    @BindView(R.id.btn_exit)
+    Button mBtnExit;
 
     private SelectImgPopupWindow selectImgPopupWindow;
     private static String localTempImageFileName = "";
@@ -88,6 +96,8 @@ public class UserInfoActivity extends BaseActivity {
     public static final File FILE_LOCAL = new File(FILE_SDCARD, IMAGE_PATH);
     public static final File FILE_PIC_SCREENSHOT = new File(FILE_LOCAL,
             "images/screenshots");
+
+    private MyReceiver receiver = new MyReceiver();
 
     @Override
     protected void loadViewLayout(Bundle savedInstanceState) {
@@ -114,11 +124,16 @@ public class UserInfoActivity extends BaseActivity {
     protected void setListener() {
         mLayoutImg.setOnClickListener(this);
         mLayoutChangepassword.setOnClickListener(this);
+        mBtnExit.setOnClickListener(this);
+        mLayoutUserinfo.setOnClickListener(this);
     }
 
     @Override
     protected void processLogic() {
         setTopTitle("账户信息");
+        IntentFilter intentFilter = new IntentFilter(DownloadService.BROADCAST_ACTION);
+        intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, intentFilter);
         getData();
     }
 
@@ -133,6 +148,19 @@ public class UserInfoActivity extends BaseActivity {
             case R.id.layout_changepassword://修改密码
                 Intent intent = new Intent(UserInfoActivity.this, GetPwdActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.btn_exit://退出
+                CheShiLiShopApplication.storeID = "";
+                CheShiLiShopApplication.wtoken = "";
+                CheShiLiShopApplication.user = null;
+                CheShiLiShopApplication.store = null;
+                Hawk.delete("wtoken");
+                intent = new Intent(UserInfoActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+            case R.id.layout_version://版本更新
+
                 break;
         }
     }
@@ -201,17 +229,21 @@ public class UserInfoActivity extends BaseActivity {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);
                 try {
-                    Log.d("个人信息",result);
+                    Log.d("个人信息", result);
                     JSONObject json = new JSONObject(result);
                     String Status = json.getString("Status");
                     if ("0".equals(Status)) {
                         CheShiLiShopApplication.user = JSON.parseObject(json.getString("Data"), UserInfoBean.class);
-                        if (TextUtils.isEmpty(CheShiLiShopApplication.user.Img)) {
+                        if (!TextUtils.isEmpty(CheShiLiShopApplication.user.Img)) {
                             Glide.with(UserInfoActivity.this)
-                                    .load(CheShiLiShopApplication.user.Img)
+                                    .load(UrlUtils.BASE_URL+"/Img/"+CheShiLiShopApplication.user.Img)
                                     .into(mImgAvatar);
                         }
                         mTvUsername.setText(CheShiLiShopApplication.user.NickName);
+                    }else if ("-1".equals(Status)){
+                        Intent intent = new Intent(UserInfoActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                        finish();
                     } else {
                         ToastUtils.show(UserInfoActivity.this, json.getString("Data"));
                     }
@@ -230,7 +262,7 @@ public class UserInfoActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == FLAG_CHOOSE_IMG && resultCode == android.app.Activity.RESULT_OK) {
+        if (requestCode == FLAG_CHOOSE_IMG && resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 Uri uri = data.getData();
                 if (!TextUtils.isEmpty(uri.getAuthority())) {
@@ -254,12 +286,12 @@ public class UserInfoActivity extends BaseActivity {
                     startActivityForResult(intent, FLAG_MODIFY_FINISH);
                 }
             }
-        } else if (requestCode == FLAG_CHOOSE_PHONE && resultCode == android.app.Activity.RESULT_OK) {
+        } else if (requestCode == FLAG_CHOOSE_PHONE && resultCode == Activity.RESULT_OK) {
             File f = new File(FILE_PIC_SCREENSHOT, localTempImageFileName);
             Intent intent = new Intent(this, CropImageActivity.class);
             intent.putExtra("path", f.getAbsolutePath());
             startActivityForResult(intent, FLAG_MODIFY_FINISH);
-        } else if (requestCode == FLAG_MODIFY_FINISH && resultCode == android.app.Activity.RESULT_OK) {
+        } else if (requestCode == FLAG_MODIFY_FINISH && resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 String path = data.getStringExtra("path");
                 uploadPic(path);
@@ -306,5 +338,25 @@ public class UserInfoActivity extends BaseActivity {
 
             }
         });
+    }
+
+    private static class MyReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String data = intent.getStringExtra(DownloadService.EXTENDED_DATA_STATUS);
+            Log.i("test", data);
+            long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+            intent = new Intent(Intent.ACTION_VIEW);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/myApp.apk")),
+                    "application/vnd.android.package-archive");
+            context.startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.administrator.cheshilishop.activity;
 
+import android.content.Intent;
 import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
@@ -220,7 +221,12 @@ public class CommissionActivity extends BaseActivity {
                             }
                             refreshLayout.finishRefreshLoadMore();
                         }
-                    }else {
+                    }else if ("-1".equals(Status)){
+                        Intent intent = new Intent(CommissionActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                    else {
                         ToastUtils.show(CommissionActivity.this,jsonObject.getString("Data"));
                     }
 

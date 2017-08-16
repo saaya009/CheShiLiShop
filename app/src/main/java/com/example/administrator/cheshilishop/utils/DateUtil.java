@@ -228,11 +228,11 @@ public class DateUtil {
 	 * 根据小时判断是否为上午、中午、下午
 	 */
 	public static String getDuringDay(int hour){
-		if (hour >= 7 && hour < 11) {
+		if (hour >= 0 && hour < 11) {
 			return "上午";
 		}if (hour >= 11 && hour <= 13) {
 			return "中午";
-		}if (hour >= 14 && hour <= 18) {
+		}if (hour >= 14 && hour <= 24) {
 			return "下午";
 		}
 		return null;

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -15,6 +16,7 @@ import com.alibaba.fastjson.JSON;
 import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.activity.MainActivity;
+import com.example.administrator.cheshilishop.activity.OrderConfirmationActivity;
 import com.example.administrator.cheshilishop.adapter.BookingAdapter;
 import com.example.administrator.cheshilishop.adapter.BookingAllAdapter;
 import com.example.administrator.cheshilishop.bean.BookingBean;
@@ -45,6 +47,7 @@ public class BookingAllFragment extends Fragment {
 
     private ListView lv_Booking;
     private LinearLayout layout_null;
+    private Button btn_null;
 
     private int page = 1;
     private int size = 10;
@@ -67,17 +70,21 @@ public class BookingAllFragment extends Fragment {
         lv_Booking = (ListView) view.findViewById(R.id.lv_Booking);
         refreshLayout = (MaterialRefreshLayout) view.findViewById(R.id.mrl_experience);;
         layout_null = (LinearLayout) view.findViewById(R.id.layout_null);
-        layout_null.setOnClickListener(new View.OnClickListener() {
+        btn_null = view.findViewById(R.id.btn_null);
+        btn_null.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
+                getActivity().finish();
             }
         });
         lv_Booking.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> view, View view1, int i, long l) {
-
+                Intent intent = new Intent(getActivity(), OrderConfirmationActivity.class);
+                intent.putExtra("AppointID",list.get(i).ID);
+                startActivity(intent);
             }
         });
 

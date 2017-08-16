@@ -1,5 +1,6 @@
 package com.example.administrator.cheshilishop.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -115,6 +116,10 @@ public class SetStoreActivity extends BaseActivity {
                         adapter = new SetStoreAdapter(SetStoreActivity.this,list);
                         lv_store.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
+                    }else if ("-1".equals(Status)){
+                        Intent intent = new Intent(SetStoreActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                        finish();
                     } else {
                         ToastUtils.show(SetStoreActivity.this, jsonObject.getString("Data"));
                     }

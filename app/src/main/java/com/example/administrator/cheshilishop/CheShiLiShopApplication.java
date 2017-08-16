@@ -1,12 +1,14 @@
 package com.example.administrator.cheshilishop;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 
 
 import com.example.administrator.cheshilishop.bean.StoreBean;
 import com.example.administrator.cheshilishop.bean.UserInfoBean;
 import com.mob.MobApplication;
+import com.orhanobut.hawk.Hawk;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,7 +16,7 @@ import java.util.List;
 /**
  * Created by Ayase
  */
-public class CheShiLiShopApplication extends MobApplication {
+public class CheShiLiShopApplication extends Application {
     private List<Activity> activityList = new LinkedList<Activity>();
     private static CheShiLiShopApplication instance;
     public static String wtoken = "";
@@ -22,6 +24,7 @@ public class CheShiLiShopApplication extends MobApplication {
     public static UserInfoBean user = new UserInfoBean();
     public static StoreBean store = new StoreBean();
     public static Context applicationContext;
+    public static String AddTime = "1";
     public static int pic_limit = 5;
 
     @Override
@@ -29,6 +32,7 @@ public class CheShiLiShopApplication extends MobApplication {
         super.onCreate();
         instance = this;
         applicationContext = this;
+
     }
 
     public static CheShiLiShopApplication getInstance() {

@@ -4,7 +4,9 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,6 +16,8 @@ import com.bumptech.glide.Glide;
 import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.bean.StoreBean;
+import com.example.administrator.cheshilishop.bean.UserInfoBean;
+import com.example.administrator.cheshilishop.dialog.TwoButtonAndContentCustomDialog;
 import com.example.administrator.cheshilishop.net.RestClient;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
@@ -24,6 +28,8 @@ import com.yzq.zxinglibrary.android.CaptureActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.net.URLDecoder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -90,10 +96,15 @@ public class MainActivity extends AppCompatActivity {
                         CheShiLiShopApplication.store = JSON.parseObject(data, StoreBean.class);
                         CheShiLiShopApplication.storeID = CheShiLiShopApplication.store.ID;
                         Glide.with(MainActivity.this)
-                                .load(CheShiLiShopApplication.store.Img)
+                                .load(UrlUtils.BASE_URL+"/Img/"+CheShiLiShopApplication.store.Img)
                                 .into(mImgLogo);
                         mTvDescri.setText(CheShiLiShopApplication.store.Name);
-                    } else {
+                    }else if ("-1".equals(Status)){
+                        Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                    else {
                         ToastUtils.show(MainActivity.this, jsonObject.getString("Data"));
                     }
 
@@ -124,6 +135,9 @@ public class MainActivity extends AppCompatActivity {
             Intent intent;
             switch (view.getId()) {
                 case R.id.layout_scan://扫一扫
+                    AndPermission.with(MainActivity.this)
+                            .permission(Manifest.permission.CAMERA)
+                            .send();
                     intent = new Intent(MainActivity.this,
                             CaptureActivity.class);
                     startActivityForResult(intent, REQUEST_CODE_SCAN);
@@ -163,9 +177,61 @@ public class MainActivity extends AppCompatActivity {
         // 扫描二维码/条码回传
         if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
             if (data != null) {
-                String content = data.getStringExtra("codedContent");
+                String content = URLDecoder.decode(data.getStringExtra("codedContent"));
                 Log.d("Qcode", content);
+                int index1 = content.indexOf("AppointID");
+                int index2 = content.indexOf("ServiceID");
+                int index3 = content.indexOf("ConfirmCode");
+                int index4 = content.indexOf("&Type");
+                String AppointID = content.substring(index1 + 10);
+                String ConfirmCode = content.substring(index3 + 12, index4);
+                String ServiceID = content.substring(index2 + 10, index1 - 1);
+                Intent intent = new Intent(MainActivity.this, OrderConfirmationActivity.class);
+                intent.putExtra("AppointID", AppointID);
+                intent.putExtra("ConfirmCode", ConfirmCode);
+                intent.putExtra("ServiceID", ServiceID);
+                startActivity(intent);
             }
+        }
+    }
+
+    /**
+     * 更改预约状态
+     */
+    private void confirmService(String content) {
+        int index1 = content.indexOf("AppointID");
+        int index2 = content.indexOf("ServiceID");
+        int index3 = content.indexOf("ConfirmCode");
+        int index4 = content.indexOf("&Type");
+        String AppointID = content.substring(index1 + 10);
+        String ConfirmCode = content.substring(index3 + 12, index4);
+        String ServiceID = content.substring(index2 + 10, index1 - 1);
+        if (TextUtils.isEmpty(AppointID)) {
+            RequestParams params = new RequestParams();
+            params.add("ID", AppointID);
+            params.add("WToken", CheShiLiShopApplication.wtoken);
+            RestClient.post(UrlUtils.queryServiceAppointDetail(), params, MainActivity.this, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    String result = new String(responseBody);
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        String Status = jsonObject.getString("Status");
+                        if ("0".equals(Status)) {
+
+                        } else {
+                            ToastUtils.show(MainActivity.this, jsonObject.getString("Data"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                }
+            });
         }
     }
 
@@ -173,5 +239,30 @@ public class MainActivity extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
         getStore();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            TwoButtonAndContentCustomDialog dialog2 = new TwoButtonAndContentCustomDialog(
+                    this, R.style.Translucent_NoTitle) {
+                @Override
+                public void doConfirm() {
+                    // TODO Auto-generated method stub
+                    super.doConfirm();
+                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                    intent.addCategory(Intent.CATEGORY_HOME);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                }
+            };
+            dialog2.show();
+            dialog2.setContent("确定退出？");
+            dialog2.setTitle("退出");
+            dialog2.setCancel("取消");
+            dialog2.setConfirm("确认");
+        }
+        return true;
     }
 }

@@ -132,4 +132,34 @@ public class UrlUtils {
         url = uribBuilder.build().toString();
         return url;
     }
+
+    /**
+     * 获取更新
+     */
+    public static String queryAppNewVersion() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/Product/App/QueryAppNewVersion?AppTypeID=5").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
+
+    /**
+     * 查询服务预约详情
+     */
+    public static String queryServiceAppointDetail() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/StoreService/QueryServiceAppointDetail").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
+
+    /**
+     * 查询用户服务详情
+     */
+    public static String queryUserServiceDetail() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/StoreService/QueryUserServiceDetail").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
 }

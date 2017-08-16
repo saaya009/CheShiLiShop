@@ -43,6 +43,7 @@
             android:layout_width="100dp"
             android:layout_height="30dp"/>
         <Button
+            android:id="@+id/btn_order"
             android:layout_marginLeft="15dp"
             android:layout_toRightOf="@id/btn_home"
             android:textColor="@color/white"

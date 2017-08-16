@@ -1,5 +1,6 @@
 package com.example.administrator.cheshilishop.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -139,8 +140,6 @@ public class ProductActivity extends BaseActivity {
                             }
                             lists.add(beanList);
                         }
-//                        rightStr = new String[lists.size()][beanList.size()];
-//                        lists.toArray(rightStr);
 
                         sectionedAdapter = new MainSectionedAdapter(ProductActivity.this, leftStr, lists);
                         pinnedListView.setAdapter(sectionedAdapter);
@@ -224,7 +223,12 @@ public class ProductActivity extends BaseActivity {
                                     isScroll = true;
                                 }
                             }
+
                         });
+                    }else if ("-1".equals(status)){
+                        Intent intent = new Intent(ProductActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -5,18 +5,11 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/img_back"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="5dp"
-        android:src="@mipmap/icon_back"
-        android:layout_width="30dp"
-        android:layout_height="30dp"/>
 
     <ImageView
         android:src="@mipmap/icon_logo"
         android:id="@+id/img_logo"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="160dp"
         android:layout_marginRight="160dp"

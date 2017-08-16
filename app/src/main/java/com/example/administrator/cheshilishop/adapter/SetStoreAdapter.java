@@ -14,6 +14,7 @@ import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.activity.UserInfoActivity;
 import com.example.administrator.cheshilishop.bean.StoreBean;
+import com.example.administrator.cheshilishop.utils.UrlUtils;
 
 import java.util.List;
 
@@ -66,7 +67,7 @@ public class SetStoreAdapter extends BaseAdapter {
 		}
 		if (!TextUtils.isEmpty(list.get(position).Img)){
 			Glide.with(context)
-					.load(list.get(position).Img)
+					.load(UrlUtils.BASE_URL+"/Img/"+list.get(position).Img)
 					.into(holder.img_store);
 		}
 		holder.tv_store.setText(list.get(position).Name);

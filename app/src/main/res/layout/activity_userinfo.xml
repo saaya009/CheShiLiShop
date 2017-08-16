@@ -118,6 +118,7 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/btn_exit"
         android:textSize="19dp"
         android:textColor="@color/white"
         android:text="退出登录"
@@ -126,6 +127,6 @@
         android:layout_marginRight="25dp"
         android:layout_marginLeft="25dp"
         android:layout_width="match_parent"
-        android:layout_height="30dp"/>
+        android:layout_height="40dp"/>
 
 </LinearLayout>
