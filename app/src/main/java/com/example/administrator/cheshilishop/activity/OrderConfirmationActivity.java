@@ -14,9 +14,10 @@ import com.example.administrator.cheshilishop.BaseActivity;
 import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.TopView;
-import com.example.administrator.cheshilishop.adapter.BookingAllAdapter;
+import com.example.administrator.cheshilishop.adapter.SetStoreAdapter;
 import com.example.administrator.cheshilishop.bean.BookingBean;
 import com.example.administrator.cheshilishop.bean.ServiceBean;
+import com.example.administrator.cheshilishop.bean.StoreBean;
 import com.example.administrator.cheshilishop.net.RestClient;
 import com.example.administrator.cheshilishop.utils.DateUtil;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
@@ -27,7 +28,7 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,10 +70,15 @@ public class OrderConfirmationActivity extends BaseActivity {
     TextView mTvPreferential;
     @BindView(R.id.btn_confirm)
     Button mBtnConfirm;
+    @BindView(R.id.tv_type)
+    TextView mTvType;
+    @BindView(R.id.btn_cancel)
+    Button mBtnCancel;
 
     private String appointID;
     private String serviceID;
     private String confirmCode;
+    private int type;
 
     @Override
     protected void loadViewLayout(Bundle savedInstanceState) {
@@ -97,7 +103,8 @@ public class OrderConfirmationActivity extends BaseActivity {
 
     @Override
     protected void setListener() {
-
+        mBtnCancel.setOnClickListener(this);
+        mBtnConfirm.setOnClickListener(this);
     }
 
     @Override
@@ -105,18 +112,104 @@ public class OrderConfirmationActivity extends BaseActivity {
         setTopTitle("预约详情");
         appointID = getIntent().getStringExtra("AppointID");
         serviceID = getIntent().getStringExtra("ServiceID");
-        confirmCode =  getIntent().getStringExtra("ConfirmCode");
-        if ("0".equals(appointID)){
+        confirmCode = getIntent().getStringExtra("ConfirmCode");
+        type = getIntent().getExtras().getInt("type");
+        if (!"0".equals(appointID)) {
             getAppointData();
-        }else {
+            mTvType.setText("已预约");
+        } else {
+            mTvType.setText("未预约");
             getServiceData();
+        }
+        switch (type) {
+            case 1://扫码
+                break;
+            case 2://列表
+                mBtnConfirm.setVisibility(View.INVISIBLE);
+                break;
         }
 
     }
 
     @Override
     protected void onClickEvent(View paramView) {
+        switch (paramView.getId()) {
+            case R.id.btn_cancel://取消预约
+                cancelAppoint();
+                break;
+            case R.id.btn_confirm://确认预约
+                confirmService();
+                break;
+        }
+    }
 
+    /**
+     * 取消预约
+     */
+    private void cancelAppoint() {
+        RequestParams params = new RequestParams();
+        params.add("WToken",CheShiLiShopApplication.wtoken);
+        params.add("ID",appointID);
+        RestClient.post(UrlUtils.cancelAppoint(), params, this, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String result = new String(responseBody);
+                try {
+                    Log.d("取消预约",result);
+                    JSONObject jsonObject = new JSONObject(result);
+                    String status = jsonObject.getString("Status");
+                    if ("0".equals(status)) {
+                    }else if ("-1".equals(status)){
+                        Intent intent = new Intent(OrderConfirmationActivity.this,SuccessActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }else {
+                        ToastUtils.show(OrderConfirmationActivity.this,jsonObject.getString("Data"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+    }
+
+    /**
+     * 确认预约
+     */
+    private void confirmService() {
+        RequestParams params = new RequestParams();
+        params.add("WToken", CheShiLiShopApplication.wtoken);
+        params.add("AppointID", appointID);
+        params.add("ServiceID", serviceID);
+        params.add("ConfirmCode", confirmCode);
+        RestClient.post(UrlUtils.confirmService(), params, this, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String result = new String(responseBody);
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    String status = jsonObject.getString("Status");
+                    if ("0".equals(status)) {
+                    }else if ("-1".equals(status)){
+                        Intent intent = new Intent(OrderConfirmationActivity.this,SuccessActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
     }
 
     /**
@@ -125,22 +218,22 @@ public class OrderConfirmationActivity extends BaseActivity {
     private void getAppointData() {
         RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
-        params.add("ID",appointID);
-        RestClient.post(UrlUtils.queryServiceAppointDetail(), params,this, new AsyncHttpResponseHandler() {
+        params.add("ID", appointID);
+        RestClient.post(UrlUtils.queryServiceAppointDetail(), params, this, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);
-                Log.d("预约详情",result);
+                Log.d("预约详情", result);
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     String Status = jsonObject.getString("Status");
-                    if ("0".equals(Status)){
+                    if ("0".equals(Status)) {
                         String data = jsonObject.getString("Data");
-                        BookingBean bookingBean = JSON.parseObject(data,BookingBean.class);
+                        BookingBean bookingBean = JSON.parseObject(data, BookingBean.class);
                         mTvTel.setText(bookingBean.UserMobile);
-                        if (!TextUtils.isEmpty(bookingBean.ProductImg)){
+                        if (!TextUtils.isEmpty(bookingBean.ProductImg)) {
                             Glide.with(context)
-                                    .load(UrlUtils.BASE_URL+"/Img/"+bookingBean.ProductImg)
+                                    .load(UrlUtils.BASE_URL + "/Img/" + bookingBean.ProductImg)
                                     .into(mImgLogo);
                         }
                         mTvShopname.setText(bookingBean.ProductName);
@@ -154,12 +247,12 @@ public class OrderConfirmationActivity extends BaseActivity {
                         mTvAmount.setText(bookingBean.AllMoney);
                         mTvOffer.setText(bookingBean.Price);
                         mTvPreferential.setText(bookingBean.OrderOutPocket);
-                    }else if ("-1".equals(Status)){
-                        Intent intent = new Intent(OrderConfirmationActivity.this,LoginActivity.class);
+                    } else if ("-1".equals(Status)) {
+                        Intent intent = new Intent(OrderConfirmationActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
-                    }else {
-                        ToastUtils.show(OrderConfirmationActivity.this,jsonObject.getString("Data"));
+                    } else {
+                        ToastUtils.show(OrderConfirmationActivity.this, jsonObject.getString("Data"));
                     }
 
                 } catch (JSONException e) {
@@ -181,26 +274,26 @@ public class OrderConfirmationActivity extends BaseActivity {
     public void getServiceData() {
         RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
-        params.add("ID",serviceID);
-        RestClient.post(UrlUtils.queryUserServiceDetail(), params,this, new AsyncHttpResponseHandler() {
+        params.add("ID", serviceID);
+        RestClient.post(UrlUtils.queryUserServiceDetail(), params, this, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);
-                Log.d("预约详情",result);
+                Log.d("服务详情", result);
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     String Status = jsonObject.getString("Status");
-                    if ("0".equals(Status)){
+                    if ("0".equals(Status)) {
                         String data = jsonObject.getString("Data");
-                        ServiceBean service = JSON.parseObject(data,ServiceBean.class);
+                        ServiceBean service = JSON.parseObject(data, ServiceBean.class);
                         mTvTel.setText(service.UserMobile);
-                        if (!TextUtils.isEmpty(service.ProductImg)){
+                        if (!TextUtils.isEmpty(service.ProductImg)) {
                             Glide.with(context)
-                                    .load(UrlUtils.BASE_URL+"/Img/"+service.ProductImg)
+                                    .load(UrlUtils.BASE_URL + "/Img/" + service.ProductImg)
                                     .into(mImgLogo);
                         }
                         mTvShopname.setText(service.ProductName);
-                        mTvMoney.setText(service.ServiceGapPrice);
+                        mTvMoney.setText(service.AllMoney);
                         mTvStatus.setText(service.ProductDescri);
                         mTvNumber.setText("x1");
                         mTvNumber2.setText("共1件商品");
@@ -210,8 +303,8 @@ public class OrderConfirmationActivity extends BaseActivity {
                         mTvAmount.setText(service.AllMoney);
                         mTvOffer.setVisibility(View.GONE);
                         mTvPreferential.setText(service.OrderOutPocket);
-                    }else {
-                        ToastUtils.show(OrderConfirmationActivity.this,jsonObject.getString("Data"));
+                    } else {
+                        ToastUtils.show(OrderConfirmationActivity.this, jsonObject.getString("Data"));
                     }
 
                 } catch (JSONException e) {
@@ -225,5 +318,12 @@ public class OrderConfirmationActivity extends BaseActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

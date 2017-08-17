@@ -3,6 +3,7 @@ package com.example.administrator.cheshilishop.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
@@ -24,6 +26,8 @@ import com.example.administrator.cheshilishop.utils.UrlUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.PermissionNo;
+import com.yanzhenjie.permission.PermissionYes;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 
 import org.json.JSONException;
@@ -96,15 +100,14 @@ public class MainActivity extends AppCompatActivity {
                         CheShiLiShopApplication.store = JSON.parseObject(data, StoreBean.class);
                         CheShiLiShopApplication.storeID = CheShiLiShopApplication.store.ID;
                         Glide.with(MainActivity.this)
-                                .load(UrlUtils.BASE_URL+"/Img/"+CheShiLiShopApplication.store.Img)
+                                .load(UrlUtils.BASE_URL + "/Img/" + CheShiLiShopApplication.store.Img)
                                 .into(mImgLogo);
                         mTvDescri.setText(CheShiLiShopApplication.store.Name);
-                    }else if ("-1".equals(Status)){
-                        Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                    } else if ("-1".equals(Status)) {
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
-                    }
-                    else {
+                    } else {
                         ToastUtils.show(MainActivity.this, jsonObject.getString("Data"));
                     }
 
@@ -135,10 +138,8 @@ public class MainActivity extends AppCompatActivity {
             Intent intent;
             switch (view.getId()) {
                 case R.id.layout_scan://扫一扫
-                    AndPermission.with(MainActivity.this)
-                            .permission(Manifest.permission.CAMERA)
-                            .send();
-                    intent = new Intent(MainActivity.this,
+
+                   intent = new Intent(MainActivity.this,
                             CaptureActivity.class);
                     startActivityForResult(intent, REQUEST_CODE_SCAN);
                     break;
@@ -190,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("AppointID", AppointID);
                 intent.putExtra("ConfirmCode", ConfirmCode);
                 intent.putExtra("ServiceID", ServiceID);
+                intent.putExtra("type", 1);
                 startActivity(intent);
             }
         }
@@ -264,5 +266,28 @@ public class MainActivity extends AppCompatActivity {
             dialog2.setConfirm("确认");
         }
         return true;
+    }
+
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        // 只需要调用这一句，剩下的AndPermission自动完成。
+//        AndPermission.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+//    }
+
+    // 成功回调的方法，用注解即可，里面的数字是请求时的requestCode。
+    @PermissionYes(101)
+    private void getLocationYes() {
+        // 申请权限成功，可以去做点什么了。
+        Intent intent = new Intent(MainActivity.this,
+                CaptureActivity.class);
+        startActivityForResult(intent, REQUEST_CODE_SCAN);
+    }
+
+    // 失败回调的方法，用注解即可，里面的数字是请求时的requestCode。
+    @PermissionNo(101)
+    private void getLocationNo() {
+        // 申请权限失败，可以提醒一下用户。
+        Toast.makeText(this, "获取相机权限失败，无法使用扫一扫", Toast.LENGTH_SHORT).show();
+        finish();
     }
 }

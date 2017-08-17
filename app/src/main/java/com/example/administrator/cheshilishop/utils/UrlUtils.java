@@ -158,7 +158,27 @@ public class UrlUtils {
      */
     public static String queryUserServiceDetail() {
         String url = null;
-        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/StoreService/QueryUserServiceDetail").buildUpon();
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/StoreService/QueryUserServiceDetail").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
+
+    /**
+     * 查询用户服务详情
+     */
+    public static String confirmService() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/StoreService/ConfirmService").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
+
+    /**
+     * 取消预约
+     */
+    public static String cancelAppoint() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/StoreService/CancelAppoint").buildUpon();
         url = uribBuilder.build().toString();
         return url;
     }

@@ -139,7 +139,7 @@ public class LoginActivity extends BaseActivity {
         setTopTitle("登录");
         Hawk.init(LoginActivity.this).build();
         String wtoken = Hawk.get("wtoken","");
-        if (!TextUtils.isEmpty(wtoken)){
+        if (!"".equals(wtoken)){
             CheShiLiShopApplication.wtoken = wtoken;
             Intent intent = new Intent(this,MainActivity.class);
             startActivity(intent);

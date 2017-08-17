@@ -76,16 +76,26 @@ public class BookingAllAdapter extends BaseAdapter {
         }
         if (!TextUtils.isEmpty(list.get(position).ID)) {
             holder.mTvTel.setText(list.get(position).UserID);
-            holder.mTvStatus.setText(list.get(position).Descri);
+            switch (list.get(position).Status) {
+                case "4":
+                    holder.mTvStatus.setText("已验证");
+                    break;
+                case "2":
+                    holder.mTvStatus.setText("已预约");
+                    break;
+                case "0":
+                    holder.mTvStatus.setText("已预约");
+                    break;
+            }
             holder.mTvEndtime.setText(DateUtil.stampToDate(list.get(position).AppointDate));
             holder.mTvOrdernumber.setText(list.get(position).ServiceID);
             holder.mTvShopname.setText(list.get(position).ProductName);
-            holder.mTvMoney.setText("¥"+list.get(position).ServiceGapPrice);
-            holder.mTvBookingtime.setText("预约时间: "+DateUtil.stampToDate3(list.get(position).AddTime));
+            holder.mTvMoney.setText("¥" + list.get(position).AllMoney);
+            holder.mTvBookingtime.setText("预约时间: " + DateUtil.stampToDate3(list.get(position).AddTime));
             holder.mTvService.setText(list.get(position).ProductDescri);
-            if (!TextUtils.isEmpty(list.get(position).Imgs)){
+            if (!TextUtils.isEmpty(list.get(position).Imgs)) {
                 Glide.with(context)
-                        .load(UrlUtils.BASE_URL+"/Img/"+list.get(position).Imgs)
+                        .load(UrlUtils.BASE_URL + "/Img/" + list.get(position).Imgs)
                         .into(holder.mImgLogo);
             }
         }
@@ -93,6 +103,7 @@ public class BookingAllAdapter extends BaseAdapter {
 
 
     }
+
     static class ViewHolder {
         TextView mTvTel;
         TextView mTvStatus;

@@ -130,7 +130,7 @@ public class CommissionActivity extends BaseActivity {
                     @Override
                     public void onClick(String year, String month, String day) {
                         // TODO Auto-generated method stub
-                        Toast.makeText(CommissionActivity.this, year + "-" + month + "-" + day, Toast.LENGTH_LONG).show();
+                        Toast.makeText(CommissionActivity.this, year + "-" + month , Toast.LENGTH_LONG).show();
                         StringBuilder sb = new StringBuilder();
 //                        sb.append(year.substring(0, year.length() - 1)).append("-").append(month.substring(0, day.length() - 1)).append("-").append(day);
                         str[0] = year.substring(0,year.length()) + "-" + month.substring(0,month.length()-1);
