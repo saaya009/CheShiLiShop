@@ -9,10 +9,13 @@
     android:orientation="vertical"
     tools:context="com.example.administrator.cheshilishop.activity.MainActivity">
 
+    <include layout="@layout/topbar"/>
+
+
     <LinearLayout
         android:id="@+id/layout_change"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="150dp"
         android:background="@mipmap/bg_logo"
         android:orientation="vertical">
 
@@ -32,7 +35,7 @@
             android:layout_marginTop="15dp"
             android:text="卡诺加一站式汽车养护"
             android:textColor="@color/white"
-            android:textSize="16dp"/>
+            android:textSize="17dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -42,7 +45,7 @@
             android:drawableRight="@mipmap/icon_change"
             android:text="更改店面  "
             android:textColor="@color/white"
-            android:textSize="16dp"/>
+            android:textSize="15dp"/>
     </LinearLayout>
 
     <LinearLayout

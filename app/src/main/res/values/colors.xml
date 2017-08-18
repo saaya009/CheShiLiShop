@@ -6,6 +6,7 @@
     <color name="white">#ffffff</color>
     <color name="blue">#2C50A6</color>
     <color name="black">#000000</color>
+    <color name="bg_gray">#FAFAFA</color>
     <color name="gray">#F0EFF5</color>
     <color name="orange">#EA5514</color>
     <color name="colortext">#98969B</color>

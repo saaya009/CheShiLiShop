@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.tv_tel)
     TextView mTvTel;
 
+    protected TextView topbar_tv_title;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,6 +119,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        topbar_tv_title = (TextView) findViewById(R.id.topbar_tv_title);
+        topbar_tv_title.setText("车势力商户中心");
         mLayoutScan.setOnClickListener(mOnClickListener);
         mLayoutBooking.setOnClickListener(mOnClickListener);
         mLayoutManager.setOnClickListener(mOnClickListener);

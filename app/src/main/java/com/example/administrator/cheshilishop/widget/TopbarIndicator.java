@@ -62,8 +62,8 @@ public class TopbarIndicator extends LinearLayout {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeWidth(10);
-        mPaint.setColor(Color.parseColor("#F7564C"));
+        mPaint.setStrokeWidth(20);
+        mPaint.setColor(Color.parseColor("#3F51B5"));
     }
 
     @Override
@@ -102,8 +102,8 @@ public class TopbarIndicator extends LinearLayout {
     //初始化下划线
     private void initLine() {
         mPath = new Path();
-        mPath.moveTo(LineWidth/4,0);
-        mPath.lineTo(LineWidth*3/4,0);
+        mPath.moveTo(0,0);
+        mPath.lineTo(LineWidth,0);
         mPath.close();//路径闭合
     }
 
