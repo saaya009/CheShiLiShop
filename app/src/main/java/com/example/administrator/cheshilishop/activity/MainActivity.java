@@ -1,9 +1,9 @@
 package com.example.administrator.cheshilishop.activity;
 
-import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.os.Process;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -11,23 +11,19 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.bean.StoreBean;
-import com.example.administrator.cheshilishop.bean.UserInfoBean;
 import com.example.administrator.cheshilishop.dialog.TwoButtonAndContentCustomDialog;
 import com.example.administrator.cheshilishop.net.RestClient;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
+import com.example.administrator.cheshilishop.utils.UpgradeAppHelper;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.yanzhenjie.permission.AndPermission;
-import com.yanzhenjie.permission.PermissionNo;
-import com.yanzhenjie.permission.PermissionYes;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 
 import org.json.JSONException;
@@ -63,22 +59,19 @@ public class MainActivity extends AppCompatActivity {
     CircleImageView mImgLogo;
     @BindView(R.id.tv_descri)
     TextView mTvDescri;
+    @BindView(R.id.tv_tel)
+    TextView mTvTel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        /**
-         * 动态权限申请
-         */
-        AndPermission.with(this)
-                .requestCode(101)
-                .permission(Manifest.permission.CAMERA)
-                .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .send();
+        // 检测软件更新方法
+        UpgradeAppHelper.checkAppVersion(MainActivity.this);
         getStore();
         initView();
+
     }
 
     /**
@@ -130,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
         mLayoutCommission.setOnClickListener(mOnClickListener);
         mLayoutUserinfo.setOnClickListener(mOnClickListener);
         mLayoutChange.setOnClickListener(mOnClickListener);
+        mTvTel.setOnClickListener(mOnClickListener);
     }
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -138,8 +132,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent;
             switch (view.getId()) {
                 case R.id.layout_scan://扫一扫
-
-                   intent = new Intent(MainActivity.this,
+                    intent = new Intent(MainActivity.this,
                             CaptureActivity.class);
                     startActivityForResult(intent, REQUEST_CODE_SCAN);
                     break;
@@ -167,6 +160,12 @@ public class MainActivity extends AppCompatActivity {
                     intent = new Intent(MainActivity.this,
                             SetStoreActivity.class);
                     startActivity(intent);
+                    break;
+                case R.id.tv_tel://客服电话
+                    Intent intentNumber = new Intent(Intent.ACTION_DIAL);
+                    Uri dataNumber = Uri.parse("tel:" + "0531-85523333");
+                    intentNumber.setData(dataNumber);
+                    startActivity(intentNumber);
                     break;
             }
         }
@@ -256,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
                     intent.addCategory(Intent.CATEGORY_HOME);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
-                    android.os.Process.killProcess(android.os.Process.myPid());
+                    Process.killProcess(Process.myPid());
                 }
             };
             dialog2.show();
@@ -268,26 +267,5 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        // 只需要调用这一句，剩下的AndPermission自动完成。
-//        AndPermission.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
-//    }
 
-    // 成功回调的方法，用注解即可，里面的数字是请求时的requestCode。
-    @PermissionYes(101)
-    private void getLocationYes() {
-        // 申请权限成功，可以去做点什么了。
-        Intent intent = new Intent(MainActivity.this,
-                CaptureActivity.class);
-        startActivityForResult(intent, REQUEST_CODE_SCAN);
-    }
-
-    // 失败回调的方法，用注解即可，里面的数字是请求时的requestCode。
-    @PermissionNo(101)
-    private void getLocationNo() {
-        // 申请权限失败，可以提醒一下用户。
-        Toast.makeText(this, "获取相机权限失败，无法使用扫一扫", Toast.LENGTH_SHORT).show();
-        finish();
-    }
 }

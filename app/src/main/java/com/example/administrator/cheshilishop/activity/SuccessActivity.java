@@ -1,5 +1,6 @@
 package com.example.administrator.cheshilishop.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -60,10 +61,14 @@ public class SuccessActivity extends BaseActivity {
     protected void onClickEvent(View paramView) {
         switch (paramView.getId()){
             case R.id.btn_home://去首页
-
+                Intent intent = new Intent(this,MainActivity.class);
+                startActivity(intent);
+                finish();
                 break;
-            case R.id.btn_order://去首页
-
+            case R.id.btn_order://去订单
+                intent = new Intent(this,BookingManagementActivity.class);
+                startActivity(intent);
+                finish();
                 break;
         }
     }

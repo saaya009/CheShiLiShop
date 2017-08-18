@@ -37,6 +37,7 @@ import com.example.administrator.cheshilishop.net.RestClient;
 import com.example.administrator.cheshilishop.photochoose.CropImageActivity;
 import com.example.administrator.cheshilishop.utils.DownloadService;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
+import com.example.administrator.cheshilishop.utils.UpgradeAppHelper;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -131,6 +132,7 @@ public class UserInfoActivity extends BaseActivity {
     @Override
     protected void processLogic() {
         setTopTitle("账户信息");
+
         IntentFilter intentFilter = new IntentFilter(DownloadService.BROADCAST_ACTION);
         intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, intentFilter);

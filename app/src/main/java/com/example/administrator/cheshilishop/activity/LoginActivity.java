@@ -1,9 +1,11 @@
 package com.example.administrator.cheshilishop.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.cheshilishop.BaseActivity;
 import com.example.administrator.cheshilishop.CheShiLiShopApplication;
@@ -25,6 +28,10 @@ import com.example.administrator.cheshilishop.utils.UrlUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.orhanobut.hawk.Hawk;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.PermissionNo;
+import com.yanzhenjie.permission.PermissionYes;
+import com.yzq.zxinglibrary.android.CaptureActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,6 +69,19 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void loadViewLayout(Bundle savedInstanceState) {
         setContentView(R.layout.activity_login);
+        Hawk.init(LoginActivity.this).build();
+        /**
+         * 动态权限申请
+         */
+        AndPermission.with(LoginActivity.this)
+                .requestCode(101)
+                .permission(Manifest.permission.CAMERA
+                        , Manifest.permission.ACCESS_COARSE_LOCATION
+                        , Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_PHONE_STATE)
+                .send();
+
     }
 
     @Override
@@ -136,15 +156,8 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void processLogic() {
-        setTopTitle("登录");
-        Hawk.init(LoginActivity.this).build();
-        String wtoken = Hawk.get("wtoken","");
-        if (!"".equals(wtoken)){
-            CheShiLiShopApplication.wtoken = wtoken;
-            Intent intent = new Intent(this,MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
+
+
     }
 
     @Override
@@ -208,7 +221,7 @@ public class LoginActivity extends BaseActivity {
                         ToastUtils.show(LoginActivity.this, "登录成功");
                         JSONObject data = object.getJSONObject("Data");
                         CheShiLiShopApplication.wtoken = data.getString("WToken");
-                        Hawk.put("wtoken",CheShiLiShopApplication.wtoken);
+                        Hawk.put("wtoken", CheShiLiShopApplication.wtoken);
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();
@@ -251,5 +264,33 @@ public class LoginActivity extends BaseActivity {
             dialog2.setConfirm("确认");
         }
         return true;
+    }
+
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        // 只需要调用这一句，剩下的AndPermission自动完成。
+//        AndPermission.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+//    }
+
+    // 成功回调的方法，用注解即可，里面的数字是请求时的requestCode。
+    @PermissionYes(101)
+    private void getLocationYes() {
+        // 申请权限成功，可以去做点什么了。
+
+        String wtoken = Hawk.get("wtoken", "");
+        if (!"".equals(wtoken)) {
+            CheShiLiShopApplication.wtoken = wtoken;
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    // 失败回调的方法，用注解即可，里面的数字是请求时的requestCode。
+    @PermissionNo(101)
+    private void getLocationNo() {
+        // 申请权限失败，可以提醒一下用户。
+        Toast.makeText(this, "获取相机权限失败，无法使用扫一扫", Toast.LENGTH_SHORT).show();
+        finish();
     }
 }

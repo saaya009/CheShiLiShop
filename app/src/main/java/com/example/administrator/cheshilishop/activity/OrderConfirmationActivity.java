@@ -195,8 +195,11 @@ public class OrderConfirmationActivity extends BaseActivity {
                     JSONObject jsonObject = new JSONObject(result);
                     String status = jsonObject.getString("Status");
                     if ("0".equals(status)) {
-                    }else if ("-1".equals(status)){
                         Intent intent = new Intent(OrderConfirmationActivity.this,SuccessActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }else if ("-1".equals(status)){
+                        Intent intent = new Intent(OrderConfirmationActivity.this,LoginActivity.class);
                         startActivity(intent);
                         finish();
                     }
