@@ -219,7 +219,7 @@ public class DateUtil {
     */
 	public static String stampToDate2(String time){
 		Long Time = new Long(time);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 		String date = sdf.format(new Date(Time*1000));
 		return date;
 	}

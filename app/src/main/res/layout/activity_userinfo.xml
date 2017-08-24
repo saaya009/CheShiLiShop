@@ -23,14 +23,14 @@
         <TextView
             android:id="@+id/tv_username"
             android:layout_marginLeft="20dp"
-            android:textSize="16dp"
+            android:textSize="17dp"
             android:gravity="center"
             android:textColor="@color/black"
             android:text=""
             android:drawableLeft="@mipmap/icon_username"
             android:layout_centerVertical="true"
             android:layout_width="150dp"
-            android:layout_height="40dp"/>
+            android:layout_height="45dp"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_marginRight="10dp"
@@ -38,8 +38,8 @@
             android:layout_toLeftOf="@+id/img_right"
             android:layout_centerVertical="true"
             android:src="@mipmap/icon_logo"
-            android:layout_width="50dp"
-            android:layout_height="50dp"/>
+            android:layout_width="45dp"
+            android:layout_height="45dp"/>
         <ImageView
             android:id="@+id/img_right"
             android:layout_marginRight="20dp"
@@ -65,7 +65,7 @@
 
         <TextView
             android:layout_marginLeft="20dp"
-            android:textSize="16dp"
+            android:textSize="17dp"
             android:gravity="center"
             android:textColor="@color/black"
             android:text="修改密码"
@@ -97,7 +97,7 @@
 
             <TextView
                 android:layout_marginLeft="20dp"
-                android:textSize="16dp"
+                android:textSize="17dp"
                 android:gravity="center"
                 android:textColor="@color/black"
                 android:text="版本信息"
@@ -127,6 +127,6 @@
         android:layout_marginRight="25dp"
         android:layout_marginLeft="25dp"
         android:layout_width="match_parent"
-        android:layout_height="40dp"/>
+        android:layout_height="45dp"/>
 
 </LinearLayout>

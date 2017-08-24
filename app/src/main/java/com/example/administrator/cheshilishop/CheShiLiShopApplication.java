@@ -24,7 +24,7 @@ public class CheShiLiShopApplication extends Application {
     public static UserInfoBean user = new UserInfoBean();
     public static StoreBean store = new StoreBean();
     public static Context applicationContext;
-    public static String AddTime = "1";
+    public static String AddTime = "1503462681";
     public static int pic_limit = 5;
 
     @Override

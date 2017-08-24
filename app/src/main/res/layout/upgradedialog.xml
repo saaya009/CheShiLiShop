@@ -1,121 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/mydialog_bk"
-    android:orientation="vertical" >
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:background="@drawable/bg_updata_style">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.7"
-        android:gravity="center"
-        android:orientation="vertical" >
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_updata_style">
 
-        <TextView
-            android:id="@+id/dialog_title"
+        <com.example.administrator.cheshilishop.widget.roundedimageview.RoundedImageView
+            android:id="@+id/tv_tipDialog_title"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="140dp"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/red_dialog_title"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"
             android:gravity="center"
-            android:text="升级提示"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.3dp"
-        android:background="#E6E6E6" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingLeft="20dp" >
-
-        <TextView
-            android:id="@+id/newversion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="发现新版本：1.0.0"
-            android:textColor="#F0497D"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/currversion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="当前版本为：1.0.0"
-            android:textColor="#F0497D"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/versionnote"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="1.新版UI界面2.优化直播画面"
-            android:textColor="#F0497D"
-            android:textSize="15sp" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.3dp"
-        android:background="#E6E6E6" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.8"
-        android:gravity="center_vertical"
-        android:orientation="vertical" >
+            android:scaleType="centerCrop"
+            android:src="@mipmap/icon_updata"
+            app:riv_border_color="#e6e6e6"
+            app:riv_border_width="0dip"
+            app:riv_corner_radius_bottom_left="0dp"
+            app:riv_corner_radius_bottom_right="0dp"
+            app:riv_corner_radius_top_left="15dp"
+            app:riv_corner_radius_top_right="15dp"
+            app:riv_mutate_background="false"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:orientation="horizontal" >
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="10dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_newversion"
+                    style="@style/textview_grey62_14_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:text="发现新版本:"
+                    android:textSize="20dp"/>
+            </RelativeLayout>
 
             <TextView
-                android:id="@+id/upgrade_dialog_tv_confirm"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:background="@drawable/red_button_getcode_bk"
-                android:gravity="center"
-                android:text="确定"
-                android:textColor="@color/white"
+                android:id="@+id/tv_currversion"
+                style="@style/textview_grey62_14_style"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:visibility="gone"/>
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
+            <LinearLayout
+                android:id="@+id/ll_versionnote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="版本特性:"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:layout_above="@+id/layout_button"
+            android:background="@color/gray"/>
+
+        <LinearLayout
+            android:id="@+id/layout_button"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
 
             <TextView
-                android:id="@+id/upgrade_dialog_tv_cancel"
+                android:id="@+id/tv_dialog_cancel"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:background="@drawable/gray_button_cancel"
+                android:layout_gravity="right"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="取消"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-    </LinearLayout>
+                android:textColor="@color/blue"
+                android:textSize="16sp"/>
 
+            <View
+                android:layout_width="2px"
+                android:layout_height="match_parent"
+                android:background="@color/gray"
+                />
+
+            <TextView
+                android:id="@+id/tv_dialog_update"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="center"
+                android:text="立即更新"
+                android:textColor="@color/blue"
+                android:textSize="16sp"/>
+        </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

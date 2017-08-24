@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,11 +17,13 @@ import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
+import com.example.administrator.cheshilishop.bean.BookingBean;
 import com.example.administrator.cheshilishop.bean.StoreBean;
 import com.example.administrator.cheshilishop.dialog.TwoButtonAndContentCustomDialog;
 import com.example.administrator.cheshilishop.net.RestClient;
+import com.example.administrator.cheshilishop.utils.DateUtil;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
-import com.example.administrator.cheshilishop.utils.UpgradeAppHelper;
+import com.example.administrator.cheshilishop.utils.UpgradeHelper;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -63,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     TextView mTvTel;
 
     protected TextView topbar_tv_title;
+    protected ImageView topbar_iv_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         // 检测软件更新方法
-        UpgradeAppHelper.checkAppVersion(MainActivity.this);
+        UpgradeHelper.checkAppVersion(MainActivity.this, true);
         getStore();
         initView();
 
@@ -120,7 +124,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
         topbar_tv_title = (TextView) findViewById(R.id.topbar_tv_title);
+        topbar_iv_back = (ImageView) findViewById(R.id.topbar_iv_back);
         topbar_tv_title.setText("车势力商户中心");
+        topbar_iv_back.setVisibility(View.GONE);
         mLayoutScan.setOnClickListener(mOnClickListener);
         mLayoutBooking.setOnClickListener(mOnClickListener);
         mLayoutManager.setOnClickListener(mOnClickListener);
@@ -128,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
         mLayoutUserinfo.setOnClickListener(mOnClickListener);
         mLayoutChange.setOnClickListener(mOnClickListener);
         mTvTel.setOnClickListener(mOnClickListener);
+        mLayoutOrder.setOnClickListener(mOnClickListener);
     }
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -171,6 +178,11 @@ public class MainActivity extends AppCompatActivity {
                     intentNumber.setData(dataNumber);
                     startActivity(intentNumber);
                     break;
+                case R.id.layout_order://三级分销
+                    intent = new Intent(MainActivity.this,
+                            OrderManagementActivity.class);
+                    startActivity(intent);
+                    break;
             }
         }
     };
@@ -190,55 +202,82 @@ public class MainActivity extends AppCompatActivity {
                 String AppointID = content.substring(index1 + 10);
                 String ConfirmCode = content.substring(index3 + 12, index4);
                 String ServiceID = content.substring(index2 + 10, index1 - 1);
-                Intent intent = new Intent(MainActivity.this, OrderConfirmationActivity.class);
-                intent.putExtra("AppointID", AppointID);
-                intent.putExtra("ConfirmCode", ConfirmCode);
-                intent.putExtra("ServiceID", ServiceID);
-                intent.putExtra("type", 1);
-                startActivity(intent);
+                if (!TextUtils.isEmpty(AppointID)){
+                    getAppointData(AppointID,ConfirmCode,ServiceID);
+                }else {
+                    Intent intent = new Intent(MainActivity.this, OrderConfirmationActivity.class);
+                    intent.putExtra("AppointID", AppointID);
+                    intent.putExtra("ConfirmCode", ConfirmCode);
+                    intent.putExtra("ServiceID", ServiceID);
+                    intent.putExtra("type", 1);
+                    startActivity(intent);
+                }
+
+
             }
         }
     }
 
     /**
-     * 更改预约状态
+     * 根据预约ID获取数据
      */
-    private void confirmService(String content) {
-        int index1 = content.indexOf("AppointID");
-        int index2 = content.indexOf("ServiceID");
-        int index3 = content.indexOf("ConfirmCode");
-        int index4 = content.indexOf("&Type");
-        String AppointID = content.substring(index1 + 10);
-        String ConfirmCode = content.substring(index3 + 12, index4);
-        String ServiceID = content.substring(index2 + 10, index1 - 1);
-        if (TextUtils.isEmpty(AppointID)) {
-            RequestParams params = new RequestParams();
-            params.add("ID", AppointID);
-            params.add("WToken", CheShiLiShopApplication.wtoken);
-            RestClient.post(UrlUtils.queryServiceAppointDetail(), params, MainActivity.this, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    String result = new String(responseBody);
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        String Status = jsonObject.getString("Status");
-                        if ("0".equals(Status)) {
+    private void getAppointData(final String AppointID, final String ConfirmCode, final String ServiceID) {
+        final RequestParams params = new RequestParams();
+        params.add("WToken", CheShiLiShopApplication.wtoken);
+        params.add("ID", AppointID);
+        RestClient.post(UrlUtils.queryServiceAppointDetail(), params, this, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String result = new String(responseBody);
+                Log.d("预约详情", result);
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    String Status = jsonObject.getString("Status");
+                    if ("0".equals(Status)) {
+                        Intent intent = new Intent(MainActivity.this, OrderConfirmationActivity.class);
+                        intent.putExtra("AppointID", AppointID);
+                        intent.putExtra("ConfirmCode", ConfirmCode);
+                        intent.putExtra("ServiceID", ServiceID);
+                        intent.putExtra("type", 1);
+                        startActivity(intent);
 
-                        } else {
-                            ToastUtils.show(MainActivity.this, jsonObject.getString("Data"));
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    } else if ("-1".equals(Status)) {
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else if ("98".equals(Status)) {
+                        ToastUtils.show(MainActivity.this,"这不是你预约的店铺！");
+                    } else {
+                        ToastUtils.show(MainActivity.this,"这不是你预约的店铺！");
                     }
-                }
 
-                @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            });
-        }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                RequestParams errParams = new RequestParams();
+                errParams.add("LogCont",new String(responseBody));
+                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData",params.toString());
+                errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                RestClient.post(UrlUtils.insertErrLog(), errParams, MainActivity.this, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                    }
+                });
+            }
+        });
     }
+
 
     @Override
     protected void onPostResume() {

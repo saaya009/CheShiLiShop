@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#50000000"
+    android:padding="3dp" >
+
+    <ImageView
+        android:id="@+id/download_iv"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/download_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/download_iv"
+        android:paddingLeft="26dp"
+        android:textColor="#FFFFFF" />
+    <ProgressBar
+        android:id="@+id/download_pb"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/download_tv"
+        android:layout_alignBottom="@+id/download_iv"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/download_tv"
+        android:paddingLeft="26dp"
+        android:paddingRight="3dp" />
+
+
+</RelativeLayout>

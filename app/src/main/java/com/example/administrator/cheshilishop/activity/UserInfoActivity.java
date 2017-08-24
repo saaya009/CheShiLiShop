@@ -10,9 +10,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -35,9 +37,8 @@ import com.example.administrator.cheshilishop.bean.UserInfoBean;
 import com.example.administrator.cheshilishop.dialog.SelectImgPopupWindow;
 import com.example.administrator.cheshilishop.net.RestClient;
 import com.example.administrator.cheshilishop.photochoose.CropImageActivity;
-import com.example.administrator.cheshilishop.utils.DownloadService;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
-import com.example.administrator.cheshilishop.utils.UpgradeAppHelper;
+import com.example.administrator.cheshilishop.utils.UpgradeHelper;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -132,10 +133,6 @@ public class UserInfoActivity extends BaseActivity {
     @Override
     protected void processLogic() {
         setTopTitle("账户信息");
-
-        IntentFilter intentFilter = new IntentFilter(DownloadService.BROADCAST_ACTION);
-        intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, intentFilter);
         getData();
     }
 
@@ -162,7 +159,7 @@ public class UserInfoActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.layout_version://版本更新
-
+                UpgradeHelper.checkAppVersion(UserInfoActivity.this, true);
                 break;
         }
     }
@@ -345,14 +342,19 @@ public class UserInfoActivity extends BaseActivity {
     private static class MyReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String data = intent.getStringExtra(DownloadService.EXTENDED_DATA_STATUS);
-            Log.i("test", data);
-            long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+
             intent = new Intent(Intent.ACTION_VIEW);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/myApp.apk")),
-                    "application/vnd.android.package-archive");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                Uri contentUri = FileProvider.getUriForFile(context, "com.example.administrator.cheshilishop.fileprovider", new File(Environment.getExternalStorageDirectory() + "/myApp.apk"));
+                intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
+            } else {
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setDataAndType(Uri.parse(Environment.getExternalStorageDirectory() + "/myApp.apk"),
+                        "application/vnd.android.package-archive");
+            }
             context.startActivity(intent);
+
         }
     }
 

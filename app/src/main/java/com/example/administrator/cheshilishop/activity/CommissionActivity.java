@@ -10,17 +10,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.bumptech.glide.Glide;
 import com.example.administrator.cheshilishop.BaseActivity;
 import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.TopView;
-import com.example.administrator.cheshilishop.adapter.BookingAllAdapter;
 import com.example.administrator.cheshilishop.adapter.CommissionAdapter;
 import com.example.administrator.cheshilishop.bean.BookingBean;
 import com.example.administrator.cheshilishop.bean.CommissionBean;
 import com.example.administrator.cheshilishop.net.RestClient;
+import com.example.administrator.cheshilishop.utils.DateUtil;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
 import com.example.administrator.cheshilishop.widget.refresh.MaterialRefreshLayout;
@@ -41,6 +44,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.util.TextUtils;
 
 /**
  * 作者：Ayase on 2017/8/9 15:13
@@ -55,6 +59,16 @@ public class CommissionActivity extends BaseActivity {
     ListView mLvCommission;
     @BindView(R.id.layout_main)
     LinearLayout mLayoutMain;
+    @BindView(R.id.tv_yongjin)
+    TextView mTvYongjin;
+    @BindView(R.id.tv_leiji)
+    TextView mTvLeiji;
+    @BindView(R.id.btn_null)
+    Button mBtnNull;
+    @BindView(R.id.layout_null)
+    LinearLayout mLayoutNull;
+    @BindView(R.id.mrl_experience)
+    MaterialRefreshLayout mMrlExperience;
 
     private int page = 1;
     private int size = 10;
@@ -85,20 +99,21 @@ public class CommissionActivity extends BaseActivity {
 
     @Override
     protected void findViewById() {
-        refreshLayout = findViewById(R.id.mrl_experience);;
+        refreshLayout = findViewById(R.id.mrl_experience);
+        ;
         layout_null = findViewById(R.id.layout_null);
         refreshLayout.setMaterialRefreshListener(new MaterialRefreshListener() {
             @Override
             public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
                 page = 1;
                 list.clear();
-                getData(year,month,page);
+                getData(year, month, page);
             }
 
             @Override
             public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
                 page++;
-                getData(year,month,page);
+                getData(year, month, page);
             }
         });
     }
@@ -113,8 +128,52 @@ public class CommissionActivity extends BaseActivity {
         setTopTitle("佣金管理");
         Calendar cal = Calendar.getInstance();
         year = cal.get(Calendar.YEAR);
-        month = cal.get(Calendar.MONTH );
-        getData(year,month,page);
+        month = cal.get(Calendar.MONTH);
+        getData(year, month, page);
+        //获取总佣金
+        queryCmnCount();
+    }
+
+    /**
+     * 获取总佣金
+     */
+    private void queryCmnCount() {
+        RequestParams params = new RequestParams();
+        params.add("WToken",CheShiLiShopApplication.wtoken);
+        params.add("StoreID",CheShiLiShopApplication.storeID);
+        RestClient.post(UrlUtils.queryCmnCount(), params, this, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String result = new String(responseBody);
+                Log.d("预约详情", result);
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    String Status = jsonObject.getString("Status");
+                    if ("0".equals(Status)) {
+                       JSONObject data = jsonObject.getJSONObject("Data");
+                        mTvYongjin.setText(data.getString("Now_Amount"));
+                        mTvLeiji.setText(data.getString("History_Amount"));
+                    } else if ("-1".equals(Status)) {
+                        Intent intent = new Intent(CommissionActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else if ("98".equals(Status)) {
+                        ToastUtils.show(CommissionActivity.this,"这不是你预约的店铺！");
+                        finish();
+                    } else {
+                        ToastUtils.show(CommissionActivity.this, jsonObject.getString("Data"));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
     }
 
     @Override
@@ -130,16 +189,16 @@ public class CommissionActivity extends BaseActivity {
                     @Override
                     public void onClick(String year, String month, String day) {
                         // TODO Auto-generated method stub
-                        Toast.makeText(CommissionActivity.this, year + "-" + month , Toast.LENGTH_LONG).show();
+                        Toast.makeText(CommissionActivity.this, year + "-" + month, Toast.LENGTH_LONG).show();
                         StringBuilder sb = new StringBuilder();
 //                        sb.append(year.substring(0, year.length() - 1)).append("-").append(month.substring(0, day.length() - 1)).append("-").append(day);
-                        str[0] = year.substring(0,year.length()) + "-" + month.substring(0,month.length()-1);
+                        str[0] = year.substring(0, year.length()) + "-" + month.substring(0, month.length() - 1);
                         str[1] = sb.toString();
                         Log.d("时间", str[0]);
                         mBtnTime.setText(str[0]);
-                        CommissionActivity.this.year = Integer.parseInt(year.substring(0,year.length()));
-                        CommissionActivity.this.month = Integer.parseInt(month.substring(0,month.length()-1));
-                        getData( CommissionActivity.this.year,CommissionActivity.this.month,page);
+                        CommissionActivity.this.year = Integer.parseInt(year.substring(0, year.length()));
+                        CommissionActivity.this.month = Integer.parseInt(month.substring(0, month.length() - 1));
+                        getData(CommissionActivity.this.year, CommissionActivity.this.month, page);
                     }
                 });
                 break;
@@ -165,8 +224,8 @@ public class CommissionActivity extends BaseActivity {
         Date date2 = null;
         try {
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            date = df.parse(year+"-"+month+"-"+dayOfMonth);
-            date2 = df.parse(year+"-"+month+"-1");
+            date = df.parse(year + "-" + month + "-" + dayOfMonth);
+            date2 = df.parse(year + "-" + month + "-1");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -178,15 +237,15 @@ public class CommissionActivity extends BaseActivity {
         long startTims = startcal.getTimeInMillis();
 
 
-        Log.d("日期1","start="+startTims);
-        Log.d("日期2","endTime="+endTime);
+        Log.d("日期1", "start=" + startTims);
+        Log.d("日期2", "endTime=" + endTime);
         RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
 //        params.add("StartTime",startTims+"");
-        params.add("EndTime",endTime+"");
-        params.add("Rows",size+"");
-        params.add("N",page+"");
-        params.add("StoreID",CheShiLiShopApplication.storeID);
+        params.add("EndTime", endTime + "");
+        params.add("Rows", size + "");
+        params.add("N", page + "");
+        params.add("StoreID", CheShiLiShopApplication.storeID);
         RestClient.post(UrlUtils.queryCmnList(), params, this, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -194,7 +253,7 @@ public class CommissionActivity extends BaseActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     String Status = jsonObject.getString("Status");
-                    if ("0".equals(Status)){
+                    if ("0".equals(Status)) {
                         JSONObject data = jsonObject.getJSONObject("Data");
                         String rows = data.getString("Rows");
                         Log.d("Rows", rows);
@@ -208,7 +267,7 @@ public class CommissionActivity extends BaseActivity {
                                 refreshLayout.setVisibility(View.VISIBLE);
                                 list.clear();
                                 list.addAll(mList);
-                                adapter = new CommissionAdapter(CommissionActivity.this, list,1);
+                                adapter = new CommissionAdapter(CommissionActivity.this, list, 1);
                                 mLvCommission.setAdapter(adapter);
                                 refreshLayout.finishRefresh();
                             }
@@ -221,13 +280,12 @@ public class CommissionActivity extends BaseActivity {
                             }
                             refreshLayout.finishRefreshLoadMore();
                         }
-                    }else if ("-1".equals(Status)){
-                        Intent intent = new Intent(CommissionActivity.this,LoginActivity.class);
+                    } else if ("-1".equals(Status)) {
+                        Intent intent = new Intent(CommissionActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
-                    }
-                    else {
-                        ToastUtils.show(CommissionActivity.this,jsonObject.getString("Data"));
+                    } else {
+                        ToastUtils.show(CommissionActivity.this, jsonObject.getString("Data"));
                     }
 
                 } catch (JSONException e) {

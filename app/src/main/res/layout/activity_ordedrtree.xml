@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/topbar"/>
+
+    <ListView
+        android:divider="#00000000"
+        android:dividerHeight="0dip"
+        android:id="@+id/id_tree"
+        android:listSelector="@color/colorPrimaryDark"
+        android:drawSelectorOnTop="true"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </ListView>
+
+</LinearLayout>

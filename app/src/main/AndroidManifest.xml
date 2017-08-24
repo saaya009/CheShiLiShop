@@ -50,15 +50,26 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <service android:name=".servers.UpdateService" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.administrator.cheshilishop.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
         <activity android:name=".activity.ProductActivity"/>
         <activity android:name=".activity.CommissionActivity"/>
         <activity android:name=".activity.SetStoreActivity"/>
         <activity android:name=".activity.UserInfoActivity"/>
         <activity android:name=".photochoose.CropImageActivity"/>
         <activity android:name=".activity.OrderConfirmationActivity"/>
-
-        <service android:name=".utils.DownloadService">
-        </service>
+        <activity android:name=".activity.OrderManagementActivity"/>
+        <activity android:name=".activity.OrderTreeActivity"/>
     </application>
 
 </manifest>

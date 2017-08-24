@@ -36,6 +36,7 @@ import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 /**
+ * 服务管理
  * 作者：Ayase on 2017/8/7 14:30
  * 邮箱：ayase@ayase.cn
  */
@@ -87,6 +88,7 @@ public class ProductActivity extends BaseActivity {
 
     @Override
     protected void processLogic() {
+        setTopTitle("服务管理");
         getData();
     }
 

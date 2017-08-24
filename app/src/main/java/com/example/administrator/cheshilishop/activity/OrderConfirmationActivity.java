@@ -1,6 +1,7 @@
 package com.example.administrator.cheshilishop.activity;
 
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -147,24 +149,24 @@ public class OrderConfirmationActivity extends BaseActivity {
      * 取消预约
      */
     private void cancelAppoint() {
-        RequestParams params = new RequestParams();
-        params.add("WToken",CheShiLiShopApplication.wtoken);
-        params.add("ID",appointID);
+        final RequestParams params = new RequestParams();
+        params.add("WToken", CheShiLiShopApplication.wtoken);
+        params.add("ID", appointID);
         RestClient.post(UrlUtils.cancelAppoint(), params, this, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);
                 try {
-                    Log.d("取消预约",result);
+                    Log.d("取消预约", result);
                     JSONObject jsonObject = new JSONObject(result);
                     String status = jsonObject.getString("Status");
                     if ("0".equals(status)) {
-                    }else if ("-1".equals(status)){
-                        Intent intent = new Intent(OrderConfirmationActivity.this,SuccessActivity.class);
+                    } else if ("-1".equals(status)) {
+                        Intent intent = new Intent(OrderConfirmationActivity.this, SuccessActivity.class);
                         startActivity(intent);
                         finish();
-                    }else {
-                        ToastUtils.show(OrderConfirmationActivity.this,jsonObject.getString("Data"));
+                    } else {
+                        ToastUtils.show(OrderConfirmationActivity.this, jsonObject.getString("Data"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -173,7 +175,25 @@ public class OrderConfirmationActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                SimpleDateFormat formatter = new SimpleDateFormat ("yyyy年MM月dd日 HH:mm:ss ");
+                Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+                String str = formatter.format(curDate);
+                RequestParams errParams = new RequestParams();
+                errParams.add("LogCont",new String(responseBody));
+                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData",params.toString());
+                errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                RestClient.post(UrlUtils.insertErrLog(), errParams, OrderConfirmationActivity.this, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                    }
+                });
             }
         });
     }
@@ -182,7 +202,7 @@ public class OrderConfirmationActivity extends BaseActivity {
      * 确认预约
      */
     private void confirmService() {
-        RequestParams params = new RequestParams();
+        final RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
         params.add("AppointID", appointID);
         params.add("ServiceID", serviceID);
@@ -195,11 +215,11 @@ public class OrderConfirmationActivity extends BaseActivity {
                     JSONObject jsonObject = new JSONObject(result);
                     String status = jsonObject.getString("Status");
                     if ("0".equals(status)) {
-                        Intent intent = new Intent(OrderConfirmationActivity.this,SuccessActivity.class);
+                        Intent intent = new Intent(OrderConfirmationActivity.this, SuccessActivity.class);
                         startActivity(intent);
                         finish();
-                    }else if ("-1".equals(status)){
-                        Intent intent = new Intent(OrderConfirmationActivity.this,LoginActivity.class);
+                    } else if ("-1".equals(status)) {
+                        Intent intent = new Intent(OrderConfirmationActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
                     }
@@ -210,7 +230,25 @@ public class OrderConfirmationActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                SimpleDateFormat formatter = new SimpleDateFormat ("yyyy年MM月dd日 HH:mm:ss ");
+                Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+                String str = formatter.format(curDate);
+                RequestParams errParams = new RequestParams();
+                errParams.add("LogCont",new String(responseBody));
+                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData",params.toString());
+                errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                RestClient.post(UrlUtils.insertErrLog(), errParams, OrderConfirmationActivity.this, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                    }
+                });
             }
         });
     }
@@ -219,7 +257,7 @@ public class OrderConfirmationActivity extends BaseActivity {
      * 根据预约ID获取数据
      */
     private void getAppointData() {
-        RequestParams params = new RequestParams();
+        final RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
         params.add("ID", appointID);
         RestClient.post(UrlUtils.queryServiceAppointDetail(), params, this, new AsyncHttpResponseHandler() {
@@ -254,8 +292,12 @@ public class OrderConfirmationActivity extends BaseActivity {
                         Intent intent = new Intent(OrderConfirmationActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
+                    } else if ("98".equals(Status)) {
+                        ToastUtils.show(OrderConfirmationActivity.this,"这不是你预约的店铺！");
+                        finish();
                     } else {
-                        ToastUtils.show(OrderConfirmationActivity.this, jsonObject.getString("Data"));
+                        ToastUtils.show(OrderConfirmationActivity.this,"这不是你预约的店铺！");
+                        finish();
                     }
 
                 } catch (JSONException e) {
@@ -265,8 +307,22 @@ public class OrderConfirmationActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                RequestParams errParams = new RequestParams();
+                errParams.add("LogCont",new String(responseBody));
+                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData",params.toString());
+                errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                RestClient.post(UrlUtils.insertErrLog(), errParams, OrderConfirmationActivity.this, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
+                    }
 
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                    }
+                });
             }
         });
     }
@@ -275,7 +331,7 @@ public class OrderConfirmationActivity extends BaseActivity {
      * 根据服务ID获取数据
      */
     public void getServiceData() {
-        RequestParams params = new RequestParams();
+        final RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
         params.add("ID", serviceID);
         RestClient.post(UrlUtils.queryUserServiceDetail(), params, this, new AsyncHttpResponseHandler() {
@@ -309,7 +365,6 @@ public class OrderConfirmationActivity extends BaseActivity {
                     } else {
                         ToastUtils.show(OrderConfirmationActivity.this, jsonObject.getString("Data"));
                     }
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -317,7 +372,25 @@ public class OrderConfirmationActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                SimpleDateFormat formatter = new SimpleDateFormat ("yyyy年MM月dd日 HH:mm:ss ");
+                Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+                String str = formatter.format(curDate);
+                RequestParams errParams = new RequestParams();
+                errParams.add("LogCont",new String(responseBody));
+                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData",params.toString());
+                errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                RestClient.post(UrlUtils.insertErrLog(), errParams, OrderConfirmationActivity.this, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                    }
+                });
 
             }
         });

@@ -31,9 +31,16 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="textview_grey62_14_style">
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="Translucent_NoTitle" parent="android:style/Theme.Dialog">
         <item name="android:background">#00000000</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
+
+
 
 </resources>
