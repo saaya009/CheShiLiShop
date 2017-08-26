@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:background="@color/gray"
               android:layout_width="match_parent"
@@ -13,7 +14,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"/>
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:src="@mipmap/icon_logo"
         android:id="@+id/img_logo"
         android:layout_marginTop="10dp"
@@ -21,6 +22,7 @@
         android:layout_marginLeft="160dp"
         android:layout_marginRight="160dp"
         android:layout_width="match_parent"
+
         android:layout_height="90dp"/>
 
     <RelativeLayout

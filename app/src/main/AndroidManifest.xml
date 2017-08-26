@@ -62,14 +62,22 @@
                 android:resource="@xml/file_paths"/>
         </provider>
 
-        <activity android:name=".activity.ProductActivity"/>
-        <activity android:name=".activity.CommissionActivity"/>
-        <activity android:name=".activity.SetStoreActivity"/>
-        <activity android:name=".activity.UserInfoActivity"/>
-        <activity android:name=".photochoose.CropImageActivity"/>
-        <activity android:name=".activity.OrderConfirmationActivity"/>
-        <activity android:name=".activity.OrderManagementActivity"/>
-        <activity android:name=".activity.OrderTreeActivity"/>
+        <activity android:name=".activity.ProductActivity"
+                  android:launchMode="singleTask"/>
+        <activity android:name=".activity.CommissionActivity"
+                  android:launchMode="singleTask"/>
+        <activity android:name=".activity.SetStoreActivity"
+                  android:launchMode="singleTask"/>
+        <activity android:name=".activity.UserInfoActivity"
+                  android:launchMode="singleTask"/>
+        <activity android:name=".photochoose.CropImageActivity"
+                  android:launchMode="singleTask"/>
+        <activity android:name=".activity.OrderConfirmationActivity"
+                  android:launchMode="singleTask"/>
+        <activity android:name=".activity.OrderManagementActivity"
+                  android:launchMode="singleTask"/>
+        <activity android:name=".activity.OrderTreeActivity"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

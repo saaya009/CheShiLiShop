@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.example.administrator.cheshilishop.BaseActivity;
@@ -13,8 +15,11 @@ import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.TopView;
 import com.example.administrator.cheshilishop.adapter.SimpleTreeAdapter;
+import com.example.administrator.cheshilishop.adapter.TreeListViewAdapter;
+import com.example.administrator.cheshilishop.bean.Bean;
 import com.example.administrator.cheshilishop.bean.FileBean;
 import com.example.administrator.cheshilishop.bean.UserRegisterBean;
+import com.example.administrator.cheshilishop.bean.tree.Node;
 import com.example.administrator.cheshilishop.net.RestClient;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
@@ -33,9 +38,10 @@ import cz.msebera.android.httpclient.Header;
  * 作者：Ayase on 2017/8/24 10:27
  * 邮箱：ayase@ayase.cn
  */
-public class OrderTreeActivity extends BaseActivity {
+public class OrderTreeActivity extends BaseActivity{
 
     private List<FileBean> mDatas2 = new ArrayList<FileBean>();
+    private List<Bean> mDatas = new ArrayList<Bean>();
     private ListView mTree;
     private SimpleTreeAdapter mAdapter;
 
@@ -65,7 +71,6 @@ public class OrderTreeActivity extends BaseActivity {
 
     @Override
     protected void setListener() {
-
     }
 
     @Override
@@ -80,22 +85,51 @@ public class OrderTreeActivity extends BaseActivity {
     }
 
     private void initDatas() {
+
         for (int i = 0; i < list.size(); i++) {
-            mDatas2.add(new FileBean(i + 1, 0, list.get(i).Mobile + "\n" + list.get(i).RealName));
+            mDatas2.add(new FileBean(mDatas2.size()+1, 0, list.get(i).Mobile + "\n" + list.get(i).RealName));
             if (!TextUtils.isEmpty(list.get(i).Children)) {
                 list2 = JSON.parseArray(list.get(i).Children, UserRegisterBean.class);
                 for (int j = 0; j < list2.size(); j++) {
-                    mDatas2.add(new FileBean(j + 1 + i + 1, i + 1, list2.get(j).Mobile + "\n" + list2.get(j).RealName));
-//                    if (!TextUtils.isEmpty(list2.get(i).Children)) {
-//                        list3 = JSON.parseArray(list2.get(i).Children, UserRegisterBean.class);
-//                        for (int n = 0; n < list3.size(); j++) {
-//                            mDatas2.add(new FileBean(mDatas2.size(), j + 1 + i + 1, list3.get(i).RealName, list3.get(i).Mobile));
-//                        }
-//                    }
+                    mDatas2.add(new FileBean(mDatas2.size()+1, i + 1, list2.get(j).Mobile + "\n" + list2.get(j).RealName));
+                    if (!TextUtils.isEmpty(list2.get(j).Children)) {
+                        list3 = JSON.parseArray(list2.get(j).Children, UserRegisterBean.class);
+                        for (int n = 0; n < list3.size(); n++) {
+                            mDatas2.add(new FileBean(mDatas2.size()+1, j + 1 + i + 1,list3.get(n).Mobile + "\n" + list3.get(n).RealName));
+                        }
+                    }
                 }
             }
             try {
                 mAdapter = new SimpleTreeAdapter<FileBean>(mTree, this, mDatas2, 10);
+                mAdapter.setOnTreeNodeClickListener(new TreeListViewAdapter.OnTreeNodeClickListener() {
+                    @Override
+                    public void onClick(Node node, int position) {
+                        Log.d("树","id"+node.getId()+"pid"+node.getpId()+"level"+node.getLevel());
+                        if (node.isExpand()){//展开
+                            switch (node.getLevel()){
+                                case 0://根节点
+                                    mAdapter.setBigger(1);
+                                    break;
+                                case 1://中间节点
+                                    mAdapter.setBigger(2);
+                                    break;
+                            }
+
+                        }else {
+                            switch (node.getLevel()){
+                                case 0://根节点
+                                    mAdapter.setBigger(11);
+                                    break;
+                                case 1://中间节点
+                                    mAdapter.setBigger(12);
+                                    break;
+                            }
+                        }
+
+                    }
+
+                });
 
             } catch (Exception e) {
                 e.printStackTrace();
