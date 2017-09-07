@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <TextView
+        android:background="@color/province_line_border"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <LinearLayout
+        android:id="@+id/layout_Pace1"
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/point1"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_btn_point_style"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="26dp"
+                android:layout_toRightOf="@id/point1"
+                android:background="@color/huise"/>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:textSize="15dp"
+                android:layout_below="@id/point1"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/black"
+                android:text="申请须知"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/point2"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_btn_point_style2"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="26dp"
+                android:layout_toRightOf="@id/point2"
+                android:background="@color/huise"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="26dp"
+                android:layout_toLeftOf="@id/point2"
+                android:background="@color/huise"/>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:textSize="15dp"
+                android:layout_below="@id/point2"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/black"
+                android:text="填写信息"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/point3"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_btn_point_style2"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="26dp"
+                android:layout_toRightOf="@id/point3"
+                android:background="@color/huise"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="26dp"
+                android:layout_toLeftOf="@id/point3"
+                android:background="@color/huise"/>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:textSize="15dp"
+                android:layout_below="@id/point3"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/black"
+                android:text="等待审核"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/point4"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_btn_point_style2"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="26dp"
+                android:layout_toLeftOf="@id/point4"
+                android:background="@color/huise"/>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:textSize="15dp"
+                android:layout_below="@id/point4"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/black"
+                android:text="添加成功"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/layout_Pace4"
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/point13"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_btn_point_style"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="26dp"
+                android:layout_toRightOf="@id/point13"
+                android:background="@color/blue"/>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:textSize="15dp"
+                android:layout_below="@id/point13"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/black"
+                android:text="申请须知"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/point14"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_btn_point_style"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="26dp"
+                android:layout_toRightOf="@id/point14"
+                android:background="@color/blue"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="26dp"
+                android:layout_toLeftOf="@id/point14"
+                android:background="@color/blue"/>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:textSize="15dp"
+                android:layout_below="@id/point14"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/black"
+                android:text="填写信息"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/point15"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_btn_point_style"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="26dp"
+                android:layout_toRightOf="@id/point15"
+                android:background="@color/blue"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="26dp"
+                android:layout_toLeftOf="@id/point15"
+                android:background="@color/blue"/>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:textSize="15dp"
+                android:layout_below="@id/point15"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/black"
+                android:text="等待审核"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/point16"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_btn_point_style"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="26dp"
+                android:layout_toLeftOf="@id/point16"
+                android:background="@color/blue"/>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:textSize="15dp"
+                android:layout_below="@id/point16"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/black"
+                android:text="添加成功"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:background="@color/gray"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
+
+
+</LinearLayout>

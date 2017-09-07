@@ -23,6 +23,8 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +59,7 @@ public class SetStoreActivity extends BaseActivity {
 
     @Override
     protected TopView getTopViews() {
-        return new TopView(topbar_iv_back, topbar_tv_title);
+        return new TopView(topbar_iv_back, topbar_tv_title,topbar_iv_right);
     }
 
     @Override
@@ -73,17 +75,24 @@ public class SetStoreActivity extends BaseActivity {
                 updateDefaultStore(list.get(i).ID);
             }
         });
+        topbar_iv_right.setOnClickListener(this);
     }
 
     @Override
     protected void processLogic() {
-        setTopTitle("更改界面");
+        setTopTitle("切换店面");
+        topbar_iv_right.setText("添加店面");
         getData();
     }
 
     @Override
     protected void onClickEvent(View paramView) {
-
+        switch (paramView.getId()){
+            case R.id.topbar_iv_right://添加店面
+                Intent intent = new Intent(this,AuthenticationActivity.class);
+                startActivity(intent);
+                break;
+        }
     }
 
     @Override
@@ -96,7 +105,7 @@ public class SetStoreActivity extends BaseActivity {
      * 获取数据
      */
     private void getData() {
-        RequestParams params = new RequestParams();
+        final RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
         params.add("Enable", "-1");
         params.add("Approved", "-1");
@@ -116,6 +125,7 @@ public class SetStoreActivity extends BaseActivity {
                         adapter = new SetStoreAdapter(SetStoreActivity.this,list);
                         lv_store.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
+
                     }else if ("-1".equals(Status)){
                         Intent intent = new Intent(SetStoreActivity.this,LoginActivity.class);
                         startActivity(intent);
@@ -131,7 +141,26 @@ public class SetStoreActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                RequestParams errParams = new RequestParams();
+                try {
+                    errParams.add("LogCont", URLEncoder.encode(new String(responseBody),"UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData",params.toString());
+                errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                RestClient.post(UrlUtils.insertErrLog(), errParams, SetStoreActivity.this, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                    }
+                });
             }
         });
     }
@@ -140,7 +169,7 @@ public class SetStoreActivity extends BaseActivity {
      * 更改默认
      */
     private void updateDefaultStore(final String id) {
-        RequestParams params = new RequestParams();
+        final RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
         params.add("StoreID",id);
         RestClient.post(UrlUtils.updateDefaultStore(), params, this, new AsyncHttpResponseHandler() {
@@ -154,6 +183,7 @@ public class SetStoreActivity extends BaseActivity {
                         ToastUtils.show(SetStoreActivity.this,"更改成功");
                         CheShiLiShopApplication.storeID = id;
                         getData();
+                        finish();
                     }
 
                 } catch (JSONException e) {
@@ -163,8 +193,29 @@ public class SetStoreActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                RequestParams errParams = new RequestParams();
+                errParams.add("LogCont",new String(responseBody));
+                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData",params.toString());
+                errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                RestClient.post(UrlUtils.insertErrLog(), errParams, SetStoreActivity.this, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                    }
+                });
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getData();
     }
 }

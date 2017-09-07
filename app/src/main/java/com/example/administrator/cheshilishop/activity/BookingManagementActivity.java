@@ -48,7 +48,7 @@ public class BookingManagementActivity extends BaseActivity{
 
     @Override
     protected TopView getTopViews() {
-       return new TopView(topbar_iv_back, topbar_tv_title);
+        return new TopView(topbar_iv_back, topbar_tv_title);
     }
 
     @Override

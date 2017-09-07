@@ -68,7 +68,7 @@ public class OrderAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         if (!TextUtils.isEmpty(list.get(position).UserID)) {
-            holder.tv_username.setText(list.get(position).Mobile);
+            holder.tv_username.setText(list.get(position).Mobile.substring(0,3)+"****"+list.get(position).Mobile.substring(7,list.get(position).Mobile.length()));
             holder.tv_nickname.setText(list.get(position).NickName);
             holder.tv_date.setText(DateUtil.stampToDate3(list.get(position).AddTime));
             holder.tv_time.setText(DateUtil.stampToDate2(list.get(position).AddTime));

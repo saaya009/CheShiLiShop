@@ -22,46 +22,32 @@ public class SimpleTreeAdapter<T> extends TreeListViewAdapter<T> {
 
     private int bigger;
     private boolean changed = false;
-    private ListView mTree;
+    private List<T> datas;
 
     public SimpleTreeAdapter(ListView mTree, Context context, List<T> datas,
                              int defaultExpandLevel) throws IllegalArgumentException,
             IllegalAccessException {
         super(mTree, context, datas, defaultExpandLevel);
-        this.mTree = mTree;
+        this.datas = datas;
     }
 
     @Override
     public View getConvertView(Node node, int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder = null;
         if (convertView == null || changed) {
-            switch (bigger) {
-//                case 1://根节点并打开
-//                    convertView = mInflater.inflate(R.layout.list_item1_on, parent, false);
-//                    break;
-//                case 2://中间点并打开
-//                    convertView = mInflater.inflate(R.layout.list_item2_on, parent, false);
-//                    break;
-//                case 11://根节点并打开
-//                    convertView = mInflater.inflate(R.layout.list_item1_off, parent, false);
-//                    break;
-//                case 12://中间点并打开
-//                    convertView = mInflater.inflate(R.layout.list_item2_off, parent, false);
-//                    break;
-                default:
-                    convertView = mInflater.inflate(R.layout.list_item1_on, parent, false);
-                    break;
-            }
+            convertView = mInflater.inflate(R.layout.list_item1_on, parent, false);
             changed = false;
             viewHolder = new ViewHolder();
             viewHolder.icon = convertView.findViewById(R.id.id_treenode_icon);
             viewHolder.label = convertView.findViewById(R.id.id_treenode_label);
             viewHolder.down = convertView.findViewById(R.id.down);
             viewHolder.up = convertView.findViewById(R.id.up);
+            viewHolder.left = convertView.findViewById(R.id.left);
             viewHolder.layout_bg = convertView.findViewById(R.id.layout_bg);
             viewHolder.layout_line = convertView.findViewById(R.id.layout_line);
             viewHolder.layout_line2 = convertView.findViewById(R.id.layout_line2);
             viewHolder.layout_line3 = convertView.findViewById(R.id.layout_line3);
+            viewHolder.layout_shop = convertView.findViewById(R.id.layout_shop);
             convertView.setTag(viewHolder);
 
         } else {
@@ -140,20 +126,6 @@ public class SimpleTreeAdapter<T> extends TreeListViewAdapter<T> {
             }
 
         }
-        if (node.getLevel() == 2) {
-
-        }
-        if (node.isRoot()) {
-
-        } else {
-            viewHolder.layout_line.setVisibility(View.VISIBLE);
-            viewHolder.layout_line2.setVisibility(View.VISIBLE);
-        }
-        if (node.getLevel() == 1) {
-
-        } else {
-
-        }
         switch (node.getLevel()) {
             case 2:
                 viewHolder.layout_bg.setBackgroundResource(R.color.white);
@@ -163,26 +135,32 @@ public class SimpleTreeAdapter<T> extends TreeListViewAdapter<T> {
                 viewHolder.label.setTextColor(csl);
                 viewHolder.layout_line2.setVisibility(View.VISIBLE);
                 viewHolder.layout_line.setVisibility(View.VISIBLE);
-                viewHolder.layout_line3.setVisibility(View.GONE);
                 break;
             case 1:
                 viewHolder.layout_line2.setVisibility(View.VISIBLE);
-                viewHolder.layout_line3.setVisibility(View.GONE);
+                ;
                 viewHolder.layout_line.setVisibility(View.GONE);
                 break;
             case 0:
                 viewHolder.layout_line.setVisibility(View.GONE);
-                viewHolder.layout_line2.setVisibility(View.VISIBLE);
-                viewHolder.layout_line3.setVisibility(View.GONE);
+                viewHolder.layout_line2.setVisibility(View.GONE);
                 break;
         }
 
         if (node.getId() == 1) {
             viewHolder.up.setVisibility(View.INVISIBLE);
-        } else if (node.getId() + 1 == mTree.getCount()) {
+            viewHolder.layout_shop.setVisibility(View.VISIBLE);
+            viewHolder.left.setVisibility(View.VISIBLE);
+        } else if (node.getId() == datas.size()) {
             viewHolder.down.setVisibility(View.INVISIBLE);
+            viewHolder.layout_shop.setVisibility(View.INVISIBLE);
+            viewHolder.left.setVisibility(View.INVISIBLE);
         } else if (!node.isRoot() && node.getParent().getChildren().get(node.getParent().getChildren().size() - 1).getId() == node.getId()) {
             viewHolder.down.setVisibility(View.INVISIBLE);
+            viewHolder.layout_shop.setVisibility(View.INVISIBLE);
+            viewHolder.left.setVisibility(View.INVISIBLE);
+        } else {
+            viewHolder.down.setVisibility(View.VISIBLE);
         }
 
 
@@ -196,11 +174,13 @@ public class SimpleTreeAdapter<T> extends TreeListViewAdapter<T> {
         ImageView icon;
         TextView up;
         TextView down;
+        TextView left;
         TextView label;
         RelativeLayout layout_bg;
         LinearLayout layout_line;
         LinearLayout layout_line2;
         LinearLayout layout_line3;
+        LinearLayout layout_shop;
     }
 
     public void setBigger(int bigger) {

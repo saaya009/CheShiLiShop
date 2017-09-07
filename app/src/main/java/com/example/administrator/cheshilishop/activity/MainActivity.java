@@ -1,6 +1,8 @@
 package com.example.administrator.cheshilishop.activity;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Process;
@@ -32,7 +34,9 @@ import com.yzq.zxinglibrary.android.CaptureActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,11 +66,10 @@ public class MainActivity extends AppCompatActivity {
     CircleImageView mImgLogo;
     @BindView(R.id.tv_descri)
     TextView mTvDescri;
-    @BindView(R.id.tv_tel)
-    TextView mTvTel;
 
     protected TextView topbar_tv_title;
     protected ImageView topbar_iv_back;
+    protected TextView topbar_iv_right;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         // 检测软件更新方法
         UpgradeHelper.checkAppVersion(MainActivity.this, true);
-        getStore();
         initView();
 
     }
@@ -84,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
      * 获取默认店铺
      */
     private void getStore() {
-        RequestParams params = new RequestParams();
+        final RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
         RestClient.post(UrlUtils.queryDefaultStore(), params, this, new AsyncHttpResponseHandler() {
             @Override
@@ -117,7 +119,26 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                RequestParams errParams = new RequestParams();
+                try {
+                    errParams.add("LogCont", URLEncoder.encode(new String(responseBody),"UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData",params.toString());
+                errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                RestClient.post(UrlUtils.insertErrLog(), errParams, MainActivity.this, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                    }
+                });
             }
         });
     }
@@ -125,16 +146,25 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         topbar_tv_title = (TextView) findViewById(R.id.topbar_tv_title);
         topbar_iv_back = (ImageView) findViewById(R.id.topbar_iv_back);
+        topbar_iv_right = (TextView) findViewById(R.id.topbar_iv_right);
         topbar_tv_title.setText("车势力商户中心");
-        topbar_iv_back.setVisibility(View.GONE);
+        topbar_iv_back.setOnClickListener(mOnClickListener);
+        topbar_iv_right.setOnClickListener(mOnClickListener);
         mLayoutScan.setOnClickListener(mOnClickListener);
         mLayoutBooking.setOnClickListener(mOnClickListener);
         mLayoutManager.setOnClickListener(mOnClickListener);
         mLayoutCommission.setOnClickListener(mOnClickListener);
         mLayoutUserinfo.setOnClickListener(mOnClickListener);
         mLayoutChange.setOnClickListener(mOnClickListener);
-        mTvTel.setOnClickListener(mOnClickListener);
+
         mLayoutOrder.setOnClickListener(mOnClickListener);
+
+        topbar_iv_back.setImageResource(R.mipmap.icon_service);
+        Resources resource = this.getResources();
+        ColorStateList csl = resource.getColorStateList(R.color.blue);
+        topbar_iv_right.setVisibility(View.VISIBLE);
+        topbar_iv_right.setText("推广");
+        topbar_iv_right.setTextColor(csl);
     }
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -172,16 +202,31 @@ public class MainActivity extends AppCompatActivity {
                             SetStoreActivity.class);
                     startActivity(intent);
                     break;
-                case R.id.tv_tel://客服电话
-                    Intent intentNumber = new Intent(Intent.ACTION_DIAL);
-                    Uri dataNumber = Uri.parse("tel:" + "0531-85523333");
-                    intentNumber.setData(dataNumber);
-                    startActivity(intentNumber);
-                    break;
                 case R.id.layout_order://三级分销
                     intent = new Intent(MainActivity.this,
                             OrderManagementActivity.class);
                     startActivity(intent);
+                    break;
+                case R.id.topbar_iv_back://客服电话
+
+                    TwoButtonAndContentCustomDialog dialog2 = new TwoButtonAndContentCustomDialog(MainActivity.this, R.style.Translucent_NoTitle) {
+                        @Override
+                        public void doConfirm() {
+                            super.doConfirm();
+                            Intent intentNumber = new Intent(Intent.ACTION_DIAL);
+                            Uri dataNumber = Uri.parse("tel:" + "053185523333");
+                            intentNumber.setData(dataNumber);
+                            startActivity(intentNumber);
+                        }
+                    };
+                    dialog2.show();
+                    dialog2.setContent("0531-8552333");
+                    dialog2.setTitle("客服电话");
+                    dialog2.setCancel("取消");
+                    dialog2.setConfirm("拨打");
+
+                    break;
+                case R.id.topbar_iv_right://推广
                     break;
             }
         }
@@ -271,7 +316,6 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
                     }
                 });
             }
@@ -279,11 +323,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        getStore();
-    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -292,7 +331,6 @@ public class MainActivity extends AppCompatActivity {
                     this, R.style.Translucent_NoTitle) {
                 @Override
                 public void doConfirm() {
-                    // TODO Auto-generated method stub
                     super.doConfirm();
                     Intent intent = new Intent(Intent.ACTION_MAIN);
                     intent.addCategory(Intent.CATEGORY_HOME);
@@ -310,5 +348,9 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getStore();
+    }
 }

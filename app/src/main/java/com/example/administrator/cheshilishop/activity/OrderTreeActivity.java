@@ -29,6 +29,8 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,15 +89,18 @@ public class OrderTreeActivity extends BaseActivity{
     private void initDatas() {
 
         for (int i = 0; i < list.size(); i++) {
-            mDatas2.add(new FileBean(mDatas2.size()+1, 0, list.get(i).Mobile + "\n" + list.get(i).RealName));
+            mDatas2.add(new FileBean(mDatas2.size()+1, 0,
+                    list.get(i).Mobile.substring(0,3)+"****"+list.get(i).Mobile.substring(7,list.get(i).Mobile.length())  + "\n" + list.get(i).RealName+"/"+list.get(i).NickName));
             if (!TextUtils.isEmpty(list.get(i).Children)) {
                 list2 = JSON.parseArray(list.get(i).Children, UserRegisterBean.class);
                 for (int j = 0; j < list2.size(); j++) {
-                    mDatas2.add(new FileBean(mDatas2.size()+1, i + 1, list2.get(j).Mobile + "\n" + list2.get(j).RealName));
+                    mDatas2.add(new FileBean(mDatas2.size()+1, i + 1,
+                            list2.get(j).Mobile.substring(0,3)+"****"+list2.get(j).Mobile.substring(7,list2.get(j).Mobile.length()) + "\n" + list2.get(j).RealName+"/"+list2.get(j).NickName));
                     if (!TextUtils.isEmpty(list2.get(j).Children)) {
                         list3 = JSON.parseArray(list2.get(j).Children, UserRegisterBean.class);
                         for (int n = 0; n < list3.size(); n++) {
-                            mDatas2.add(new FileBean(mDatas2.size()+1, j + 1 + i + 1,list3.get(n).Mobile + "\n" + list3.get(n).RealName));
+                            mDatas2.add(new FileBean(mDatas2.size()+1, j + 1 + i + 1,
+                                    list3.get(n).Mobile.substring(0,3)+"****"+list3.get(n).Mobile.substring(7,list3.get(n).Mobile.length()) + "\n" + list3.get(n).RealName+"/"+list3.get(n).NickName));
                         }
                     }
                 }
@@ -106,6 +111,7 @@ public class OrderTreeActivity extends BaseActivity{
                     @Override
                     public void onClick(Node node, int position) {
                         Log.d("树","id"+node.getId()+"pid"+node.getpId()+"level"+node.getLevel());
+                        Log.d("树","size"+mDatas2.size());
                         if (node.isExpand()){//展开
                             switch (node.getLevel()){
                                 case 0://根节点
@@ -143,7 +149,7 @@ public class OrderTreeActivity extends BaseActivity{
      * 获取用户数据
      */
     private void getData() {
-        RequestParams params = new RequestParams();
+        final RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
         params.add("StoreID", CheShiLiShopApplication.storeID);
         RestClient.post(UrlUtils.queryUserRegisterJson(), params, OrderTreeActivity.this, new AsyncHttpResponseHandler() {
@@ -172,7 +178,26 @@ public class OrderTreeActivity extends BaseActivity{
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                RequestParams errParams = new RequestParams();
+                try {
+                    errParams.add("LogCont", URLEncoder.encode(new String(responseBody),"UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData",params.toString());
+                errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                RestClient.post(UrlUtils.insertErrLog(), errParams, OrderTreeActivity.this, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                    }
+                });
 
             }
         });

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="com.example.administrator.cheshilishop">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
@@ -30,8 +31,11 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".activity.MainActivity">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        tools:replace="android:theme">
+        <activity
+            android:name=".activity.MainActivity"
+            android:launchMode="singleTask">
         </activity>
         <activity
             android:name="com.yzq.zxinglibrary.android.CaptureActivity"
@@ -44,13 +48,10 @@
         <activity
             android:name=".activity.LoginActivity"
             android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
-        <service android:name=".servers.UpdateService" />
+
+        <service android:name=".servers.UpdateService"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -62,22 +63,41 @@
                 android:resource="@xml/file_paths"/>
         </provider>
 
-        <activity android:name=".activity.ProductActivity"
-                  android:launchMode="singleTask"/>
-        <activity android:name=".activity.CommissionActivity"
-                  android:launchMode="singleTask"/>
-        <activity android:name=".activity.SetStoreActivity"
-                  android:launchMode="singleTask"/>
-        <activity android:name=".activity.UserInfoActivity"
-                  android:launchMode="singleTask"/>
-        <activity android:name=".photochoose.CropImageActivity"
-                  android:launchMode="singleTask"/>
-        <activity android:name=".activity.OrderConfirmationActivity"
-                  android:launchMode="singleTask"/>
-        <activity android:name=".activity.OrderManagementActivity"
-                  android:launchMode="singleTask"/>
-        <activity android:name=".activity.OrderTreeActivity"
+        <activity
+            android:name=".activity.ProductActivity"
             android:launchMode="singleTask"/>
+        <activity
+            android:name=".activity.CommissionActivity"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name=".activity.SetStoreActivity"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name=".activity.UserInfoActivity"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name=".photochoose.CropImageActivity"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name=".activity.OrderConfirmationActivity"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name=".activity.OrderManagementActivity"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name=".activity.OrderTreeActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".activity.AuthenticationActivity"/>
+        <activity android:name=".activity.WriteActivity"/>
+        <activity android:name=".activity.ExamineActivity"/>
+        <activity android:name=".activity.StoreDataActivity"/>
+        <activity android:name=".activity.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

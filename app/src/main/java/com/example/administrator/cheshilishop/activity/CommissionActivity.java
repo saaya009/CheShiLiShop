@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -11,30 +12,28 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
-import com.bumptech.glide.Glide;
 import com.example.administrator.cheshilishop.BaseActivity;
 import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.TopView;
 import com.example.administrator.cheshilishop.adapter.CommissionAdapter;
-import com.example.administrator.cheshilishop.bean.BookingBean;
 import com.example.administrator.cheshilishop.bean.CommissionBean;
+import com.example.administrator.cheshilishop.dialog.LoadingDialog;
 import com.example.administrator.cheshilishop.net.RestClient;
-import com.example.administrator.cheshilishop.utils.DateUtil;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
+import com.example.administrator.cheshilishop.widget.TimePickerView;
 import com.example.administrator.cheshilishop.widget.refresh.MaterialRefreshLayout;
 import com.example.administrator.cheshilishop.widget.refresh.MaterialRefreshListener;
-import com.example.administrator.cheshilishop.widget.wheelview.ChangeDatePopwindow;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -44,9 +43,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.util.TextUtils;
 
 /**
+ * 佣金管理
  * 作者：Ayase on 2017/8/9 15:13
  * 邮箱：ayase@ayase.cn
  */
@@ -69,6 +68,12 @@ public class CommissionActivity extends BaseActivity {
     LinearLayout mLayoutNull;
     @BindView(R.id.mrl_experience)
     MaterialRefreshLayout mMrlExperience;
+    @BindView(R.id.tv_time)
+    TextView mTvTime;
+
+
+    TimePickerView pvTime;
+
 
     private int page = 1;
     private int size = 10;
@@ -121,6 +126,7 @@ public class CommissionActivity extends BaseActivity {
     @Override
     protected void setListener() {
         mBtnTime.setOnClickListener(this);
+        mBtnNull.setOnClickListener(this);
     }
 
     @Override
@@ -129,18 +135,46 @@ public class CommissionActivity extends BaseActivity {
         Calendar cal = Calendar.getInstance();
         year = cal.get(Calendar.YEAR);
         month = cal.get(Calendar.MONTH);
+        mTvTime.setText(year + "-" + month);
+        mBtnTime.setText(year + "-" + month);
         getData(year, month, page);
         //获取总佣金
         queryCmnCount();
+        // 时间选择器
+        pvTime = new TimePickerView(this, TimePickerView.Type.YEAR_MONTH_DAY);
+        // 控制时间范围
+        pvTime.setTime(new Date());
+        pvTime.setCyclic(false);
+        pvTime.setCancelable(true);
+        // 时间选择后回调
+        pvTime.setOnTimeSelectListener(new TimePickerView.OnTimeSelectListener() {
+
+            @Override
+            public void onTimeSelect(Date date) {
+                mTvTime.setText(getTime(date));
+                mBtnTime.setText(getTime(date));
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar c = Calendar.getInstance();
+                c.setTime(date);
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
+
+                getData(year, month, day);
+            }
+        });
+
+
     }
+
 
     /**
      * 获取总佣金
      */
     private void queryCmnCount() {
         RequestParams params = new RequestParams();
-        params.add("WToken",CheShiLiShopApplication.wtoken);
-        params.add("StoreID",CheShiLiShopApplication.storeID);
+        params.add("WToken", CheShiLiShopApplication.wtoken);
+        params.add("StoreID", CheShiLiShopApplication.storeID);
         RestClient.post(UrlUtils.queryCmnCount(), params, this, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -150,7 +184,7 @@ public class CommissionActivity extends BaseActivity {
                     JSONObject jsonObject = new JSONObject(result);
                     String Status = jsonObject.getString("Status");
                     if ("0".equals(Status)) {
-                       JSONObject data = jsonObject.getJSONObject("Data");
+                        JSONObject data = jsonObject.getJSONObject("Data");
                         mTvYongjin.setText(data.getString("Now_Amount"));
                         mTvLeiji.setText(data.getString("History_Amount"));
                     } else if ("-1".equals(Status)) {
@@ -158,7 +192,7 @@ public class CommissionActivity extends BaseActivity {
                         startActivity(intent);
                         finish();
                     } else if ("98".equals(Status)) {
-                        ToastUtils.show(CommissionActivity.this,"这不是你预约的店铺！");
+                        ToastUtils.show(CommissionActivity.this, "这不是你预约的店铺！");
                         finish();
                     } else {
                         ToastUtils.show(CommissionActivity.this, jsonObject.getString("Data"));
@@ -180,27 +214,12 @@ public class CommissionActivity extends BaseActivity {
     protected void onClickEvent(View paramView) {
         switch (paramView.getId()) {
             case R.id.btn_time://选择时间
-                final String[] str = new String[10];
-                ChangeDatePopwindow mChangeBirthDialog = new ChangeDatePopwindow(CommissionActivity.this);
-                mChangeBirthDialog.setDate("2017", "8", "20");
-                mChangeBirthDialog.showAtLocation(mLayoutMain, Gravity.BOTTOM, 0, 0);
-                mChangeBirthDialog.setBirthdayListener(new ChangeDatePopwindow.OnBirthListener() {
-
-                    @Override
-                    public void onClick(String year, String month, String day) {
-                        // TODO Auto-generated method stub
-                        Toast.makeText(CommissionActivity.this, year + "-" + month, Toast.LENGTH_LONG).show();
-                        StringBuilder sb = new StringBuilder();
-//                        sb.append(year.substring(0, year.length() - 1)).append("-").append(month.substring(0, day.length() - 1)).append("-").append(day);
-                        str[0] = year.substring(0, year.length()) + "-" + month.substring(0, month.length() - 1);
-                        str[1] = sb.toString();
-                        Log.d("时间", str[0]);
-                        mBtnTime.setText(str[0]);
-                        CommissionActivity.this.year = Integer.parseInt(year.substring(0, year.length()));
-                        CommissionActivity.this.month = Integer.parseInt(month.substring(0, month.length() - 1));
-                        getData(CommissionActivity.this.year, CommissionActivity.this.month, page);
-                    }
-                });
+                pvTime.show();
+                break;
+            case R.id.btn_null://去首页
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                finish();
                 break;
         }
     }
@@ -239,9 +258,9 @@ public class CommissionActivity extends BaseActivity {
 
         Log.d("日期1", "start=" + startTims);
         Log.d("日期2", "endTime=" + endTime);
-        RequestParams params = new RequestParams();
+        final RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
-//        params.add("StartTime",startTims+"");
+        params.add("StartTime", startTims + "");
         params.add("EndTime", endTime + "");
         params.add("Rows", size + "");
         params.add("N", page + "");
@@ -251,6 +270,7 @@ public class CommissionActivity extends BaseActivity {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);
                 try {
+                    Log.d("查询佣金",result);
                     JSONObject jsonObject = new JSONObject(result);
                     String Status = jsonObject.getString("Status");
                     if ("0".equals(Status)) {
@@ -295,8 +315,47 @@ public class CommissionActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                RequestParams errParams = new RequestParams();
+                errParams.add("LogCont",new String(responseBody));
+                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData",params.toString());
+                errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                RestClient.post(UrlUtils.insertErrLog(), errParams, CommissionActivity.this, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        RequestParams errParams = new RequestParams();
+                        try {
+                            errParams.add("LogCont", URLEncoder.encode(new String(responseBody),"UTF-8"));
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        errParams.add("Url",UrlUtils.queryServiceAppointDetail());
+                        errParams.add("PostData",params.toString());
+                        errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                        RestClient.post(UrlUtils.insertErrLog(), errParams, CommissionActivity.this, new AsyncHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                            }
+                        });
+                    }
+                });
             }
         });
+    }
+
+    public static String getTime(Date date) {
+        java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM");
+        return format.format(date);
     }
 }

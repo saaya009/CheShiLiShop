@@ -6,9 +6,11 @@
     android:background="@color/white"
     android:orientation="horizontal"
     >
+
     <LinearLayout
-        android:id="@+id/layout_line"  
-        android:layout_width="80dp"
+        android:visibility="gone"
+        android:id="@+id/layout_line"
+        android:layout_width="79.5dp"
         android:layout_height="match_parent">
 
         <TextView
@@ -20,8 +22,9 @@
     </LinearLayout>
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/layout_line3"
-        android:layout_width="95dp"
+        android:layout_width="91.5dp"
         android:layout_height="match_parent">
 
         <TextView
@@ -33,8 +36,9 @@
     </LinearLayout>
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/layout_line2"
-        android:layout_width="65dp"
+        android:layout_width="15dp"
         android:layout_height="match_parent">
 
         <TextView
@@ -45,79 +49,106 @@
 
     </LinearLayout>
 
-
-
-
     <LinearLayout
-        android:layout_width="180dp"
-        android:layout_height="60dp">
+        android:layout_marginLeft="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-
-        <RelativeLayout
-            android:layout_width="30dp"
-            android:layout_height="60dp">
-
-            <TextView
-                android:id="@+id/point"
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:layout_centerInParent="true"
-                android:background="@drawable/bg_btn_point_style"/>
-
-            <TextView
-                android:id="@+id/down"
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/point"
-                android:layout_centerHorizontal="true"
-                android:background="@color/colorPrimaryDark"/>
-
-            <TextView
-                android:id="@+id/up"
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_centerHorizontal="true"
-                android:background="@color/colorPrimaryDark"/>
-
-            <TextView
-                android:id="@+id/right"
-                android:layout_width="20dp"
-                android:layout_height="1dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/point"
-                android:background="@color/colorPrimaryDark"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/layout_bg"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@color/white">
-
+        <LinearLayout
+            android:id="@+id/layout_shop"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:visibility="invisible">
 
             <ImageView
-                android:id="@+id/id_treenode_icon"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_toRightOf="@+id/id_treenode_label"
-                android:src="@mipmap/tree_ec"/>
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/icon_shop"/>
 
-            <TextView
-                android:id="@+id/id_treenode_label"
-                android:layout_width="100dp"
-                android:layout_height="45dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:text="啪啪啪/数据库"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="14dp"/>
-        </RelativeLayout>
 
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="180dp"
+            android:layout_height="60dp">
+
+
+            <RelativeLayout
+                android:layout_width="30dp"
+                android:layout_height="60dp">
+
+                <TextView
+                    android:id="@+id/point"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/bg_btn_point_style"/>
+
+                <TextView
+                    android:id="@+id/down"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/point"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/colorPrimaryDark"/>
+
+                <TextView
+                    android:id="@+id/up"
+                    android:layout_width="1dp"
+                    android:layout_height="30dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/colorPrimaryDark"/>
+
+                <TextView
+                    android:id="@+id/right"
+                    android:layout_width="20dp"
+                    android:layout_height="1dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/point"
+                    android:background="@color/colorPrimaryDark"/>
+
+                <TextView
+                    android:id="@+id/left"
+                    android:layout_width="20dp"
+                    android:layout_height="1dp"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/bg_btn_point_style"
+                    android:visibility="invisible"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_bg"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white">
+
+
+                <ImageView
+                    android:id="@+id/id_treenode_icon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_toRightOf="@+id/id_treenode_label"
+                    android:src="@mipmap/tree_ec"/>
+
+                <TextView
+                    android:id="@+id/id_treenode_label"
+                    android:layout_width="100dp"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="14dp"/>
+            </RelativeLayout>
+
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

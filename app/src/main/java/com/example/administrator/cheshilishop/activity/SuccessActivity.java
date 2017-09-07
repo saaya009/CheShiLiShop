@@ -25,6 +25,9 @@ public class SuccessActivity extends BaseActivity {
     @BindView(R.id.btn_order)
     Button mBtnOrder;
 
+    private String appointID;
+    private String serviceID;
+
     @Override
     protected void loadViewLayout(Bundle savedInstanceState) {
         setContentView(R.layout.activity_success);
@@ -55,6 +58,8 @@ public class SuccessActivity extends BaseActivity {
     @Override
     protected void processLogic() {
         setTopTitle("确认成功");
+        appointID = getIntent().getStringExtra("AppointID");
+        serviceID = getIntent().getStringExtra("ServiceID");
     }
 
     @Override
@@ -66,17 +71,14 @@ public class SuccessActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.btn_order://去订单
-                intent = new Intent(this,BookingManagementActivity.class);
+                intent = new Intent(this,OrderConfirmationActivity.class);
+                intent.putExtra("AppointID",appointID);
+                intent.putExtra("ServiceID",serviceID);
+                intent.putExtra("type",5);
                 startActivity(intent);
                 finish();
                 break;
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

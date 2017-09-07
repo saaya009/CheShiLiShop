@@ -14,6 +14,7 @@ import com.example.administrator.cheshilishop.fragment.BookingAllFragment;
 import com.example.administrator.cheshilishop.fragment.BookingEndFragment;
 import com.example.administrator.cheshilishop.fragment.BookingVerifiedFragment;
 import com.example.administrator.cheshilishop.fragment.OrderOneFragment;
+import com.example.administrator.cheshilishop.fragment.OrderThreeFragment;
 import com.example.administrator.cheshilishop.fragment.OrderTwoFragment;
 import com.example.administrator.cheshilishop.widget.TopbarIndicator;
 
@@ -36,7 +37,7 @@ public class OrderManagementActivity extends BaseActivity {
     private List<Fragment> mFragmentList = new ArrayList<Fragment>();
     private OrderOneFragment orderOneFragment;
     private OrderTwoFragment mOrderTwoFragment;
-    private BookingVerifiedFragment vFragment;
+    private OrderThreeFragment mOrderThreeFragment;
 
     @Override
     protected void loadViewLayout(Bundle savedInstanceState) {
@@ -72,10 +73,10 @@ public class OrderManagementActivity extends BaseActivity {
 
         orderOneFragment = new OrderOneFragment();
         mOrderTwoFragment = new OrderTwoFragment();
-        vFragment = new BookingVerifiedFragment();
+        mOrderThreeFragment = new OrderThreeFragment();
         mFragmentList.add(orderOneFragment);
         mFragmentList.add(mOrderTwoFragment);
-        mFragmentList.add(vFragment);
+        mFragmentList.add(mOrderThreeFragment);
 
         adapter = new BookingAdapter(this.getSupportFragmentManager(), mFragmentList);
         vp_financial.setAdapter(adapter);

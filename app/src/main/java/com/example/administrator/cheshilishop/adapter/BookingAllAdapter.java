@@ -16,6 +16,9 @@ import com.example.administrator.cheshilishop.bean.BookingBean;
 import com.example.administrator.cheshilishop.utils.DateUtil;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -89,10 +92,16 @@ public class BookingAllAdapter extends BaseAdapter {
             }
             holder.mTvEndtime.setText(DateUtil.stampToDate(list.get(position).AppointDate));
             holder.mTvOrdernumber.setText(list.get(position).ServiceID);
-            holder.mTvShopname.setText(list.get(position).ProductName);
+            holder.mTvShopname.setText(list.get(position).UserMobile);
             holder.mTvMoney.setText("¥" + list.get(position).AllMoney);
             holder.mTvBookingtime.setText("预约时间: " + DateUtil.stampToDate3(list.get(position).AddTime));
-            holder.mTvService.setText(list.get(position).ProductDescri);
+            JSONObject descri = null;
+            try {
+                descri = new JSONObject(list.get(position).ProductDescri);
+                holder.mTvService.setText(descri.getString("title"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             if (!TextUtils.isEmpty(list.get(position).Imgs)) {
                 Glide.with(context)
                         .load(UrlUtils.BASE_URL + "/Img/" + list.get(position).Imgs)

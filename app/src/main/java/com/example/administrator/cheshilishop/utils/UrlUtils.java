@@ -212,4 +212,35 @@ public class UrlUtils {
         url = uribBuilder.build().toString();
         return url;
     }
+
+    /**
+     * 增加商家
+     */
+    public static String addStore() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/Store/AddStore").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
+
+    /**
+     * 增加商家图片(虚拟文件夹
+     */
+    public static String addStoreImage() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/Store/AddStoreImage").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
+
+
+    /**
+     * 获取Store的Detail
+     */
+    public static String queryStoreDetail() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/Store/QueryStoreDetail").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
 }

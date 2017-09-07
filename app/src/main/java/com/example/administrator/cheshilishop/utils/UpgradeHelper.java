@@ -36,7 +36,7 @@ import org.json.JSONObject;
 
 /***
  * 功能描述：app更新
- * 
+ *
  * @author 作者 gqi
  * @version 1.0.0
  */

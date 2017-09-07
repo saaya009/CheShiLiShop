@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/gray"
+              android:orientation="vertical">
+
+    <include layout="@layout/topbar"/>
+
+    <LinearLayout
+        android:background="@color/white"
+        android:id="@+id/layout_Pace3"
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/point9"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_btn_point_style"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="26dp"
+                android:layout_toRightOf="@id/point9"
+                android:background="@color/blue"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/point9"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:text="申请须知"
+                android:textColor="@color/black"
+                android:textSize="15dp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/point10"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_btn_point_style"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="26dp"
+                android:layout_toRightOf="@id/point10"
+                android:background="@color/blue"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="26dp"
+                android:layout_toLeftOf="@id/point10"
+                android:background="@color/blue"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/point10"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:text="填写信息"
+                android:textColor="@color/black"
+                android:textSize="15dp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/point11"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_btn_point_style"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="26dp"
+                android:layout_toRightOf="@id/point11"
+                android:background="@color/huise"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="26dp"
+                android:layout_toLeftOf="@id/point11"
+                android:background="@color/blue"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/point11"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:text="等待审核"
+                android:textColor="@color/black"
+                android:textSize="15dp"/>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/point12"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_btn_point_style2"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="26dp"
+                android:layout_toLeftOf="@id/point12"
+                android:background="@color/huise"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/point12"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:text="添加成功"
+                android:textColor="@color/black"
+                android:textSize="15dp"/>
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_margin="20dp"
+            android:id="@+id/layout_null"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <ImageView
+                android:layout_marginTop="70dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@mipmap/icon_edit"
+                android:layout_width="130dp"
+                android:layout_height="130dp"/>
+            <TextView
+                android:layout_marginTop="20dp"
+                android:textSize="20dp"
+                android:layout_gravity="center_horizontal"
+                android:text="等待审核"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_marginTop="20dp"
+                android:textSize="16dp"
+                android:layout_gravity="center_horizontal"
+                android:text="客服人员会尽快联系你"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_marginTop="5dp"
+                android:textSize="16dp"
+                android:layout_gravity="center_horizontal"
+                android:text="请保持手机畅通"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp">
+                <Button
+                    android:layout_marginRight="10dp"
+                    android:id="@+id/btn_main"
+                    android:layout_marginTop="20dp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="去首页"
+                    android:background="@drawable/bg_button_home_style"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"/>
+                <Button
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/btn_date"
+                    android:layout_marginTop="20dp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="查看资料"
+                    android:textColor="@color/white"
+                    android:background="@drawable/bg_btn_point_style"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

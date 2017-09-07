@@ -1,246 +1,258 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:background="@color/gray"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/gray"
     android:orientation="vertical"
     tools:context="com.example.administrator.cheshilishop.activity.MainActivity">
 
     <include layout="@layout/topbar"/>
 
-
-    <LinearLayout
-        android:id="@+id/layout_change"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:background="@mipmap/bg_logo"
-        android:orientation="vertical">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/img_logo"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:src="@mipmap/icon_logo"/>
-
-        <TextView
-            android:id="@+id/tv_descri"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="15dp"
-            android:text="无店面"
-            android:textColor="@color/white"
-            android:textSize="18dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"
-            android:drawableRight="@mipmap/icon_change"
-            android:text="更改店面  "
-            android:textColor="@color/white"
-            android:textSize="15dp"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:background="@color/colorPrimaryDark"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/layout_scan"
-            android:orientation="vertical"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layout_change"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@mipmap/bg_logo"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/img_logo"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:src="@mipmap/icon_logo"/>
+
+                <TextView
+                    android:id="@+id/tv_descri"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="15dp"
+                    android:text="无店面"
+                    android:textColor="@color/white"
+                    android:textSize="18dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:drawableRight="@mipmap/icon_change"
+                    android:text="更改店面  "
+                    android:textColor="@color/white"
+                    android:textSize="15dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:background="@color/colorPrimaryDark"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/layout_scan"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:src="@mipmap/icon_scan"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:text="扫一扫"
+                        android:textColor="@color/white"
+                        android:textSize="18dp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/white"/>
+
+                <LinearLayout
+                    android:id="@+id/layout_userinfo"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:src="@mipmap/icon_user"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:text="账户信息"
+                        android:textColor="@color/white"
+                        android:textSize="18dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/layout_order"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="25dp"
+                        android:src="@mipmap/icon_order"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:text="推广清单"
+                        android:textColor="@color/black"
+                        android:textSize="17dp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="2px"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray"/>
+
+                <LinearLayout
+                    android:id="@+id/layout_manager"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="25dp"
+                        android:src="@mipmap/icon_manager"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:text="服务管理"
+                        android:textColor="@color/black"
+                        android:textSize="17dp"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginTop="2px"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/layout_booking"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="25dp"
+                        android:src="@mipmap/icon_time"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:text="预约管理"
+                        android:textColor="@color/black"
+                        android:textSize="17dp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="2px"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray"/>
+
+                <LinearLayout
+                    android:id="@+id/layout_commission"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="25dp"
+                        android:src="@mipmap/icon_money"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:text="佣金记录"
+                        android:textColor="@color/black"
+                        android:textSize="17dp"/>
+                </LinearLayout>
+            </LinearLayout>
 
             <ImageView
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@mipmap/icon_scan"
-                android:layout_width="40dp"
-                android:layout_height="40dp"/>
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:textSize="18dp"
-                android:textColor="@color/white"
-                android:text="扫一扫"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_ad"/>
         </LinearLayout>
 
-        <TextView
-            android:layout_width="1px"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/white"/>
 
-        <LinearLayout
-            android:id="@+id/layout_userinfo"
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <ImageView
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@mipmap/icon_user"
-                android:layout_width="40dp"
-                android:layout_height="40dp"/>
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:textSize="18dp"
-                android:textColor="@color/white"
-                android:text="账户信息"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:background="@color/white"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:id="@+id/layout_order"
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <ImageView
-                android:layout_marginTop="25dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@mipmap/icon_order"
-                android:layout_width="35dp"
-                android:layout_height="35dp"/>
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:textSize="17dp"
-                android:textColor="@color/black"
-                android:text="三级分销"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="2px"
-            android:layout_height="match_parent"
-            android:background="@color/gray"/>
-
-        <LinearLayout
-            android:id="@+id/layout_manager"
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <ImageView
-                android:layout_marginTop="25dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@mipmap/icon_manager"
-                android:layout_width="35dp"
-                android:layout_height="35dp"/>
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:textSize="17dp"
-                android:textColor="@color/black"
-                android:text="服务管理"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginTop="2px"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:background="@color/white"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:id="@+id/layout_booking"
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <ImageView
-                android:layout_marginTop="25dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@mipmap/icon_time"
-                android:layout_width="35dp"
-                android:layout_height="35dp"/>
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:textSize="17dp"
-                android:textColor="@color/black"
-                android:text="预约管理"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="2px"
-            android:layout_height="match_parent"
-            android:background="@color/gray"/>
-
-        <LinearLayout
-            android:id="@+id/layout_commission"
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <ImageView
-                android:layout_marginTop="25dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@mipmap/icon_money"
-                android:layout_width="35dp"
-                android:layout_height="35dp"/>
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:textSize="17dp"
-                android:textColor="@color/black"
-                android:text="佣金记录"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_tel"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center_horizontal"
-        android:textSize="17dp"
-        android:textColor="@color/colorPrimaryDark"
-        android:text="联系客服"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    </ScrollView>
 
 </LinearLayout>

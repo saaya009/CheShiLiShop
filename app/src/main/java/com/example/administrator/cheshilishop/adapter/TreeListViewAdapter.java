@@ -46,7 +46,7 @@ public abstract class TreeListViewAdapter<T> extends BaseAdapter
 	}
 
 	/**
-	 * 
+	 *
 	 * @param mTree
 	 * @param context
 	 * @param datas
@@ -93,7 +93,7 @@ public abstract class TreeListViewAdapter<T> extends BaseAdapter
 
 	/**
 	 * 相应ListView的点击事件 展开或关闭某节点
-	 * 
+	 *
 	 * @param position
 	 */
 	public void expandOrCollapse(int position)
@@ -136,11 +136,10 @@ public abstract class TreeListViewAdapter<T> extends BaseAdapter
 		convertView = getConvertView(node, position, convertView, parent);
 
 		// 设置内边距
-
 		if (node.getLevel() ==2){
-			convertView.setPadding(node.getLevel() * dip2px(mContext,39.5f), 0, 0, 0);
+			convertView.setPadding(node.getLevel() * dip2px(mContext,32), 0, 0, 0);
 		}else {
-			convertView.setPadding(node.getLevel() * dip2px(mContext,80), 0, 0, 0);
+			convertView.setPadding(node.getLevel() * dip2px(mContext,64), 0, 0, 0);
 		}
 		return convertView;
 	}

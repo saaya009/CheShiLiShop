@@ -4,15 +4,22 @@ import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.LocalBroadcastManager;
@@ -34,6 +41,7 @@ import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.TopView;
 import com.example.administrator.cheshilishop.bean.UserInfoBean;
+import com.example.administrator.cheshilishop.dialog.LoadingDialog;
 import com.example.administrator.cheshilishop.dialog.SelectImgPopupWindow;
 import com.example.administrator.cheshilishop.net.RestClient;
 import com.example.administrator.cheshilishop.photochoose.CropImageActivity;
@@ -48,8 +56,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -100,6 +114,9 @@ public class UserInfoActivity extends BaseActivity {
             "images/screenshots");
 
     private MyReceiver receiver = new MyReceiver();
+    private File newFile;
+    private Uri contentUri;
+    private LoadingDialog mDialog;
 
     @Override
     protected void loadViewLayout(Bundle savedInstanceState) {
@@ -128,6 +145,7 @@ public class UserInfoActivity extends BaseActivity {
         mLayoutChangepassword.setOnClickListener(this);
         mBtnExit.setOnClickListener(this);
         mLayoutUserinfo.setOnClickListener(this);
+        mLayoutVersion.setOnClickListener(this);
     }
 
     @Override
@@ -159,7 +177,7 @@ public class UserInfoActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.layout_version://版本更新
-                UpgradeHelper.checkAppVersion(UserInfoActivity.this, true);
+                UpgradeHelper.checkAppVersion(UserInfoActivity.this, false);
                 break;
         }
     }
@@ -181,30 +199,31 @@ public class UserInfoActivity extends BaseActivity {
             switch (v.getId()) {
                 //拍照
                 case R.id.btn_photograph:
-                    String status = Environment.getExternalStorageState();
-                    if (status.equals(Environment.MEDIA_MOUNTED)) {
-                        try {
-                            localTempImageFileName = "";
-                            localTempImageFileName = String.valueOf((new Date())
-                                    .getTime()) + ".jpg";
-                            File filePath = FILE_PIC_SCREENSHOT;
-                            if (!filePath.exists()) {
-                                filePath.mkdirs();
-                            }
-                            Intent intent = new Intent(
-                                    MediaStore.ACTION_IMAGE_CAPTURE);
-                            File f = new File(filePath, localTempImageFileName);
-                            // localTempImgDir和localTempImageFileName是自己定义的名字
-                            ContentValues contentValues = new ContentValues(1);
-                            contentValues.put(MediaStore.EXTRA_OUTPUT, String.valueOf(f));
-                            Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-                            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                            startActivityForResult(intent, FLAG_CHOOSE_PHONE);
-                        } catch (ActivityNotFoundException e) {
-                            //
-                        }
-                    }
-
+//                    String status = Environment.getExternalStorageState();
+//                    if (status.equals(Environment.MEDIA_MOUNTED)) {
+//                        try {
+//                            localTempImageFileName = "";
+//                            localTempImageFileName = String.valueOf((new Date())
+//                                    .getTime()) + ".jpg";
+//                            File filePath = FILE_PIC_SCREENSHOT;
+//                            if (!filePath.exists()) {
+//                                filePath.mkdirs();
+//                            }
+//                            Intent intent = new Intent(
+//                                    MediaStore.ACTION_IMAGE_CAPTURE);
+//                            File f = new File(filePath, localTempImageFileName);
+//                            // localTempImgDir和localTempImageFileName是自己定义的名字
+//                            ContentValues contentValues = new ContentValues(1);
+//                            contentValues.put(MediaStore.EXTRA_OUTPUT, String.valueOf(f));
+//                            Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+//                            intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
+//                            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+//                            startActivityForResult(intent, FLAG_CHOOSE_PHONE);
+//                        } catch (ActivityNotFoundException e) {
+//                            //
+//                        }
+//                    }
+                    startCamera();
                     break;
                 //图库选择图片
                 case R.id.btn_pickphoto:
@@ -221,12 +240,15 @@ public class UserInfoActivity extends BaseActivity {
      * 获取数据
      */
     public void getData() {
-        RequestParams params = new RequestParams();
+        mDialog = new LoadingDialog(this);
+        mDialog.show();
+        final RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
         RestClient.post(UrlUtils.getInfoByToken(), params, this, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);
+                mDialog.dismiss();
                 try {
                     Log.d("个人信息", result);
                     JSONObject json = new JSONObject(result);
@@ -235,12 +257,12 @@ public class UserInfoActivity extends BaseActivity {
                         CheShiLiShopApplication.user = JSON.parseObject(json.getString("Data"), UserInfoBean.class);
                         if (!TextUtils.isEmpty(CheShiLiShopApplication.user.Img)) {
                             Glide.with(UserInfoActivity.this)
-                                    .load(UrlUtils.BASE_URL+"/Img/"+CheShiLiShopApplication.user.Img)
+                                    .load(UrlUtils.BASE_URL + "/Img/" + CheShiLiShopApplication.user.Img)
                                     .into(mImgAvatar);
                         }
                         mTvUsername.setText(CheShiLiShopApplication.user.NickName);
-                    }else if ("-1".equals(Status)){
-                        Intent intent = new Intent(UserInfoActivity.this,LoginActivity.class);
+                    } else if ("-1".equals(Status)) {
+                        Intent intent = new Intent(UserInfoActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
@@ -253,7 +275,26 @@ public class UserInfoActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                RequestParams errParams = new RequestParams();
+                try {
+                    errParams.add("LogCont", URLEncoder.encode(new String(responseBody),"UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData",params.toString());
+                errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                RestClient.post(UrlUtils.insertErrLog(), errParams, UserInfoActivity.this, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                    }
+                });
             }
         });
     }
@@ -296,6 +337,11 @@ public class UserInfoActivity extends BaseActivity {
                 uploadPic(path);
             }
         }
+        if (resultCode == RESULT_OK && requestCode == 1000) {
+            Intent intent = new Intent(this, CropImageActivity.class);
+            intent.putExtra("path", newFile.getAbsolutePath());
+            startActivityForResult(intent, FLAG_MODIFY_FINISH);
+        }
     }
 
     /**
@@ -304,9 +350,11 @@ public class UserInfoActivity extends BaseActivity {
      * @param path
      */
     private void uploadPic(String path) {
-        RequestParams params = new RequestParams();
+        mDialog = new LoadingDialog(this);
+        mDialog.show();
+        final RequestParams params = new RequestParams();
         try {
-            params.put("avatar", new File(path));
+            params.put("Img", new File(path), "image/png");
             Log.d("头像", path);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -317,6 +365,7 @@ public class UserInfoActivity extends BaseActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);
+                mDialog.dismiss();
                 try {
                     Log.d("刷新", result);
                     JSONObject jsonObject = new JSONObject(result);
@@ -334,10 +383,30 @@ public class UserInfoActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                RequestParams errParams = new RequestParams();
+                try {
+                    errParams.add("LogCont", URLEncoder.encode(new String(responseBody),"UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData",params.toString());
+                errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                RestClient.post(UrlUtils.insertErrLog(), errParams, UserInfoActivity.this, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                    }
+                });
             }
         });
     }
+
 
     private static class MyReceiver extends BroadcastReceiver {
         @Override
@@ -357,6 +426,41 @@ public class UserInfoActivity extends BaseActivity {
 
         }
     }
+
+    /**
+     * 打开相机获取图片
+     */
+    private void startCamera() {
+        File imagePath = new File(Environment.getExternalStorageDirectory(), "images");
+        if (!imagePath.exists()) imagePath.mkdirs();
+        newFile = new File(imagePath, "head_image.jpg");
+
+        //第二参数是在manifest.xml定义 provider的authorities属性
+        contentUri = FileProvider.getUriForFile(this, "com.example.administrator.cheshilishop.fileprovider", newFile);
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //兼容版本处理，因为 intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION) 只在5.0以上的版本有效
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            ClipData clip =
+                    ClipData.newUri(getContentResolver(), "A photo", contentUri);
+            intent.setClipData(clip);
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        } else {
+            List<ResolveInfo> resInfoList =
+                    getPackageManager()
+                            .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+            for (ResolveInfo resolveInfo : resInfoList) {
+                String packageName = resolveInfo.activityInfo.packageName;
+                grantUriPermission(packageName, contentUri,
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            }
+        }
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri);
+        startActivityForResult(intent, 1000);
+    }
+
 
     @Override
     protected void onDestroy() {

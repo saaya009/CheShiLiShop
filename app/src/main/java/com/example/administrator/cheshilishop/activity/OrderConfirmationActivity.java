@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -15,10 +16,8 @@ import com.example.administrator.cheshilishop.BaseActivity;
 import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.TopView;
-import com.example.administrator.cheshilishop.adapter.SetStoreAdapter;
 import com.example.administrator.cheshilishop.bean.BookingBean;
 import com.example.administrator.cheshilishop.bean.ServiceBean;
-import com.example.administrator.cheshilishop.bean.StoreBean;
 import com.example.administrator.cheshilishop.net.RestClient;
 import com.example.administrator.cheshilishop.utils.DateUtil;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
@@ -29,7 +28,6 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -76,6 +74,14 @@ public class OrderConfirmationActivity extends BaseActivity {
     TextView mTvType;
     @BindView(R.id.btn_cancel)
     Button mBtnCancel;
+    @BindView(R.id.layout_confirm)
+    RelativeLayout mLayoutConfirm;
+    @BindView(R.id.btn_list)
+    Button mBtnList;
+    @BindView(R.id.btn_home)
+    Button mBtnHome;
+    @BindView(R.id.layout_suc)
+    RelativeLayout mLayoutSuc;
 
     private String appointID;
     private String serviceID;
@@ -107,6 +113,8 @@ public class OrderConfirmationActivity extends BaseActivity {
     protected void setListener() {
         mBtnCancel.setOnClickListener(this);
         mBtnConfirm.setOnClickListener(this);
+        mBtnList.setOnClickListener(this);
+        mBtnHome.setOnClickListener(this);
     }
 
     @Override
@@ -116,18 +124,47 @@ public class OrderConfirmationActivity extends BaseActivity {
         serviceID = getIntent().getStringExtra("ServiceID");
         confirmCode = getIntent().getStringExtra("ConfirmCode");
         type = getIntent().getExtras().getInt("type");
-        if (!"0".equals(appointID)) {
-            getAppointData();
-            mTvType.setText("已预约");
-        } else {
-            mTvType.setText("未预约");
-            getServiceData();
-        }
+
         switch (type) {
             case 1://扫码
+                if ("0".equals(appointID)){
+                    getServiceData();
+                    mTvType.setText("未预约");
+                }else {
+                    mTvType.setText("已预约");
+                    getAppointData();
+                }
+                mLayoutConfirm.setVisibility(View.VISIBLE);
+                mLayoutSuc.setVisibility(View.GONE);
                 break;
             case 2://列表
-                mBtnConfirm.setVisibility(View.INVISIBLE);
+                getServiceData();
+                mTvType.setText("用户取消");
+                mLayoutSuc.setVisibility(View.GONE);
+                mLayoutConfirm.setVisibility(View.INVISIBLE);
+                break;
+            case 3://列表
+                getServiceData();
+                mTvType.setText("商家取消");
+                mLayoutSuc.setVisibility(View.GONE);
+                mLayoutConfirm.setVisibility(View.INVISIBLE);
+                break;
+            case 4://已履约
+                getServiceData();
+                mTvType.setText("已验证");
+                mLayoutSuc.setVisibility(View.GONE);
+                mLayoutConfirm.setVisibility(View.INVISIBLE);
+                break;
+            case 5://查看订单
+                getServiceData();
+                mTvType.setText("已验证");
+                mLayoutSuc.setVisibility(View.VISIBLE);
+                mLayoutConfirm.setVisibility(View.INVISIBLE);
+                break;
+            default:
+                getServiceData();
+                mLayoutSuc.setVisibility(View.GONE);
+                mLayoutConfirm.setVisibility(View.INVISIBLE);
                 break;
         }
 
@@ -141,6 +178,16 @@ public class OrderConfirmationActivity extends BaseActivity {
                 break;
             case R.id.btn_confirm://确认预约
                 confirmService();
+                break;
+            case R.id.btn_list://去列表
+                Intent intent = new Intent(this,BookingManagementActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+            case R.id.btn_home://去首页
+                intent = new Intent(this,MainActivity.class);
+                startActivity(intent);
+                finish();
                 break;
         }
     }
@@ -175,14 +222,14 @@ public class OrderConfirmationActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                SimpleDateFormat formatter = new SimpleDateFormat ("yyyy年MM月dd日 HH:mm:ss ");
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss ");
                 Date curDate = new Date(System.currentTimeMillis());//获取当前时间
                 String str = formatter.format(curDate);
                 RequestParams errParams = new RequestParams();
-                errParams.add("LogCont",new String(responseBody));
-                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
-                errParams.add("PostData",params.toString());
-                errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                errParams.add("LogCont", new String(responseBody));
+                errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData", params.toString());
+                errParams.add("WToken", CheShiLiShopApplication.wtoken);
                 RestClient.post(UrlUtils.insertErrLog(), errParams, OrderConfirmationActivity.this, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -191,7 +238,22 @@ public class OrderConfirmationActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        RequestParams errParams = new RequestParams();
+                        errParams.add("LogCont", new String(responseBody));
+                        errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                        errParams.add("PostData", params.toString());
+                        errParams.add("WToken", CheShiLiShopApplication.wtoken);
+                        RestClient.post(UrlUtils.insertErrLog(), errParams, OrderConfirmationActivity.this, new AsyncHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                            }
+                        });
                     }
                 });
             }
@@ -216,6 +278,8 @@ public class OrderConfirmationActivity extends BaseActivity {
                     String status = jsonObject.getString("Status");
                     if ("0".equals(status)) {
                         Intent intent = new Intent(OrderConfirmationActivity.this, SuccessActivity.class);
+                        intent.putExtra("AppointID",appointID);
+                        intent.putExtra("ServiceID",serviceID);
                         startActivity(intent);
                         finish();
                     } else if ("-1".equals(status)) {
@@ -230,14 +294,11 @@ public class OrderConfirmationActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                SimpleDateFormat formatter = new SimpleDateFormat ("yyyy年MM月dd日 HH:mm:ss ");
-                Date curDate = new Date(System.currentTimeMillis());//获取当前时间
-                String str = formatter.format(curDate);
                 RequestParams errParams = new RequestParams();
-                errParams.add("LogCont",new String(responseBody));
-                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
-                errParams.add("PostData",params.toString());
-                errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                errParams.add("LogCont", new String(responseBody));
+                errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData", params.toString());
+                errParams.add("WToken", CheShiLiShopApplication.wtoken);
                 RestClient.post(UrlUtils.insertErrLog(), errParams, OrderConfirmationActivity.this, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -246,7 +307,22 @@ public class OrderConfirmationActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        RequestParams errParams = new RequestParams();
+                        errParams.add("LogCont", new String(responseBody));
+                        errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                        errParams.add("PostData", params.toString());
+                        errParams.add("WToken", CheShiLiShopApplication.wtoken);
+                        RestClient.post(UrlUtils.insertErrLog(), errParams, OrderConfirmationActivity.this, new AsyncHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                            }
+                        });
                     }
                 });
             }
@@ -278,25 +354,26 @@ public class OrderConfirmationActivity extends BaseActivity {
                                     .into(mImgLogo);
                         }
                         mTvShopname.setText(bookingBean.ProductName);
-                        mTvMoney.setText(bookingBean.ServiceGapPrice);
-                        mTvStatus.setText(bookingBean.ProductDescri);
+                        mTvMoney.setText(bookingBean.AllMoney);
+                        JSONObject descri = new JSONObject(bookingBean.ProductDescri);
+                        mTvStatus.setText(descri.getString("title"));
                         mTvNumber.setText("x1");
                         mTvNumber2.setText("共1件商品");
                         mTvOrder.setText(bookingBean.OrderID);
                         mTvOdertime.setText(DateUtil.stampToDate(bookingBean.AddTime));
                         mTvBookingtime.setText(DateUtil.stampToDate3(bookingBean.AppointDate));
                         mTvAmount.setText(bookingBean.AllMoney);
-                        mTvOffer.setText(bookingBean.Price);
+                        mTvOffer.setText(Float.parseFloat(bookingBean.AllMoney) - Float.parseFloat(bookingBean.OrderOutPocket) + "");
                         mTvPreferential.setText(bookingBean.OrderOutPocket);
                     } else if ("-1".equals(Status)) {
                         Intent intent = new Intent(OrderConfirmationActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
                     } else if ("98".equals(Status)) {
-                        ToastUtils.show(OrderConfirmationActivity.this,"这不是你预约的店铺！");
+                        ToastUtils.show(OrderConfirmationActivity.this, "这不是你预约的店铺！");
                         finish();
                     } else {
-                        ToastUtils.show(OrderConfirmationActivity.this,"这不是你预约的店铺！");
+                        ToastUtils.show(OrderConfirmationActivity.this, "这不是你预约的店铺！");
                         finish();
                     }
 
@@ -308,10 +385,10 @@ public class OrderConfirmationActivity extends BaseActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 RequestParams errParams = new RequestParams();
-                errParams.add("LogCont",new String(responseBody));
-                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
-                errParams.add("PostData",params.toString());
-                errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                errParams.add("LogCont", new String(responseBody));
+                errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData", params.toString());
+                errParams.add("WToken", CheShiLiShopApplication.wtoken);
                 RestClient.post(UrlUtils.insertErrLog(), errParams, OrderConfirmationActivity.this, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -320,7 +397,22 @@ public class OrderConfirmationActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        RequestParams errParams = new RequestParams();
+                        errParams.add("LogCont", new String(responseBody));
+                        errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                        errParams.add("PostData", params.toString());
+                        errParams.add("WToken", CheShiLiShopApplication.wtoken);
+                        RestClient.post(UrlUtils.insertErrLog(), errParams, OrderConfirmationActivity.this, new AsyncHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                            }
+                        });
                     }
                 });
             }
@@ -353,14 +445,15 @@ public class OrderConfirmationActivity extends BaseActivity {
                         }
                         mTvShopname.setText(service.ProductName);
                         mTvMoney.setText(service.AllMoney);
-                        mTvStatus.setText(service.ProductDescri);
+                        JSONObject descri = new JSONObject(service.ProductDescri);
+                        mTvStatus.setText(descri.getString("title"));
                         mTvNumber.setText("x1");
                         mTvNumber2.setText("共1件商品");
                         mTvOrder.setText(service.OrderID);
                         mTvOdertime.setText(DateUtil.stampToDate(service.AddTime));
                         mTvBookingtime.setVisibility(View.GONE);
                         mTvAmount.setText(service.AllMoney);
-                        mTvOffer.setVisibility(View.GONE);
+                        mTvOffer.setText(Float.parseFloat(service.AllMoney) - Float.parseFloat(service.OrderOutPocket) + "");
                         mTvPreferential.setText(service.OrderOutPocket);
                     } else {
                         ToastUtils.show(OrderConfirmationActivity.this, jsonObject.getString("Data"));
@@ -372,14 +465,12 @@ public class OrderConfirmationActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                SimpleDateFormat formatter = new SimpleDateFormat ("yyyy年MM月dd日 HH:mm:ss ");
-                Date curDate = new Date(System.currentTimeMillis());//获取当前时间
-                String str = formatter.format(curDate);
+
                 RequestParams errParams = new RequestParams();
-                errParams.add("LogCont",new String(responseBody));
-                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
-                errParams.add("PostData",params.toString());
-                errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                errParams.add("LogCont", new String(responseBody));
+                errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData", params.toString());
+                errParams.add("WToken", CheShiLiShopApplication.wtoken);
                 RestClient.post(UrlUtils.insertErrLog(), errParams, OrderConfirmationActivity.this, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -396,10 +487,4 @@ public class OrderConfirmationActivity extends BaseActivity {
         });
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

@@ -31,6 +31,24 @@
             android:src="@mipmap/icon_point"
             android:layout_width="18dp"
             android:layout_height="18dp"/>
+        <TextView
+            android:layout_marginRight="8dp"
+            android:textSize="16dp"
+            android:id="@+id/tv_shenhe"
+            android:layout_marginTop="8dp"
+            android:layout_alignParentRight="true"
+            android:text="审核中"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:layout_toLeftOf="@id/tv_shenhe"
+            android:id="@+id/img_shenhe"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:src="@mipmap/icon_time2"
+            android:layout_width="18dp"
+            android:layout_height="18dp"/>
         
         <ImageView
             android:id="@+id/img_store"

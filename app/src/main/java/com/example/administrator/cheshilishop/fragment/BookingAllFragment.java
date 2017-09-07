@@ -15,6 +15,7 @@ import android.widget.ListView;
 import com.alibaba.fastjson.JSON;
 import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
+import com.example.administrator.cheshilishop.activity.CommissionActivity;
 import com.example.administrator.cheshilishop.activity.MainActivity;
 import com.example.administrator.cheshilishop.activity.OrderConfirmationActivity;
 import com.example.administrator.cheshilishop.adapter.BookingAdapter;
@@ -31,6 +32,8 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -83,8 +86,9 @@ public class BookingAllFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> view, View view1, int i, long l) {
                 Intent intent = new Intent(getActivity(), OrderConfirmationActivity.class);
-                intent.putExtra("AppointID",list.get(i).ID);
-                intent.putExtra("type",  list.get(i).Status);
+                intent.putExtra("ServiceID",list.get(i).ServiceID);
+                intent.putExtra("AppointID","0");
+                intent.putExtra("type",Integer.parseInt(list.get(i).Status));
                 startActivity(intent);
             }
         });
@@ -110,7 +114,7 @@ public class BookingAllFragment extends Fragment {
      * @param page
      */
     private void getData(final int page) {
-        RequestParams params = new RequestParams();
+        final RequestParams params = new RequestParams();
         params.add("WToken",CheShiLiShopApplication.wtoken);
         params.add("StoreID",CheShiLiShopApplication.storeID);
         params.add("N",page+"");
@@ -161,7 +165,26 @@ public class BookingAllFragment extends Fragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                RequestParams errParams = new RequestParams();
+                try {
+                    errParams.add("LogCont", URLEncoder.encode(new String(responseBody),"UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData",params.toString());
+                errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                RestClient.post(UrlUtils.insertErrLog(), errParams, getActivity(), new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                    }
+                });
 
             }
         });

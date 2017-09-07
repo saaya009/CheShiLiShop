@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <include layout="@layout/topbar"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ScrollView
+            android:layout_above="@+id/layout_next"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include layout="@layout/progressbar"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="20dp"
+                        android:src="@mipmap/icon_order"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:text="成为车势力认证店面的优势"
+                        android:textColor="@color/black"
+                        android:textSize="16dp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:text=""
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:background="@color/gray"/>
+
+                <TextView
+                    android:textSize="15dp"
+                    android:layout_margin="20dp"
+                    android:text="甲乙双方本着互惠互利、诚实信用、服务至上的原则，就车势力会员汽车机油保养合作事宜达成合作协议。
+
+一、合作资格
+乙方系经当地工商部门核准的合法企业，营业执照复印件加盖公章后作为本协议的附件。乙方应资质信誉良好、服务场所固定、经营场地整洁，能够为车势力会员提供优质服务；乙方须在经营服务场所配备车势力商户客户端。
+
+二、合作形式
+甲方负责对乙方针对车势力会员免费换机油保养服务内容进行广泛宣传。车势力汽车免费保养目前提供机油保养产品。本条款中描述的保养类产品耗材（国际知名品牌发动机润滑油、机油滤清器）由甲方或甲方合作的耗材服务商负责免费提供给乙方。
+乙方为车势力会员提供优质服务，服务标准须包括以下内容：
+⑴定位：将车开到合适的位置，并套上引擎套、椅套、方向盘套，保证车辆整洁；
+（2）关闭发动机：如果发动机温度较低，启动发动机暖机至发动机正常工作温度范围（一般需3-5分钟左右）
+（3）拧松加油口盖：拧松机油口盖，使发动机内部与空气连通；
+（4）拆卸机油滤清器：拆卸过程中使用无尘滤纸，防止机油滴落污染车体及车间环境（部分型号车辆，滤清器位置需要先放油5分钟以上）
+（5）彻底放油：车辆缓缓上升到合适高度，将接机油盘置于合适位置，拆卸反动及放油螺旋，排净旧机油直至机油不再以流线状流出为止（直至5秒滴一滴为止，一般需10-15分钟左右）
+（6）安装新的放油螺栓:用无尘滤纸擦拭油底壳周围油滴，安装新的放油螺栓。
+(7)安装新的机油滤清器：安装过程中，当滤清器密封圈与底座贴合后，使用规定的工具再拧3/4圈；
+（8）准确添加发动机机油：使用无尘漏斗，添加符合车辆生产厂家所规定规格的发动机机油至规定的机油液位（注意：机油液位禁止超过机油标尺的最大刻度线），拧紧加油口盖，并检查是否有工具遗留在发动机机舱内；
+(9)漏油检查：启动发动机，让发动机怠速运转1分钟，用手电筒检查发动机是否有漏油，关闭发动机，等待2分钟，检查发动机油液位是否位于正确的范围内，如有需要，可根据实际情况添加适量机油。
+
+三、服务流程
+客户在享受免费换油服务前，需向乙方出示二维码，由乙方在商户端扫描登记，如果需要输入密码，乙方根据返回信息判断客户能否享受汽车免费换油保养服务。对不符合条件的（如不符合换油条件、车牌号码不一致、密码错误等）不得享受免费换油保养服务。
+乙方换油保养服务应遵循换油标准。
+对于因通信线路或系统出现故障，导致不能正常进行换油保养登记时，乙方应立即致电400-011-2789或0531-85523333核实客户信息并告知甲方，且要求客户在《车势力汽车会员服务登记表》手工登记并签名，并将《登记表》于次日扫描给甲方，甲方逐一落实后，在系统内予以补登，列入每月清算范围。
+
+四、权利与义务
+1、甲方负责为乙方安装商户客户端，并做好人员使用培训。客户端出现故障需及时向甲方反馈。
+2、甲方支付乙方换油保养的费用标准为：服务费用不分车型统一按50元／车／次。每月1日至15日为对账日，甲方系统实时统计，乙方可通过客户端查询客户信息及结算费用，按照查询的费用开具正规发票；每月16日至20日为结算日，结算上月补贴费用。
+3、如果乙方对甲方统计的换油服务次数有疑问，可凭核对后的《登记表》与甲方核对。
+4、乙方须在服务场所放置醒目的“车势力汽车会员特约商户”指示牌，以引导客户接受服务。服务指示牌由甲方提供或经甲方同意后按甲方同意的统一标准制作。
+5、有效投诉：指甲方车势力汽车会员对乙方提供的换油保养服务不满意，投诉到甲方，经甲方调查落实属乙方未按照换油保养标准向车势力汽车会员提供服务的事件。乙方若因服务质量或服务态度被客户投诉，乙方需对客户道歉并向甲方反馈真实情况；经甲方落实为有效投诉的，按100元/次在当月应支付乙方服务费中扣除。自然月度内有效投诉5次（含）以上的，或者造成重大负面影响的，甲方有权立即终止本协议并收回“车势力汽车会员特约商户”指示牌等标识用品及商户客户端。若乙方给客户造成损失的，乙方应承担对客户的赔偿责任。
+6、乙方不得虚构客户换油登记套取甲方费用，一经发现，甲方无需乙方同意有权立即解除合同，并按照虚构金额的十倍向甲方支付违约金；情节特别严重的，甲方将采取法律手段进行追责（甲方有权从乙方当期未结算费用中扣除）。
+7、甲方承诺提供的保养产品耗材为正规厂商渠道提供的正品润滑油、机油滤清器。因保养耗材质量问题引起的纠纷，由甲方协同品牌厂商进行质量检测，并与客户协商解决。
+
+五、违约责任
+1、甲乙双方都应认真履行本协议，如有一方要求终止协议应当提前10日书面通知对方，同时需取得到对方书面同意，在对方同意终止协议前双方应继续履行本协议。如甲方同意乙方提前终止协议，不免除乙方依照本协议第五条、②应承担的责任。
+2、如乙方单方面要求提前终止本协议或乙方单方面提出本协议规定内容外的其他要求，造成本协议无法继续履行的，乙方应向甲方支付违约金贰万元整，及甲方通知客户产生的费用（甲方有权从乙方当期未结算费用中扣除）。
+3、乙方不得为获得甲方费用有造假行为，不得向任何单位和个人提供车势力汽车会员的客户资料，否则甲方停止支付所有未结费用，并单方面解除合作关系，且乙方负责承担一切责任（包括向客户的解释工作和赔偿责任等）。
+4、甲乙双方如认为需要变更本协议条款，应提出书面意见，双方本着友好协商的原则解决。
+5、甲乙双方发生纠纷时，应本着友好合作的精神进行协商，如协商不成，可视具体情况提交济南市仲裁委员会仲裁。
+
+六、其他事项
+1、乙方（是/否）参与甲方制定的三级分销体系，分销比例为5：3：2。
+2、本协议自甲方负责人或授权代理人人签字并盖章、乙方法定代表人签字并盖章之日起生效，有效期一年。协议期满前一个月内双方没有提出异议的，本协议自动延期一年，次数不限。
+3、甲乙双方之间对本协议项目下未尽事宜应通过友好协商解决。"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+
+        </ScrollView>
+        <LinearLayout
+            android:id="@+id/layout_next"
+            android:background="@color/gray"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/btn_next"
+                android:text="下一步"
+                android:textSize="18dp"
+                android:textColor="@color/white"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/bg_button_style"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</LinearLayout>

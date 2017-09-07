@@ -21,6 +21,7 @@ import com.example.administrator.cheshilishop.BaseActivity;
 import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.TopView;
+import com.example.administrator.cheshilishop.dialog.LoadingDialog;
 import com.example.administrator.cheshilishop.dialog.TwoButtonAndContentCustomDialog;
 import com.example.administrator.cheshilishop.net.RestClient;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
@@ -35,6 +36,9 @@ import com.yzq.zxinglibrary.android.CaptureActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -54,6 +58,7 @@ public class LoginActivity extends BaseActivity {
 
     private String mVal;
     private Intent mIntent;
+    private LoadingDialog mDialog;
 
     Handler handler = new Handler() {
         @Override
@@ -157,6 +162,13 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void processLogic() {
 
+        String wtoken = Hawk.get("wtoken", "");
+        if (!"".equals(wtoken)) {
+            CheShiLiShopApplication.wtoken = wtoken;
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
     }
 
@@ -204,7 +216,9 @@ public class LoginActivity extends BaseActivity {
             ToastUtils.show(LoginActivity.this, "密码不能为空");
             return;
         }
-        RequestParams params = new RequestParams();
+        mDialog = new LoadingDialog(this);
+        mDialog.show();
+        final RequestParams params = new RequestParams();
         params.add("Mobile", username);
         params.add("Password", password);
         params.add("Platform", "31");
@@ -212,6 +226,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
+                    mDialog.dismiss();
                     String result = new String(responseBody);
                     JSONObject object = new JSONObject(result);
                     Log.d("登录", result);
@@ -235,7 +250,26 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                RequestParams errParams = new RequestParams();
+                try {
+                    errParams.add("LogCont", URLEncoder.encode(new String(responseBody), "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData", params.toString());
+                errParams.add("WToken", CheShiLiShopApplication.wtoken);
+                RestClient.post(UrlUtils.insertErrLog(), errParams, LoginActivity.this, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                    }
+                });
             }
         });
 
@@ -248,7 +282,6 @@ public class LoginActivity extends BaseActivity {
                     this, R.style.Translucent_NoTitle) {
                 @Override
                 public void doConfirm() {
-                    // TODO Auto-generated method stub
                     super.doConfirm();
                     Intent intent = new Intent(Intent.ACTION_MAIN);
                     intent.addCategory(Intent.CATEGORY_HOME);
@@ -266,31 +299,5 @@ public class LoginActivity extends BaseActivity {
         return true;
     }
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        // 只需要调用这一句，剩下的AndPermission自动完成。
-//        AndPermission.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
-//    }
 
-    // 成功回调的方法，用注解即可，里面的数字是请求时的requestCode。
-    @PermissionYes(101)
-    private void getLocationYes() {
-        // 申请权限成功，可以去做点什么了。
-
-        String wtoken = Hawk.get("wtoken", "");
-        if (!"".equals(wtoken)) {
-            CheShiLiShopApplication.wtoken = wtoken;
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
-    }
-
-    // 失败回调的方法，用注解即可，里面的数字是请求时的requestCode。
-    @PermissionNo(101)
-    private void getLocationNo() {
-        // 申请权限失败，可以提醒一下用户。
-        Toast.makeText(this, "获取相机权限失败，无法使用扫一扫", Toast.LENGTH_SHORT).show();
-        finish();
-    }
 }
