@@ -36,7 +36,7 @@ public class UrlUtils {
      */
     public static String getPwd() {
         String url = null;
-        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/Login/ResetPwdByPhone").buildUpon();
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/CSL/Login/ResetPwdByPhone").buildUpon();
         url = uribBuilder.build().toString();
         return url;
     }

@@ -41,7 +41,7 @@
             android:id="@+id/tv_yongjin"
             android:textSize="15dp"
             android:textColor="@color/orange"
-            android:text="¥1998.89"
+            android:text="¥0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
@@ -54,7 +54,7 @@
         <TextView
             android:id="@+id/tv_leiji"
             android:textSize="15dp"
-            android:text="¥1888998.89"
+            android:text="¥0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
@@ -74,10 +74,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone"
+
         >
         <ImageView
-            android:layout_marginTop="100dp"
+            android:visibility="gone"
+            android:layout_marginTop="60dp"
             android:layout_gravity="center_horizontal"
             android:src="@mipmap/icon_null"
             android:layout_width="180dp"

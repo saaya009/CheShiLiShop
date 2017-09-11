@@ -1,11 +1,13 @@
 package com.example.administrator.cheshilishop.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,18 +15,29 @@ import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSON;
 import com.example.administrator.cheshilishop.BaseActivity;
+import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.TopView;
+import com.example.administrator.cheshilishop.dialog.LoadingDialog;
+import com.example.administrator.cheshilishop.dialog.TwoButtonAndContentCustomDialog;
+import com.example.administrator.cheshilishop.net.RestClient;
 import com.example.administrator.cheshilishop.utils.HttpUtils;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
 import com.example.administrator.cheshilishop.widget.Countdown;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+import com.orhanobut.hawk.Hawk;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * 修改密码
@@ -42,6 +55,7 @@ public class GetPwdActivity extends BaseActivity {
 
     private String mVal;
 
+    private LoadingDialog mDialog;
     private Countdown mCountdown;
 
     Handler handler = new Handler() {
@@ -53,7 +67,9 @@ public class GetPwdActivity extends BaseActivity {
             switch (num){
                 case 1:
                     mVal = data.getString("value");
-                    reg();
+                    mDialog = new LoadingDialog(GetPwdActivity.this);
+                    mDialog.show();
+                    change();
                     break;
                 case 2:
                     mVal = data.getString("value");
@@ -162,9 +178,9 @@ public class GetPwdActivity extends BaseActivity {
     }
 
     /**
-     * 注册
+     * 修改密码
      */
-    private void reg() {
+    private void change() {
         try {
             JSONObject object = new JSONObject(mVal);
             Log.d("注册", mVal);
@@ -172,7 +188,7 @@ public class GetPwdActivity extends BaseActivity {
             status = object.getInt("Status");
             if (status == 0) {
                 ToastUtils.show(GetPwdActivity.this, "密码修改成功");
-                finish();
+                login();
             } else {
                 ToastUtils.show(GetPwdActivity.this, "手机号或密码错误或者验证码错误");
             }
@@ -268,7 +284,86 @@ public class GetPwdActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
+
+    /**
+     * 登录
+     */
+    private void login() {
+        String username = et_username.getText().toString().trim();
+        String password = et_password.getText().toString().trim();
+        if (username.length() != 11) {
+            ToastUtils.show(GetPwdActivity.this, "请输入正确的手机号码");
+            return;
+        }
+        if (password.length() == 0) {
+            ToastUtils.show(GetPwdActivity.this, "密码不能为空");
+            return;
+        }
+
+        final RequestParams params = new RequestParams();
+        params.add("Mobile", username);
+        params.add("Password", password);
+        params.add("Platform", "31");
+        RestClient.post(UrlUtils.login(), params, this, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    mDialog.dismiss();
+                    String result = new String(responseBody);
+                    JSONObject object = new JSONObject(result);
+                    Log.d("登录", result);
+                    int status = 0;
+                    status = object.getInt("Status");
+                    if (status == 0) {
+                        ToastUtils.show(GetPwdActivity.this, "登录成功");
+                        JSONObject data = object.getJSONObject("Data");
+                        CheShiLiShopApplication.wtoken = data.getString("WToken");
+                        Hawk.put("wtoken", CheShiLiShopApplication.wtoken);
+                        Intent intent = new Intent(GetPwdActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        ToastUtils.show(GetPwdActivity.this, "手机号或密码错误");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                RequestParams errParams = new RequestParams();
+                try {
+                    errParams.add("LogCont", URLEncoder.encode(new String(responseBody), "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData", params.toString());
+                errParams.add("WToken", CheShiLiShopApplication.wtoken);
+                RestClient.post(UrlUtils.insertErrLog(), errParams, GetPwdActivity.this, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent intent = new Intent(this,LoginActivity.class);
+            startActivity(intent);
+        }
+        return true;
+    }
 }

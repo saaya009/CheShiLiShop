@@ -73,7 +73,7 @@ public class ProductActivity extends BaseActivity {
 
     @Override
     protected TopView getTopViews() {
-        return new TopView(topbar_iv_back, topbar_tv_title);
+        return new TopView(topbar_iv_back, topbar_tv_title,topbar_iv_right);
     }
 
     @Override
@@ -91,12 +91,19 @@ public class ProductActivity extends BaseActivity {
     @Override
     protected void processLogic() {
         setTopTitle("服务管理");
+        topbar_iv_right.setVisibility(View.VISIBLE);
+        topbar_iv_right.setText("添加服务");
         getData();
     }
 
     @Override
     protected void onClickEvent(View paramView) {
-
+        switch (paramView.getId()){
+            case R.id.topbar_iv_right://添加服务
+                Intent intent = new Intent(this,ChangeActivity.class);
+                startActivity(intent);
+                break;
+        }
     }
 
     @Override

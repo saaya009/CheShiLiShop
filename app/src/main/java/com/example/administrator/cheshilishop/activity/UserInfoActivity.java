@@ -182,13 +182,6 @@ public class UserInfoActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
     /**
      * 选择图片
      */
@@ -199,30 +192,6 @@ public class UserInfoActivity extends BaseActivity {
             switch (v.getId()) {
                 //拍照
                 case R.id.btn_photograph:
-//                    String status = Environment.getExternalStorageState();
-//                    if (status.equals(Environment.MEDIA_MOUNTED)) {
-//                        try {
-//                            localTempImageFileName = "";
-//                            localTempImageFileName = String.valueOf((new Date())
-//                                    .getTime()) + ".jpg";
-//                            File filePath = FILE_PIC_SCREENSHOT;
-//                            if (!filePath.exists()) {
-//                                filePath.mkdirs();
-//                            }
-//                            Intent intent = new Intent(
-//                                    MediaStore.ACTION_IMAGE_CAPTURE);
-//                            File f = new File(filePath, localTempImageFileName);
-//                            // localTempImgDir和localTempImageFileName是自己定义的名字
-//                            ContentValues contentValues = new ContentValues(1);
-//                            contentValues.put(MediaStore.EXTRA_OUTPUT, String.valueOf(f));
-//                            Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-//                            intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
-//                            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-//                            startActivityForResult(intent, FLAG_CHOOSE_PHONE);
-//                        } catch (ActivityNotFoundException e) {
-//                            //
-//                        }
-//                    }
                     startCamera();
                     break;
                 //图库选择图片

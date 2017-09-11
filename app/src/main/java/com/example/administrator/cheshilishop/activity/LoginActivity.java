@@ -162,6 +162,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void processLogic() {
 
+
         String wtoken = Hawk.get("wtoken", "");
         if (!"".equals(wtoken)) {
             CheShiLiShopApplication.wtoken = wtoken;
@@ -190,6 +191,7 @@ public class LoginActivity extends BaseActivity {
             case R.id.tv_getpwd://找回密码
                 mIntent = new Intent(LoginActivity.this, GetPwdActivity.class);
                 startActivity(mIntent);
+                finish();
                 break;
             case R.id.btn_clear://清除手机号
                 et_username.setText("");

@@ -105,6 +105,8 @@ public class OrderTwoFragment extends Fragment {
                         Intent intent = new Intent(getActivity(), LoginActivity.class);
                         startActivity(intent);
                         getActivity().finish();
+                    } else if ("1".equals(Status)) {
+                        layout_null.setVisibility(View.VISIBLE);
                     } else {
                         ToastUtils.show(getActivity(), jsonObject.getString("Data"));
                     }

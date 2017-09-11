@@ -29,6 +29,7 @@ import com.example.administrator.cheshilishop.utils.UpgradeHelper;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.orhanobut.hawk.Hawk;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 
 import org.json.JSONException;
@@ -105,10 +106,13 @@ public class MainActivity extends AppCompatActivity {
                                 .into(mImgLogo);
                         mTvDescri.setText(CheShiLiShopApplication.store.Name);
                     } else if ("-1".equals(Status)) {
+                        Hawk.delete("wtoken");
+                        CheShiLiShopApplication.wtoken = "";
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
+                        CheShiLiShopApplication.storeID = "0";
                         ToastUtils.show(MainActivity.this, jsonObject.getString("Data"));
                     }
 
@@ -287,6 +291,8 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
 
                     } else if ("-1".equals(Status)) {
+                        Hawk.delete("wtoken");
+                        CheShiLiShopApplication.wtoken = "";
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();

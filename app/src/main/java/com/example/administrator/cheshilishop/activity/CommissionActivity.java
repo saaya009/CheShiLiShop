@@ -5,6 +5,7 @@ import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -179,20 +180,27 @@ public class CommissionActivity extends BaseActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);
-                Log.d("预约详情", result);
+                Log.d("总佣金", result);
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     String Status = jsonObject.getString("Status");
                     if ("0".equals(Status)) {
                         JSONObject data = jsonObject.getJSONObject("Data");
-                        mTvYongjin.setText(data.getString("Now_Amount"));
-                        mTvLeiji.setText(data.getString("History_Amount"));
+                        if (TextUtils.isEmpty(data.getString("Now_Amount"))) {
+                            mTvYongjin.setText("0");
+                        } else {
+                            mTvYongjin.setText(data.getString("Now_Amount"));
+                        }
+                        if (TextUtils.isEmpty(data.getString("History_Amount"))) {
+                            mTvLeiji.setText("0");
+                        } else {
+                            mTvLeiji.setText(data.getString("History_Amount"));
+                        }
+
+
                     } else if ("-1".equals(Status)) {
                         Intent intent = new Intent(CommissionActivity.this, LoginActivity.class);
                         startActivity(intent);
-                        finish();
-                    } else if ("98".equals(Status)) {
-                        ToastUtils.show(CommissionActivity.this, "这不是你预约的店铺！");
                         finish();
                     } else {
                         ToastUtils.show(CommissionActivity.this, jsonObject.getString("Data"));
@@ -270,7 +278,7 @@ public class CommissionActivity extends BaseActivity {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);
                 try {
-                    Log.d("查询佣金",result);
+                    Log.d("查询佣金", result);
                     JSONObject jsonObject = new JSONObject(result);
                     String Status = jsonObject.getString("Status");
                     if ("0".equals(Status)) {
@@ -290,6 +298,7 @@ public class CommissionActivity extends BaseActivity {
                                 adapter = new CommissionAdapter(CommissionActivity.this, list, 1);
                                 mLvCommission.setAdapter(adapter);
                                 refreshLayout.finishRefresh();
+                                adapter.notifyDataSetChanged();
                             }
                         } else {
                             if (mList.size() == 0) {
@@ -316,10 +325,10 @@ public class CommissionActivity extends BaseActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 RequestParams errParams = new RequestParams();
-                errParams.add("LogCont",new String(responseBody));
-                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
-                errParams.add("PostData",params.toString());
-                errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                errParams.add("LogCont", new String(responseBody));
+                errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData", params.toString());
+                errParams.add("WToken", CheShiLiShopApplication.wtoken);
                 RestClient.post(UrlUtils.insertErrLog(), errParams, CommissionActivity.this, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -330,13 +339,13 @@ public class CommissionActivity extends BaseActivity {
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         RequestParams errParams = new RequestParams();
                         try {
-                            errParams.add("LogCont", URLEncoder.encode(new String(responseBody),"UTF-8"));
+                            errParams.add("LogCont", URLEncoder.encode(new String(responseBody), "UTF-8"));
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
-                        errParams.add("Url",UrlUtils.queryServiceAppointDetail());
-                        errParams.add("PostData",params.toString());
-                        errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                        errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                        errParams.add("PostData", params.toString());
+                        errParams.add("WToken", CheShiLiShopApplication.wtoken);
                         RestClient.post(UrlUtils.insertErrLog(), errParams, CommissionActivity.this, new AsyncHttpResponseHandler() {
                             @Override
                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {

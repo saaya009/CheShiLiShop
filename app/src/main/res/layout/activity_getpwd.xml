@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
-              android:background="@color/gray"
+              android:background="@mipmap/login_bg"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
@@ -84,7 +84,7 @@
             android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
             android:textSize="16dp"
-            android:hint="请输入密码"
+            android:hint="请输入新密码"
             android:layout_marginBottom="3dp"
             android:layout_toRightOf="@id/img_pwd"
             android:layout_width="match_parent"

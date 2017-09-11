@@ -20,13 +20,30 @@
         android:layout_marginLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-    <TextView
-        android:id="@+id/tv_money"
-        android:textSize="15dp"
-        android:text="¥500.00"
-        android:layout_margin="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/orange" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <TextView
+            android:id="@+id/tv_money"
+            android:textSize="15dp"
+            android:text="¥500.00"
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/orange" />
+
+        <Button
+            android:id="@+id/btn_change"
+            android:layout_margin="10dp"
+            android:textColor="@color/white"
+            android:text="编辑"
+            android:background="@drawable/bg_button_style"
+            android:layout_alignParentRight="true"
+            android:layout_width="50dp"
+            android:layout_height="25dp"/>
+
+    </RelativeLayout>
+
 
 </LinearLayout>
