@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/layout1"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+    <TextView
+        android:layout_centerInParent="true"
+        android:textSize="15dp"
+        android:textColor="@color/black"
+        android:text="不使用"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    <TextView
+        android:background="@color/gray"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
+    <RelativeLayout
+        android:id="@+id/layout2"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_centerInParent="true"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:text="一次预约"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    <TextView
+        android:background="@color/gray"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
+    <RelativeLayout
+        android:id="@+id/layout3"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_centerInParent="true"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:text="每天"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    <TextView
+        android:background="@color/gray"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
+    <RelativeLayout
+        android:id="@+id/layout4"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_centerInParent="true"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:text="法定工作日"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    <TextView
+        android:background="@color/gray"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
+    <RelativeLayout
+        android:id="@+id/layout5"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_centerInParent="true"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:text="法定节假日"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    <TextView
+        android:background="@color/gray"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
+    <RelativeLayout
+        android:id="@+id/layout6"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_centerInParent="true"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:text="周五至周日"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    <TextView
+        android:background="@color/gray"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
+    <RelativeLayout
+        android:id="@+id/layout7"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_centerInParent="true"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:text="自定义"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    <TextView
+        android:background="@color/gray"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
+
+
+
+</LinearLayout>

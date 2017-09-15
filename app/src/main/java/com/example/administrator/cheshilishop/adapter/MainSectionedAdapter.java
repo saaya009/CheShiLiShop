@@ -1,15 +1,18 @@
 package com.example.administrator.cheshilishop.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.cheshilishop.R;
+import com.example.administrator.cheshilishop.activity.ChangeActivity;
 import com.example.administrator.cheshilishop.bean.ProductBean;
 
 import java.util.List;
@@ -64,12 +67,15 @@ public class MainSectionedAdapter extends SectionedBaseAdapter {
         ((TextView) layout.findViewById(R.id.tv_name)).setText(rlist.get(section).get(position).ProductName);
         ((TextView) layout.findViewById(R.id.tv_context)).setText(rlist.get(section).get(position).Descri);
         ((TextView) layout.findViewById(R.id.tv_money)).setText("¥"+rlist.get(section).get(position).GapPrice);
-//        layout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View arg0) {
-//                Toast.makeText(mContext, rlistrlist.get(section).get(position), Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        (layout.findViewById(R.id.btn_change)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, ChangeActivity.class);
+                intent.putExtra("ID",rlist.get(section).get(position).ID);
+                intent.putExtra("productID",rlist.get(section).get(position).ProductID);
+                mContext.startActivity(intent);
+            }
+        });
         return layout;
     }
 
@@ -87,5 +93,7 @@ public class MainSectionedAdapter extends SectionedBaseAdapter {
         ((TextView) layout.findViewById(R.id.textItem)).setText(leftStr[section]);
         return layout;
     }
+
+
 
 }

@@ -19,11 +19,11 @@ import com.example.administrator.cheshilishop.R;
  * 邮箱：ayase@ayase.cn
  */
 
-public class AmountView extends LinearLayout implements View.OnClickListener, TextWatcher {
+public class Amount2View extends LinearLayout implements View.OnClickListener, TextWatcher {
 
     private static final String TAG = "AmountView";
-    private int amount = 1; //购买数量
-    private int goods_storage = 10000; //商品库存
+    private double amount = 1; //购买数量
+    private int goods_storage = 15; //商品库存
 
     private OnAmountChangeListener mListener;
 
@@ -31,11 +31,11 @@ public class AmountView extends LinearLayout implements View.OnClickListener, Te
     private Button btnDecrease;
     private Button btnIncrease;
 
-    public AmountView(Context context) {
+    public Amount2View(Context context) {
         this(context, null);
     }
 
-    public AmountView(Context context, AttributeSet attrs) {
+    public Amount2View(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         LayoutInflater.from(context).inflate(R.layout.view_amount, this);
@@ -80,13 +80,13 @@ public class AmountView extends LinearLayout implements View.OnClickListener, Te
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.btnDecrease) {
-            if (amount > 1) {
-                amount--;
+            if (amount > -2) {
+                amount=amount-0.5;
                 etAmount.setText(amount + "");
             }
         } else if (i == R.id.btnIncrease) {
             if (amount < goods_storage) {
-                amount++;
+                amount= amount+0.5;
                 etAmount.setText(amount + "");
             }
         }
@@ -100,7 +100,7 @@ public class AmountView extends LinearLayout implements View.OnClickListener, Te
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        double num = Double.parseDouble(s.toString());
+
     }
 
     @Override
@@ -112,7 +112,7 @@ public class AmountView extends LinearLayout implements View.OnClickListener, Te
     public void afterTextChanged(Editable s) {
         if (s.toString().isEmpty())
             return;
-        amount = Integer.valueOf(s.toString());
+        amount = Double.valueOf(s.toString());
         if (amount > goods_storage) {
             etAmount.setText(goods_storage + "");
             return;
@@ -124,8 +124,10 @@ public class AmountView extends LinearLayout implements View.OnClickListener, Te
     }
 
 
+
+
     public interface OnAmountChangeListener {
-        void onAmountChange(View view, int amount);
+        void onAmountChange(View view, double amount);
     }
 
 }

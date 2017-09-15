@@ -16,7 +16,7 @@ public class InviteUtils {
                 break;
             case 1:
                 id = "00"+id;
-                 break;
+                break;
             case 2:
                 id = "0"+id;
                 break;

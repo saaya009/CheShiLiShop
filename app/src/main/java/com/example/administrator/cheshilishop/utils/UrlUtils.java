@@ -243,4 +243,36 @@ public class UrlUtils {
         url = uribBuilder.build().toString();
         return url;
     }
+
+
+    /**
+     * 修改商家服务
+     */
+    public static String updateService() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/StoreService/UpdateService").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
+
+
+    /**
+     * 查询可用标准服务json
+     */
+    public static String queryProductServiceJson() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/Product/StoreService/QueryProductServiceJson").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
+
+    /**
+     * 批量添加服务
+     */
+    public static String addServices() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/StoreService/AddServices").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
 }

@@ -24,5 +24,6 @@ public class ProductBean implements Serializable {
     public String CategoryName;
     public String CategoryID;
 
-
+    public String Name;
+    public String BusinessPrice;
 }

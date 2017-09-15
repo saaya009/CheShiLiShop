@@ -28,6 +28,7 @@ public class CheShiLiShopApplication extends Application {
     public static String AddTime = "1504777259";
     public static String address = "";
     public static int pic_limit = 5;
+    public static List<List<Boolean>> status;
 
     @Override
     public void onCreate() {

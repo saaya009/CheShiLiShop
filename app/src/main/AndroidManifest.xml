@@ -64,7 +64,7 @@
         </provider>
 
         <activity
-            android:name=".activity.ProductActivity"
+            android:name=".activity.ServiceActivity"
             android:launchMode="singleTask"/>
         <activity
             android:name=".activity.CommissionActivity"
@@ -91,6 +91,7 @@
         <activity android:name=".activity.WriteActivity"/>
         <activity android:name=".activity.ExamineActivity"/>
         <activity android:name=".activity.StoreDataActivity"/>
+        <activity android:name=".activity.SuccessActivity"/>
         <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -99,6 +100,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.ChangeActivity"/>
+        <activity android:name=".activity.AddServiceActivity"/>
+        <activity android:name=".activity.TuiGuangActivity"/>
     </application>
 
 </manifest>

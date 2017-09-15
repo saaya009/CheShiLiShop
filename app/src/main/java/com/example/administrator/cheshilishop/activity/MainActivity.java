@@ -19,11 +19,9 @@ import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
-import com.example.administrator.cheshilishop.bean.BookingBean;
 import com.example.administrator.cheshilishop.bean.StoreBean;
 import com.example.administrator.cheshilishop.dialog.TwoButtonAndContentCustomDialog;
 import com.example.administrator.cheshilishop.net.RestClient;
-import com.example.administrator.cheshilishop.utils.DateUtil;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
 import com.example.administrator.cheshilishop.utils.UpgradeHelper;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
@@ -106,14 +104,13 @@ public class MainActivity extends AppCompatActivity {
                                 .into(mImgLogo);
                         mTvDescri.setText(CheShiLiShopApplication.store.Name);
                     } else if ("-1".equals(Status)) {
-                        Hawk.delete("wtoken");
                         CheShiLiShopApplication.wtoken = "";
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
                         CheShiLiShopApplication.storeID = "0";
-                        ToastUtils.show(MainActivity.this, jsonObject.getString("Data"));
+//                        ToastUtils.show(MainActivity.this, jsonObject.getString("Data"));
                     }
 
                 } catch (JSONException e) {
@@ -188,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.layout_manager://服务管理
                     intent = new Intent(MainActivity.this,
-                            ProductActivity.class);
+                            ServiceActivity.class);
                     startActivity(intent);
                     break;
                 case R.id.layout_userinfo://账户信息

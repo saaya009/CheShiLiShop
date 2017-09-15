@@ -23,9 +23,9 @@
             android:textColor="@color/black"
             android:textSize="17dp"/>
 
-        <com.example.administrator.cheshilishop.widget.AmountView
+        <com.example.administrator.cheshilishop.widget.Amount2View
             android:layout_gravity="center_vertical"
-            android:id="@+id/amount_view"
+            android:id="@+id/amount_view2"
             app:btnTextSize="14sp"
             app:btnWidth="36dp"
             app:tvWidth="50dp"
@@ -57,6 +57,7 @@
             android:layout_height="match_parent"/>
 
         <EditText
+            android:id="@+id/et_Descri"
             android:layout_marginRight="10dp"
             android:textSize="16dp"
             android:layout_marginTop="10dp"
@@ -87,13 +88,14 @@
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:layout_centerVertical="true"
+            android:id="@+id/tv_enable"
             android:layout_marginLeft="100dp"
             android:textColor="@color/black"
             android:textSize="17dp"
             android:text="启动"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
         <ImageView
             android:layout_marginRight="20dp"
@@ -123,13 +125,14 @@
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:layout_centerVertical="true"
+            android:id="@+id/tv_appointType"
             android:layout_marginLeft="100dp"
             android:textColor="@color/black"
             android:textSize="17dp"
             android:text="自定义"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
         <ImageView
             android:layout_marginRight="20dp"
@@ -162,6 +165,8 @@
             android:layout_height="match_parent"/>
 
         <LinearLayout
+            android:id="@+id/layout_time"
+            android:clickable="false"
             android:orientation="vertical"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
@@ -296,7 +301,7 @@
 
         <com.example.administrator.cheshilishop.widget.AmountView
             android:layout_gravity="center_vertical"
-            android:id="@+id/amount_view2"
+            android:id="@+id/amount_view"
             app:btnTextSize="14sp"
             app:btnWidth="36dp"
             app:tvWidth="50dp"
@@ -316,6 +321,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <Button
+            android:id="@+id/btn_commit"
             android:textColor="@color/white"
             android:text="保存"
             android:textSize="17dp"

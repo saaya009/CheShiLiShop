@@ -274,6 +274,7 @@ public class OrderConfirmationActivity extends BaseActivity {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);
                 try {
+                    Log.d("确认预约",result);
                     JSONObject jsonObject = new JSONObject(result);
                     String status = jsonObject.getString("Status");
                     if ("0".equals(status)) {

@@ -2,27 +2,30 @@ package com.example.administrator.cheshilishop.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.example.administrator.cheshilishop.BaseActivity;
 import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.TopView;
-import com.example.administrator.cheshilishop.adapter.MainSectionedAdapter;
+import com.example.administrator.cheshilishop.adapter.MainSectioned2Adapter;
 import com.example.administrator.cheshilishop.adapter.ProductLeftListAdapter;
 import com.example.administrator.cheshilishop.bean.ProductBean;
 import com.example.administrator.cheshilishop.net.RestClient;
+import com.example.administrator.cheshilishop.utils.Log;
+import com.example.administrator.cheshilishop.utils.LogUtil;
+import com.example.administrator.cheshilishop.utils.ToastUtils;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
 import com.example.administrator.cheshilishop.widget.PinnedHeaderListView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,7 +33,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -38,27 +40,31 @@ import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 /**
- * 服务管理
- * 作者：Ayase on 2017/8/7 14:30
+ * 添加服务
+ * 作者：Ayase on 2017/9/14 14:30
  * 邮箱：ayase@ayase.cn
  */
-public class ProductActivity extends BaseActivity {
+public class AddServiceActivity extends BaseActivity {
 
 
     @BindView(R.id.left_listview)
     ListView leftListview;
     @BindView(R.id.pinnedListView)
     PinnedHeaderListView pinnedListView;
+    @BindView(R.id.btn_seva)
+    Button mBtnSeva;
 
     private boolean isScroll = true;
     private ProductLeftListAdapter adapter;
-    private MainSectionedAdapter sectionedAdapter;
+    private MainSectioned2Adapter sectionedAdapter;
+    private List<List<Boolean>> originalFoundedDevicesState; //有一个保存状态的list
 
     private String[] leftStr;
     private boolean[] flagArray = {true, false, false, false, false, false, false, false, false};
     private List<ProductBean> mList;
     private List<String> list;
     private List<List<ProductBean>> lists;
+    private String productIDs = "";
 
     @Override
     protected void loadViewLayout(Bundle savedInstanceState) {
@@ -73,43 +79,100 @@ public class ProductActivity extends BaseActivity {
 
     @Override
     protected TopView getTopViews() {
-        return new TopView(topbar_iv_back, topbar_tv_title,topbar_iv_right);
+        return new TopView(topbar_iv_back, topbar_tv_title, topbar_iv_right);
     }
 
     @Override
     protected void findViewById() {
-
+        mBtnSeva.setOnClickListener(this);
     }
 
     @Override
     protected void setListener() {
-        pinnedListView = (PinnedHeaderListView) findViewById(R.id.pinnedListView);
+        pinnedListView = findViewById(R.id.pinnedListView);
 
 
     }
 
     @Override
     protected void processLogic() {
-        setTopTitle("服务管理");
-        topbar_iv_right.setVisibility(View.VISIBLE);
-        topbar_iv_right.setText("添加服务");
+        setTopTitle("请选择添加服务");
         getData();
     }
 
     @Override
     protected void onClickEvent(View paramView) {
-        switch (paramView.getId()){
-            case R.id.topbar_iv_right://添加服务
-                Intent intent = new Intent(this,ChangeActivity.class);
-                startActivity(intent);
+        switch (paramView.getId()) {
+            case R.id.btn_seva://保存
+                for (int i = 0; i < CheShiLiShopApplication.status.size(); i++) {
+                    for (int j = 0; j < CheShiLiShopApplication.status.get(i).size(); j++) {
+                       if (CheShiLiShopApplication.status.get(i).get(j)){
+                           productIDs = productIDs+lists.get(i).get(j).ID+",";
+                           Log.d("保存添加",productIDs);
+                       }
+                    }
+                }
+                addService();
                 break;
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
+    /**
+     * 批量添加服务
+     */
+    private void addService(){
+        final RequestParams params = new RequestParams();
+        params.add("WToken",CheShiLiShopApplication.wtoken);
+        params.add("StoreID",CheShiLiShopApplication.storeID);
+        productIDs = productIDs.substring(0,productIDs.length()-1);
+        params.add("ProductIDs",productIDs);
+        RestClient.post(UrlUtils.addServices(), params, this, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    String result = new String(responseBody);
+                    android.util.Log.d("添加服务", result);
+                    JSONObject jsonObject = new JSONObject(result);
+                    String Status = jsonObject.getString("Status");
+                    if ("0".equals(Status)) {
+                        ToastUtils.show(AddServiceActivity.this, "添加服务成功");
+                        finish();
+                    } else if ("-1".equals(Status)) {
+                        Intent intent = new Intent(AddServiceActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        ToastUtils.show(AddServiceActivity.this, jsonObject.getString("Data"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                RequestParams errParams = new RequestParams();
+                try {
+                    errParams.add("LogCont", URLEncoder.encode(new String(responseBody), "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData", params.toString());
+                errParams.add("WToken", CheShiLiShopApplication.wtoken);
+                RestClient.post(UrlUtils.insertErrLog(), errParams, AddServiceActivity.this, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                    }
+                });
+            }
+        });
     }
 
     /**
@@ -119,19 +182,19 @@ public class ProductActivity extends BaseActivity {
         final RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
         params.add("StoreID", CheShiLiShopApplication.storeID);
-        RestClient.post(UrlUtils.queryServiceList(), params, this, new AsyncHttpResponseHandler() {
+        RestClient.post(UrlUtils.queryProductServiceJson(), params, this, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);
                 try {
                     list = new ArrayList<String>();
                     JSONObject jsonObject = new JSONObject(result);
-                    Log.d("服务", result);
+                    LogUtil.d("服务", result);
                     String status = jsonObject.getString("Status");
-                    List<String> rlist = new ArrayList<String>();
+                    final List<String> rlist = new ArrayList<String>();
                     if ("0".equals(status)) {
                         lists = new ArrayList<List<ProductBean>>();
-                        org.json.JSONArray data = jsonObject.getJSONArray("Data");
+                        JSONArray data = jsonObject.getJSONArray("Data");
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject object = data.getJSONObject(i);
                             rlist.add(object.getString("CategoryName"));
@@ -142,7 +205,7 @@ public class ProductActivity extends BaseActivity {
                         for (int i = 0; i < leftStr.length; i++) {
                             JSONObject object2 = data.getJSONObject(i);
                             List<ProductBean> beanList = new ArrayList<ProductBean>();
-                            org.json.JSONArray Children = object2.getJSONArray("Children");
+                            JSONArray Children = object2.getJSONArray("Children");
                             for (int j = 0; j < Children.length(); j++) {
                                 String product = Children.getString(j);
                                 Log.d("服务2", product);
@@ -152,9 +215,21 @@ public class ProductActivity extends BaseActivity {
                             lists.add(beanList);
                         }
 
-                        sectionedAdapter = new MainSectionedAdapter(ProductActivity.this, leftStr, lists);
+                        originalFoundedDevicesState = new ArrayList<List<Boolean>>();
+                        for (int i = 0; i < lists.size(); i++) {
+                            List<Boolean> flag = new ArrayList<Boolean>();
+                            for (int j = 0; j < lists.get(i).size(); j++) {
+                                flag.add(j, false);
+                            }
+                            originalFoundedDevicesState.add(i, flag);
+                        }
+                        sectionedAdapter = new MainSectioned2Adapter(AddServiceActivity.this, leftStr, lists, originalFoundedDevicesState);
                         pinnedListView.setAdapter(sectionedAdapter);
-                        adapter = new ProductLeftListAdapter(ProductActivity.this, leftStr, flagArray);
+                        pinnedListView.setItemsCanFocus(false);
+                        pinnedListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
+
+                        adapter = new ProductLeftListAdapter(AddServiceActivity.this, leftStr, flagArray);
                         leftListview.setAdapter(adapter);
                         leftListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -236,8 +311,8 @@ public class ProductActivity extends BaseActivity {
                             }
 
                         });
-                    }else if ("-1".equals(status)){
-                        Intent intent = new Intent(ProductActivity.this,LoginActivity.class);
+                    } else if ("-1".equals(status)) {
+                        Intent intent = new Intent(AddServiceActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
                     }
@@ -251,14 +326,14 @@ public class ProductActivity extends BaseActivity {
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 RequestParams errParams = new RequestParams();
                 try {
-                    errParams.add("LogCont", URLEncoder.encode(new String(responseBody),"UTF-8"));
+                    errParams.add("LogCont", URLEncoder.encode(new String(responseBody), "UTF-8"));
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
-                errParams.add("PostData",params.toString());
-                errParams.add("WToken",CheShiLiShopApplication.wtoken);
-                RestClient.post(UrlUtils.insertErrLog(), errParams, ProductActivity.this, new AsyncHttpResponseHandler() {
+                errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData", params.toString());
+                errParams.add("WToken", CheShiLiShopApplication.wtoken);
+                RestClient.post(UrlUtils.insertErrLog(), errParams, AddServiceActivity.this, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 

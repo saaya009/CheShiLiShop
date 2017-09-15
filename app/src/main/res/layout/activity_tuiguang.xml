@@ -2,40 +2,448 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/gray"
+              android:background="#E3F3FF"
               android:orientation="vertical">
 
 
     <include layout="@layout/topbar"/>
-    <LinearLayout
-        android:layout_gravity="center"
-        android:background="@color/white"
-        android:layout_marginTop="50dp"
-        android:layout_width="300dp"
-        android:layout_height="380dp">
-        
-        <RelativeLayout
-            android:orientation="horizontal"
-            android:layout_margin="20dp"
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:padding="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/icon_banner"/>
+
+                <ImageView
+                    android:id="@+id/image_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:src="@mipmap/icon_btn"/>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="450dp">
+
+                <TextView
+                    android:layout_margin="20dp"
+                    android:gravity="center_horizontal"
+                    android:textSize="25dp"
+                    android:textColor="@color/coffee"
+                    android:text="— 我的推荐码—"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <RelativeLayout
+                    android:layout_marginRight="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:background="@drawable/bg_ad2_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="380dp">
+                    
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:background="@drawable/bg_ad_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="75dp">
+
+                        <TextView
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:textColor="@color/coffee"
+                            android:text="扫一扫"
+                            android:textSize="25dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"/>
+                        <TextView
+                            android:gravity="center"
+                            android:textColor="@color/coffee"
+                            android:text="↓"
+                            android:textSize="35dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"/>
+
+                        <LinearLayout
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="35dp"
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:textSize="15dp"
+                                android:textColor="@color/coffee"
+                                android:text="面对面扫码或者点击"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+
+                            <TextView
+                                android:textSize="14dp"
+                                android:textColor="@color/material_blue"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                            </TextView>
+
+                            <TextView
+                                android:textSize="15dp"
+                                android:textColor="@color/coffee"
+                                android:text="即可推广给用户"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/image_code"
+                        android:layout_marginTop="100dp"
+                        android:layout_centerHorizontal="true"
+                        android:src="@mipmap/icon_logo"
+                        android:layout_width="250dp"
+                        android:layout_height="250dp"/>
+                    
+                </RelativeLayout>
+
+            </LinearLayout>
+            
+            <LinearLayout
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="560dp">
+
+
+                <TextView
+                    android:layout_margin="20dp"
+                    android:gravity="center_horizontal"
+                    android:textSize="25dp"
+                    android:textColor="@color/coffee"
+                    android:text="— 商户福利 —"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+
+                <LinearLayout
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/bg_ad_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp">
+
+                    <TextView
+                        android:layout_marginLeft="20dp"
+                        android:gravity="center"
+                        android:textColor="@color/coffee"
+                        android:text="①"
+                        android:textSize="18dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+                    <TextView
+                        android:gravity="center"
+                        android:textColor="@color/coffee"
+                        android:text="2元"
+                        android:textSize="25dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+                    <TextView
+                        android:gravity="center"
+                        android:textColor="@color/coffee"
+                        android:text="返现"
+                        android:textSize="18dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+
+                    <LinearLayout
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="45dp"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:textSize="15dp"
+                            android:textColor="@color/coffee"
+                            android:text="邀请用户注册车势力账"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:textSize="15dp"
+                            android:textColor="@color/coffee"
+                            android:text="号并进行有效消费，即"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:textSize="15dp"
+                            android:textColor="@color/coffee"
+                            android:text="可获得2元返现"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/bg_ad2_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="380dp">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:background="@drawable/bg_ad_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="75dp">
+
+                        <TextView
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:textColor="@color/coffee"
+                            android:text="②"
+                            android:textSize="18dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"/>
+                        <TextView
+                            android:gravity="center"
+                            android:textColor="@color/coffee"
+                            android:text="1元"
+                            android:textSize="25dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"/>
+                        <TextView
+                            android:gravity="center"
+                            android:textColor="@color/coffee"
+                            android:text="返现"
+                            android:textSize="18dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"/>
+
+                        <LinearLayout
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="45dp"
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:textSize="15dp"
+                                android:textColor="@color/coffee"
+                                android:text="用户再邀请一名好友注"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+
+                            <TextView
+                                android:textSize="15dp"
+                                android:textColor="@color/coffee"
+                                android:text="册车势力并消费，您可"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+                            <TextView
+                                android:textSize="15dp"
+                                android:textColor="@color/coffee"
+                                android:text="以再获得一元返现"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:padding="15dp"
+                        android:layout_marginTop="80dp"
+                        android:layout_centerHorizontal="true"
+                        android:src="@mipmap/icon_pic"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="250dp">
+
+                <TextView
+                    android:layout_margin="20dp"
+                    android:gravity="center_horizontal"
+                    android:textSize="25dp"
+                    android:textColor="@color/coffee"
+                    android:text="— 用户福利 —"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/bg_ad_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp">
+
+                    <TextView
+                        android:layout_marginLeft="20dp"
+                        android:gravity="center"
+                        android:textColor="@color/coffee"
+                        android:text="①"
+                        android:textSize="18dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+                    <TextView
+                        android:gravity="center"
+                        android:textColor="@color/coffee"
+                        android:text="1元"
+                        android:textSize="25dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+                    <TextView
+                        android:gravity="center"
+                        android:textColor="@color/coffee"
+                        android:text="玻璃水"
+                        android:textSize="18dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+
+                    <LinearLayout
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="30dp"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:textSize="15dp"
+                            android:textColor="@color/coffee"
+                            android:text="新用户注册车势力即可"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:textSize="15dp"
+                            android:textColor="@color/coffee"
+                            android:text="获得超值1元玻璃水"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:textSize="13dp"
+                            android:textColor="@color/material_blue"
+                            android:text="点击购买一元玻璃水"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/bg_ad_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp">
+
+                    <TextView
+                        android:layout_marginLeft="20dp"
+                        android:gravity="center"
+                        android:textColor="@color/coffee"
+                        android:text="②"
+                        android:textSize="18dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+                    <TextView
+                        android:gravity="center"
+                        android:textColor="@color/coffee"
+                        android:text="1元"
+                        android:textSize="25dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+                    <TextView
+                        android:gravity="center"
+                        android:textColor="@color/coffee"
+                        android:text="势力币"
+                        android:textSize="18dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+
+                    <LinearLayout
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="30dp"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:textSize="15dp"
+                            android:textColor="@color/coffee"
+                            android:text="新用户注册送1元势力"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:textSize="15dp"
+                            android:textColor="@color/coffee"
+                            android:text="币，精选商品任性购"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:textSize="13dp"
+                            android:textColor="@color/material_blue"
+                            android:text="去车势力首页逛逛"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
             <ImageView
-                android:id="@+id/img_logo"
-                android:src="@mipmap/icon_logo"
-                android:layout_width="60dp"
-                android:layout_height="60dp"/>
-
-            <TextView
-                android:textSize="17dp"
+                android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@id/img_logo"
-                android:layout_centerVertical="true"
-                android:textColor="@color/black"
-                android:text="卡诺加一站式汽车养护"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:id="@+id/image_btn2"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:src="@mipmap/icon_btn"/>
 
-        </RelativeLayout>
-        
-    </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
