@@ -359,7 +359,7 @@
         android:background="@color/white">
 
         <Button
-            android:id="@+id/btn_list"
+            android:id="@+id/btn_home"
             android:layout_width="120dp"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
@@ -371,12 +371,12 @@
             android:textSize="16dp"/>
 
         <Button
-            android:id="@+id/btn_home"
+            android:id="@+id/btn_list"
             android:layout_width="120dp"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@+id/btn_list"
+            android:layout_toLeftOf="@+id/btn_home"
             android:background="@drawable/bg_button_style3"
             android:text="查看预约列表"
             android:textColor="@color/black"

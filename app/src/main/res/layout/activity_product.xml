@@ -37,6 +37,7 @@
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/layout_next"
         android:background="@color/gray"
         android:layout_width="match_parent"

@@ -28,7 +28,7 @@ import com.example.administrator.cheshilishop.utils.UrlUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.orhanobut.hawk.Hawk;
-import com.yzq.zxinglibrary.android.CaptureActivity;
+import com.uuzuche.lib_zxing.activity.CaptureActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         // 检测软件更新方法
         UpgradeHelper.checkAppVersion(MainActivity.this, true);
+        Hawk.init(MainActivity.this).build();
         initView();
-
     }
 
     /**
@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
                     } else if ("-1".equals(Status)) {
                         CheShiLiShopApplication.wtoken = "";
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        Hawk.delete("wtoken");
                         startActivity(intent);
                         finish();
                     } else {
@@ -122,13 +123,13 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 RequestParams errParams = new RequestParams();
                 try {
-                    errParams.add("LogCont", URLEncoder.encode(new String(responseBody),"UTF-8"));
+                    errParams.add("LogCont", URLEncoder.encode(new String(responseBody), "UTF-8"));
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
-                errParams.add("PostData",params.toString());
-                errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                errParams.add("Url", UrlUtils.queryDefaultStore());
+                errParams.add("PostData", params.toString());
+                errParams.add("WToken", CheShiLiShopApplication.wtoken);
                 RestClient.post(UrlUtils.insertErrLog(), errParams, MainActivity.this, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -175,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
             switch (view.getId()) {
                 case R.id.layout_scan://扫一扫
                     intent = new Intent(MainActivity.this,
-                            CaptureActivity.class);
+                            RichscanActivity.class);
                     startActivityForResult(intent, REQUEST_CODE_SCAN);
                     break;
                 case R.id.layout_booking://预约管理
@@ -221,13 +222,15 @@ public class MainActivity extends AppCompatActivity {
                         }
                     };
                     dialog2.show();
-                    dialog2.setContent("0531-8552333");
+                    dialog2.setContent("0531-85523333");
                     dialog2.setTitle("客服电话");
                     dialog2.setCancel("取消");
                     dialog2.setConfirm("拨打");
 
                     break;
                 case R.id.topbar_iv_right://推广
+                    intent = new Intent(MainActivity.this,TuiGuangActivity.class);
+                    startActivity(intent);
                     break;
             }
         }
@@ -248,16 +251,16 @@ public class MainActivity extends AppCompatActivity {
                 String AppointID = content.substring(index1 + 10);
                 String ConfirmCode = content.substring(index3 + 12, index4);
                 String ServiceID = content.substring(index2 + 10, index1 - 1);
-                if (!TextUtils.isEmpty(AppointID)){
-                    getAppointData(AppointID,ConfirmCode,ServiceID);
-                }else {
-                    Intent intent = new Intent(MainActivity.this, OrderConfirmationActivity.class);
-                    intent.putExtra("AppointID", AppointID);
-                    intent.putExtra("ConfirmCode", ConfirmCode);
-                    intent.putExtra("ServiceID", ServiceID);
-                    intent.putExtra("type", 1);
-                    startActivity(intent);
-                }
+//                if ("0".equals(AppointID)){
+//                    getAppointData(AppointID,ConfirmCode,ServiceID);
+//                }else {
+                Intent intent = new Intent(MainActivity.this, OrderConfirmationActivity.class);
+                intent.putExtra("AppointID", AppointID);
+                intent.putExtra("ConfirmCode", ConfirmCode);
+                intent.putExtra("ServiceID", ServiceID);
+                intent.putExtra("type", 1);
+                startActivity(intent);
+//                }
 
 
             }
@@ -294,9 +297,9 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     } else if ("98".equals(Status)) {
-                        ToastUtils.show(MainActivity.this,"这不是你预约的店铺！");
+                        ToastUtils.show(MainActivity.this, "这不是你预约的店铺！");
                     } else {
-                        ToastUtils.show(MainActivity.this,"这不是你预约的店铺！");
+                        ToastUtils.show(MainActivity.this, "这不是你预约的店铺！");
                     }
 
                 } catch (JSONException e) {
@@ -307,10 +310,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 RequestParams errParams = new RequestParams();
-                errParams.add("LogCont",new String(responseBody));
-                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
-                errParams.add("PostData",params.toString());
-                errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                errParams.add("LogCont", new String(responseBody));
+                errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData", params.toString());
+                errParams.add("WToken", CheShiLiShopApplication.wtoken);
                 RestClient.post(UrlUtils.insertErrLog(), errParams, MainActivity.this, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -324,7 +327,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
     @Override

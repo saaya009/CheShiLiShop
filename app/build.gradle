@@ -36,7 +36,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:26.+'
-    compile 'com.github.yuzhiqiang1993:zxing:1.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     compile 'io.reactivex:rxjava:1.0.14'
@@ -46,14 +45,6 @@ dependencies {
     compile 'com.jakewharton:disklrucache:2.0.2'
     compile 'com.yanzhenjie:permission:1.0.3'
     compile 'com.google.code.gson:gson:2.8.1'
-    compile files('libs/MobCommons-2017.0608.1618.jar')
-    compile files('libs/MobTools-2017.0608.1618.jar')
-    compile files('libs/ShareSDK-Core-3.0.0.jar')
-    compile files('libs/ShareSDK-QQ-3.0.0.jar')
-    compile files('libs/ShareSDK-QZone-3.0.0.jar')
-    compile files('libs/ShareSDK-Wechat-3.0.0.jar')
-    compile files('libs/ShareSDK-Wechat-Core-3.0.0.jar')
-    compile files('libs/ShareSDK-Wechat-Moments-3.0.0.jar')
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile 'com.bm.photoview:library:1.4.1'
     compile files('libs/alipaySdk-20170710.jar')
@@ -65,4 +56,13 @@ dependencies {
     compile 'com.orhanobut:hawk:2.0.1'
     compile 'com.makeramen:roundedimageview:2.2.1'
     compile project(path: ':citypickerview')
+    compile 'cn.yipianfengye.android:zxing-library:2.2'
+    compile files('libs/ShareSDK-Wechat-Favorite-3.1.0.jar')
+    compile files('libs/MobCommons-2017.0914.1125.jar')
+    compile files('libs/MobTools-2017.0914.1125.jar')
+    compile files('libs/ShareSDK-Core-3.1.0.jar')
+    compile files('libs/ShareSDK-Wechat-3.1.0.jar')
+    compile files('libs/ShareSDK-Wechat-Core-3.1.0.jar')
+    compile files('libs/ShareSDK-Wechat-Favorite-3.1.0.jar')
+    compile files('libs/ShareSDK-Wechat-Moments-3.1.0.jar')
 }

@@ -94,7 +94,7 @@ public class ChangeActivity extends BaseActivity {
 
     @Override
     protected TopView getTopViews() {
-        return new TopView(topbar_iv_back, topbar_tv_title);
+        return new TopView(topbar_iv_back, topbar_tv_title,topbar_iv_right);
     }
 
     @Override
@@ -122,6 +122,7 @@ public class ChangeActivity extends BaseActivity {
         mTvEnable.setOnClickListener(this);
         mTvAppointType.setOnClickListener(this);
         mBtnCommit.setOnClickListener(this);
+        topbar_iv_right.setOnClickListener(this);
     }
 
     @Override
@@ -129,6 +130,8 @@ public class ChangeActivity extends BaseActivity {
         setTopTitle("编辑服务");
         id = getIntent().getExtras().getString("ID");
         productID = getIntent().getExtras().getString("productID");
+        topbar_iv_right.setVisibility(View.VISIBLE);
+        topbar_iv_right.setText("删除");
     }
 
     @Override
@@ -329,7 +332,66 @@ public class ChangeActivity extends BaseActivity {
             case R.id.btn_commit://
                 commit();
                 break;
+            case R.id.topbar_iv_right://
+                delete();
+                break;
         }
+    }
+
+    /**
+     * 删除
+     */
+    private void delete() {
+        final RequestParams params = new RequestParams();
+        params.add("WToken", CheShiLiShopApplication.wtoken);
+        params.add("ID", id);
+        RestClient.post(UrlUtils.delCategory(), params, this, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    String result = new String(responseBody);
+                    JSONObject jsonObject = new JSONObject(result);
+                    String Status = jsonObject.getString("Status");
+                    if ("0".equals(Status)) {
+                        ToastUtils.show(ChangeActivity.this, "删除成功");
+                        finish();
+                    } else if ("-1".equals(Status)) {
+                        Intent intent = new Intent(ChangeActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        ToastUtils.show(ChangeActivity.this, jsonObject.getString("Data"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                RequestParams errParams = new RequestParams();
+                try {
+                    errParams.add("LogCont", URLEncoder.encode(new String(responseBody), "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                errParams.add("Url", UrlUtils.delCategory());
+                errParams.add("PostData", params.toString());
+                errParams.add("WToken", CheShiLiShopApplication.wtoken);
+                RestClient.post(UrlUtils.insertErrLog(), errParams, ChangeActivity.this, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                    }
+                });
+            }
+        });
     }
 
     /**
@@ -403,7 +465,7 @@ public class ChangeActivity extends BaseActivity {
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                errParams.add("Url", UrlUtils.updateService());
                 errParams.add("PostData", params.toString());
                 errParams.add("WToken", CheShiLiShopApplication.wtoken);
                 RestClient.post(UrlUtils.insertErrLog(), errParams, ChangeActivity.this, new AsyncHttpResponseHandler() {

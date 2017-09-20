@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.alibaba.fastjson.JSON;
@@ -24,6 +25,7 @@ import com.example.administrator.cheshilishop.widget.PinnedHeaderListView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,6 +51,8 @@ public class ServiceActivity extends BaseActivity {
     ListView leftListview;
     @BindView(R.id.pinnedListView)
     PinnedHeaderListView pinnedListView;
+    @BindView(R.id.layout_next)
+    LinearLayout mLayoutNext;
 
     private boolean isScroll = true;
     private ProductLeftListAdapter adapter;
@@ -73,7 +77,7 @@ public class ServiceActivity extends BaseActivity {
 
     @Override
     protected TopView getTopViews() {
-        return new TopView(topbar_iv_back, topbar_tv_title,topbar_iv_right);
+        return new TopView(topbar_iv_back, topbar_tv_title, topbar_iv_right);
     }
 
     @Override
@@ -83,13 +87,14 @@ public class ServiceActivity extends BaseActivity {
 
     @Override
     protected void setListener() {
-        pinnedListView =  findViewById(R.id.pinnedListView);
+        pinnedListView = findViewById(R.id.pinnedListView);
 
 
     }
 
     @Override
     protected void processLogic() {
+        mLayoutNext.setVisibility(View.GONE);
         setTopTitle("服务管理");
         topbar_iv_right.setVisibility(View.VISIBLE);
         topbar_iv_right.setText("添加服务");
@@ -101,9 +106,9 @@ public class ServiceActivity extends BaseActivity {
 
     @Override
     protected void onClickEvent(View paramView) {
-        switch (paramView.getId()){
+        switch (paramView.getId()) {
             case R.id.topbar_iv_right://添加服务
-                Intent intent = new Intent(this,AddServiceActivity.class);
+                Intent intent = new Intent(this, AddServiceActivity.class);
                 startActivity(intent);
                 break;
         }
@@ -134,7 +139,7 @@ public class ServiceActivity extends BaseActivity {
                     List<String> rlist = new ArrayList<String>();
                     if ("0".equals(status)) {
                         lists = new ArrayList<List<ProductBean>>();
-                        org.json.JSONArray data = jsonObject.getJSONArray("Data");
+                        JSONArray data = jsonObject.getJSONArray("Data");
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject object = data.getJSONObject(i);
                             rlist.add(object.getString("CategoryName"));
@@ -145,7 +150,7 @@ public class ServiceActivity extends BaseActivity {
                         for (int i = 0; i < leftStr.length; i++) {
                             JSONObject object2 = data.getJSONObject(i);
                             List<ProductBean> beanList = new ArrayList<ProductBean>();
-                            org.json.JSONArray Children = object2.getJSONArray("Children");
+                            JSONArray Children = object2.getJSONArray("Children");
                             for (int j = 0; j < Children.length(); j++) {
                                 String product = Children.getString(j);
                                 Log.d("服务2", product);
@@ -239,8 +244,8 @@ public class ServiceActivity extends BaseActivity {
                             }
 
                         });
-                    }else if ("-1".equals(status)){
-                        Intent intent = new Intent(ServiceActivity.this,LoginActivity.class);
+                    } else if ("-1".equals(status)) {
+                        Intent intent = new Intent(ServiceActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
                     }
@@ -254,13 +259,13 @@ public class ServiceActivity extends BaseActivity {
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 RequestParams errParams = new RequestParams();
                 try {
-                    errParams.add("LogCont", URLEncoder.encode(new String(responseBody),"UTF-8"));
+                    errParams.add("LogCont", URLEncoder.encode(new String(responseBody), "UTF-8"));
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
-                errParams.add("PostData",params.toString());
-                errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData", params.toString());
+                errParams.add("WToken", CheShiLiShopApplication.wtoken);
                 RestClient.post(UrlUtils.insertErrLog(), errParams, ServiceActivity.this, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {

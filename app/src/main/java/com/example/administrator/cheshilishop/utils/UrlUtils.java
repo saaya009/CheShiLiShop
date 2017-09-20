@@ -275,4 +275,14 @@ public class UrlUtils {
         url = uribBuilder.build().toString();
         return url;
     }
+
+    /**
+     * 删除商品
+     */
+    public static String delCategory() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/Prod/DelCategory").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
 }

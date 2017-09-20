@@ -130,6 +130,7 @@ public class OrderConfirmationActivity extends BaseActivity {
                 if ("0".equals(appointID)){
                     getServiceData();
                     mTvType.setText("未预约");
+                    mBtnCancel.setVisibility(View.GONE);
                 }else {
                     mTvType.setText("已预约");
                     getAppointData();
@@ -213,7 +214,7 @@ public class OrderConfirmationActivity extends BaseActivity {
                         startActivity(intent);
                         finish();
                     } else {
-                        ToastUtils.show(OrderConfirmationActivity.this, jsonObject.getString("Data"));
+                        ToastUtils.show(OrderConfirmationActivity.this,"取消失败");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -227,7 +228,7 @@ public class OrderConfirmationActivity extends BaseActivity {
                 String str = formatter.format(curDate);
                 RequestParams errParams = new RequestParams();
                 errParams.add("LogCont", new String(responseBody));
-                errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                errParams.add("Url", UrlUtils.cancelAppoint());
                 errParams.add("PostData", params.toString());
                 errParams.add("WToken", CheShiLiShopApplication.wtoken);
                 RestClient.post(UrlUtils.insertErrLog(), errParams, OrderConfirmationActivity.this, new AsyncHttpResponseHandler() {
@@ -238,22 +239,7 @@ public class OrderConfirmationActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        RequestParams errParams = new RequestParams();
-                        errParams.add("LogCont", new String(responseBody));
-                        errParams.add("Url", UrlUtils.queryServiceAppointDetail());
-                        errParams.add("PostData", params.toString());
-                        errParams.add("WToken", CheShiLiShopApplication.wtoken);
-                        RestClient.post(UrlUtils.insertErrLog(), errParams, OrderConfirmationActivity.this, new AsyncHttpResponseHandler() {
-                            @Override
-                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
-                            }
-
-                            @Override
-                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-                            }
-                        });
                     }
                 });
             }

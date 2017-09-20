@@ -32,7 +32,6 @@ import com.orhanobut.hawk.Hawk;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionNo;
 import com.yanzhenjie.permission.PermissionYes;
-import com.yzq.zxinglibrary.android.CaptureActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;

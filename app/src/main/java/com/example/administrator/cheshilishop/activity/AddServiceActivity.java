@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.alibaba.fastjson.JSON;
@@ -53,6 +54,8 @@ public class AddServiceActivity extends BaseActivity {
     PinnedHeaderListView pinnedListView;
     @BindView(R.id.btn_seva)
     Button mBtnSeva;
+    @BindView(R.id.layout_next)
+    LinearLayout mLayoutNext;
 
     private boolean isScroll = true;
     private ProductLeftListAdapter adapter;
@@ -90,13 +93,12 @@ public class AddServiceActivity extends BaseActivity {
     @Override
     protected void setListener() {
         pinnedListView = findViewById(R.id.pinnedListView);
-
-
     }
 
     @Override
     protected void processLogic() {
         setTopTitle("请选择添加服务");
+        mLayoutNext.setVisibility(View.VISIBLE);
         getData();
     }
 
@@ -106,10 +108,10 @@ public class AddServiceActivity extends BaseActivity {
             case R.id.btn_seva://保存
                 for (int i = 0; i < CheShiLiShopApplication.status.size(); i++) {
                     for (int j = 0; j < CheShiLiShopApplication.status.get(i).size(); j++) {
-                       if (CheShiLiShopApplication.status.get(i).get(j)){
-                           productIDs = productIDs+lists.get(i).get(j).ID+",";
-                           Log.d("保存添加",productIDs);
-                       }
+                        if (CheShiLiShopApplication.status.get(i).get(j)) {
+                            productIDs = productIDs + lists.get(i).get(j).ID + ",";
+                            Log.d("保存添加", productIDs);
+                        }
                     }
                 }
                 addService();
@@ -120,12 +122,12 @@ public class AddServiceActivity extends BaseActivity {
     /**
      * 批量添加服务
      */
-    private void addService(){
+    private void addService() {
         final RequestParams params = new RequestParams();
-        params.add("WToken",CheShiLiShopApplication.wtoken);
-        params.add("StoreID",CheShiLiShopApplication.storeID);
-        productIDs = productIDs.substring(0,productIDs.length()-1);
-        params.add("ProductIDs",productIDs);
+        params.add("WToken", CheShiLiShopApplication.wtoken);
+        params.add("StoreID", CheShiLiShopApplication.storeID);
+        productIDs = productIDs.substring(0, productIDs.length() - 1);
+        params.add("ProductIDs", productIDs);
         RestClient.post(UrlUtils.addServices(), params, this, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -362,4 +364,5 @@ public class AddServiceActivity extends BaseActivity {
         list.addAll(hashSet);
         return list;
     }
+
 }

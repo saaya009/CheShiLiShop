@@ -59,7 +59,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -136,9 +138,15 @@ public class WriteActivity extends BaseActivity {
     @BindView(R.id.img_close2)
     ImageView mImgClose2;
     @BindView(R.id.et_yingyetime)
-    EditText mEtYingyetime;
+    TextView mEtYingyetime;
     @BindView(R.id.et_yingyemianji)
     EditText mEtYingyemianji;
+    @BindView(R.id.et_bankname)
+    EditText mEtBankname;
+    @BindView(R.id.et_banknum)
+    EditText mEtBanknum;
+    @BindView(R.id.et_bank)
+    EditText mEtBank;
 
     //营业期限
     private String expired;
@@ -206,6 +214,7 @@ public class WriteActivity extends BaseActivity {
         mLayoutImg2.setOnClickListener(this);
         mImgClose1.setOnClickListener(this);
         mImgClose2.setOnClickListener(this);
+        mEtYingyetime.setOnClickListener(this);
     }
 
     @Override
@@ -368,6 +377,8 @@ public class WriteActivity extends BaseActivity {
                 mImgClose1.setVisibility(View.GONE);
                 mLayoutImg1.setEnabled(true);
                 break;
+            case R.id.et_yingyetime://选择营业时间
+                break;
         }
     }
 
@@ -397,6 +408,22 @@ public class WriteActivity extends BaseActivity {
             ToastUtils.show(this, "手机号码不正确");
             return;
         }
+        String bankName = mEtBankname.getText().toString().trim();
+        String bankNo = mEtBanknum.getText().toString().trim();
+        String bankCompany = mEtBank.getText().toString().trim();
+
+        if (bankName.length() == 0) {
+            ToastUtils.show(this, "银行开户名不能为空");
+            return;
+        }
+        if (bankNo.length() == 0) {
+            ToastUtils.show(this, "银行账号不能为空");
+            return;
+        }
+        if (bankCompany.length() == 0) {
+            ToastUtils.show(this, "开户银行不能为空");
+            return;
+        }
         if (path.length() == 0) {
             ToastUtils.show(this, "请上传店铺图片");
             return;
@@ -405,6 +432,7 @@ public class WriteActivity extends BaseActivity {
             ToastUtils.show(this, "请上传店铺图片");
             return;
         }
+
         params.add("Phone", phone);
         params.add("Tel", mEtTel.getText().toString().trim());
         params.add("Expired", expired);
@@ -415,10 +443,21 @@ public class WriteActivity extends BaseActivity {
         params.add("ProvinceID", ProvinceID);
         params.add("CityID", CityID);
         params.add("CountyID", CountyID);
+        params.add("BankName", bankName);
+        params.add("BankNo", bankNo);
+        params.add("BankCompany", bankCompany);
         params.add("Address", mEtAdress.getText().toString().trim());
         params.add("Longitude", mEtLongitude.getText().toString().trim());
         params.add("Latitude", mEtLatitude.getText().toString().trim());
-        params.add("Descri", mEtDescri.getText().toString().trim());
+        if (mEtDescri.getText().toString().trim().length() > 0) {
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("text1", mEtDescri.getText().toString().trim());
+            String jsonString = JSON.toJSONString(map);
+            params.add("Descri", jsonString);
+        } else {
+            params.add("Descri", mEtDescri.getText().toString().trim());
+        }
+
         params.add("OpenTime", mEtYingyetime.getText().toString().trim());
         params.add("OpenArea", mEtYingyemianji.getText().toString().trim());
         RestClient.post(UrlUtils.addStore(), params, this, new AsyncHttpResponseHandler() {
@@ -693,4 +732,10 @@ public class WriteActivity extends BaseActivity {
         return format.format(date);
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

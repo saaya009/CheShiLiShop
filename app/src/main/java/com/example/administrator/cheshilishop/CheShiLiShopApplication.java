@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by Ayase
  */
-public class CheShiLiShopApplication extends Application {
+public class CheShiLiShopApplication extends MobApplication {
     private List<Activity> activityList = new LinkedList<Activity>();
     private static CheShiLiShopApplication instance;
     public static String wtoken = "";

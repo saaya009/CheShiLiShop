@@ -393,6 +393,139 @@
                         android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
+                        android:text="银行开户名"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"/>
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/tv_mobile"
+                        android:text="*"
+                        android:textColor="@color/material_red"
+                        android:textSize="15dp"/>
+
+                    <EditText
+                        android:id="@+id/et_bankname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/tv_shopname"
+                        android:background="@null"
+                        android:hint="请输入开户姓名"
+                        android:textSize="15dp"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@color/gray"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="20dp"
+                        android:text="银行账号"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"/>
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/tv_mobile"
+                        android:text="*"
+                        android:textColor="@color/material_red"
+                        android:textSize="15dp"/>
+
+                    <EditText
+                        android:id="@+id/et_banknum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toRightOf="@id/tv_shopname"
+                        android:background="@null"
+                        android:hint="请输入银行账号"
+                        android:inputType="number"
+                        android:textSize="15dp"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@color/gray"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="20dp"
+                        android:text="开户银行"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"/>
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/tv_mobile"
+                        android:text="*"
+                        android:textColor="@color/material_red"
+                        android:textSize="15dp"/>
+
+                    <EditText
+                        android:id="@+id/et_bank"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toRightOf="@id/tv_shopname"
+                        android:background="@null"
+                        android:hint="请输入开户银行"
+                        android:textSize="15dp"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@color/gray"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="20dp"
                         android:text="电话号码"
                         android:textColor="@color/black"
                         android:textSize="15dp"/>
@@ -418,6 +551,7 @@
                     android:layout_height="1dp"
                     android:layout_marginLeft="20dp"
                     android:background="@color/gray"/>
+
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -827,7 +961,7 @@
                         android:textColor="@color/black"
                         android:textSize="15dp"/>
 
-                    <EditText
+                    <TextView
                         android:id="@+id/et_yingyetime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -836,7 +970,7 @@
                         android:layout_marginLeft="20dp"
                         android:layout_toRightOf="@id/tv_shopname"
                         android:background="@null"
-                        android:hint="示例：8:30-18:30"
+                        android:hint="选择时间"
                         android:textSize="15dp"/>
 
 
@@ -967,7 +1101,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_centerHorizontal="true"
                                     android:layout_marginTop="70dp"
-                                    android:text="上传店铺图片（必填）"
+                                    android:text="上传营业执照 （必填）"
                                     android:textSize="15dp"/>
 
                                 <ImageView
