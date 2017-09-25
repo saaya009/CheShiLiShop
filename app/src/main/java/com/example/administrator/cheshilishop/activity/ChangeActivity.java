@@ -3,6 +3,7 @@ package com.example.administrator.cheshilishop.activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -69,14 +70,16 @@ public class ChangeActivity extends BaseActivity {
     Button mBtnCommit;
     @BindView(R.id.layout_time)
     LinearLayout mLayoutTime;
+    @BindView(R.id.layout)
+    LinearLayout mLayout;
 
     private AmountView mAmountView;
     private Amount2View mAmountView2;
 
     private String gapPrice;
     private String LimitNum;
-    private String enable = "0";
-    private String appointtype = "6";
+    private String enable = "1";
+    private String appointtype = "0";
     private String id;
     private String productID;
     private String AppointCont = "";
@@ -94,7 +97,7 @@ public class ChangeActivity extends BaseActivity {
 
     @Override
     protected TopView getTopViews() {
-        return new TopView(topbar_iv_back, topbar_tv_title,topbar_iv_right);
+        return new TopView(topbar_iv_back, topbar_tv_title, topbar_iv_right);
     }
 
     @Override
@@ -149,7 +152,7 @@ public class ChangeActivity extends BaseActivity {
                     public void onClick(View view) {
                         bottomDialog.dismiss();
                         mTvEnable.setText("启用");
-                        enable = 0 + "";
+                        enable = 1 + "";
                     }
                 });
                 contentView.findViewById(R.id.layout2).setOnClickListener(new View.OnClickListener() {
@@ -157,7 +160,7 @@ public class ChangeActivity extends BaseActivity {
                     public void onClick(View view) {
                         bottomDialog.dismiss();
                         mTvEnable.setText("禁用");
-                        enable = 1 + "";
+                        enable = 0 + "";
                     }
                 });
                 bottomDialog.getWindow().setGravity(Gravity.BOTTOM);
@@ -178,6 +181,7 @@ public class ChangeActivity extends BaseActivity {
                         bottomDialog2.dismiss();
                         appointtype = 0 + "";
                         mTvAppointType.setText("不使用");
+                        mLayout.setVisibility(View.GONE);
                         mCb1.setClickable(false);
                         mCb2.setClickable(false);
                         mCb3.setClickable(false);
@@ -201,6 +205,7 @@ public class ChangeActivity extends BaseActivity {
                         appointtype = 1 + "";
                         mLayoutTime.setOnClickListener(null);
                         mTvAppointType.setText("一次预约");
+                        mLayout.setVisibility(View.GONE);
                         mCb1.setClickable(false);
                         mCb2.setClickable(false);
                         mCb3.setClickable(false);
@@ -224,6 +229,7 @@ public class ChangeActivity extends BaseActivity {
                         appointtype = 2 + "";
                         mLayoutTime.setOnClickListener(null);
                         mTvAppointType.setText("每天");
+                        mLayout.setVisibility(View.GONE);
                         mCb1.setClickable(false);
                         mCb2.setClickable(false);
                         mCb3.setClickable(false);
@@ -247,6 +253,7 @@ public class ChangeActivity extends BaseActivity {
                         appointtype = 3 + "";
                         mLayoutTime.setOnClickListener(null);
                         mTvAppointType.setText("法定工作日");
+                        mLayout.setVisibility(View.GONE);
                         mCb1.setClickable(false);
                         mCb2.setClickable(false);
                         mCb3.setClickable(false);
@@ -270,6 +277,7 @@ public class ChangeActivity extends BaseActivity {
                         appointtype = 4 + "";
                         mLayoutTime.setOnClickListener(null);
                         mTvAppointType.setText("法定节假日");
+                        mLayout.setVisibility(View.GONE);
                         mCb1.setClickable(false);
                         mCb2.setClickable(false);
                         mCb3.setClickable(false);
@@ -293,6 +301,7 @@ public class ChangeActivity extends BaseActivity {
                         appointtype = 5 + "";
                         mLayoutTime.setOnClickListener(null);
                         mTvAppointType.setText("周五至周日");
+                        mLayout.setVisibility(View.GONE);
                         mCb1.setClickable(false);
                         mCb2.setClickable(false);
                         mCb3.setClickable(false);
@@ -315,6 +324,7 @@ public class ChangeActivity extends BaseActivity {
                         bottomDialog2.dismiss();
                         appointtype = 6 + "";
                         mTvAppointType.setText("自定义");
+                        mLayout.setVisibility(View.VISIBLE);
                         mCb1.setClickable(true);
                         mCb2.setClickable(true);
                         mCb3.setClickable(true);
@@ -344,7 +354,7 @@ public class ChangeActivity extends BaseActivity {
     private void delete() {
         final RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
-        params.add("ID", id);
+        params.add("ID", productID);
         RestClient.post(UrlUtils.delCategory(), params, this, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -429,10 +439,14 @@ public class ChangeActivity extends BaseActivity {
         if (mCb7.isChecked()) {
             AppointCont = AppointCont + "7,";
         }
-        if ("6".equals(appointtype)){
+
+        if ("6".equals(appointtype) && !TextUtils.isEmpty(AppointCont)) {
             AppointCont = AppointCont.substring(AppointCont.length() - 1, AppointCont.length());
             Log.d("星期", AppointCont);
             params.add("AppointCont", AppointCont);
+        } else if ("6".equals(appointtype) && TextUtils.isEmpty(AppointCont)) {
+            ToastUtils.show(ChangeActivity.this, "请选择可预约时间！");
+            return;
         }
         RestClient.post(UrlUtils.updateService(), params, this, new AsyncHttpResponseHandler() {
             @Override
@@ -444,10 +458,10 @@ public class ChangeActivity extends BaseActivity {
                     String Status = jsonObject.getString("Status");
                     if ("0".equals(Status)) {
                         ToastUtils.show(ChangeActivity.this, "修改成功");
+                        finish();
                     } else if ("-1".equals(Status)) {
                         Intent intent = new Intent(ChangeActivity.this, LoginActivity.class);
                         startActivity(intent);
-                        finish();
                     } else {
                         ToastUtils.show(ChangeActivity.this, jsonObject.getString("Data"));
                     }
@@ -503,4 +517,10 @@ public class ChangeActivity extends BaseActivity {
         return true;
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

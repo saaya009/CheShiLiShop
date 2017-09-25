@@ -63,31 +63,39 @@ public class SetStoreAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-//		if ("0".equals(list.get(position).Approved)){
-//			holder.img_shenhe.setVisibility(View.VISIBLE);
-//			holder.img_right.setVisibility(View.GONE);
-//			holder.img_shenhe.setImageResource(R.mipmap.icon_close);
-//			holder.tv_shenhe.setText("审核未通过");
-//			Resources resource = context.getResources();
-//			ColorStateList csl = resource.getColorStateList(R.color.colortext);
-//			holder.tv_shenhe.setTextColor(csl);
-//			holder.layout_store.setEnabled(false);
-//		}else {
         if ("0".equals(list.get(position).Enable)) {
-            holder.img_shenhe.setVisibility(View.VISIBLE);
-            holder.img_right.setVisibility(View.GONE);
-            holder.img_shenhe.setImageResource(R.mipmap.icon_time2);
-            holder.tv_shenhe.setText("审核中");
-            holder.tv_shenhe.setVisibility(View.VISIBLE);
-            Resources resource = context.getResources();
-            ColorStateList csl = resource.getColorStateList(R.color.textOrange);
-            holder.tv_shenhe.setTextColor(csl);
-            holder.layout_store.setEnabled(false);
+
         } else {
             holder.tv_shenhe.setVisibility(View.GONE);
             holder.img_shenhe.setVisibility(View.GONE);
         }
-//		}
+
+        switch (list.get(position).Approved){
+            case "0"://审核不通过
+                holder.img_shenhe.setVisibility(View.VISIBLE);
+                holder.img_right.setVisibility(View.GONE);
+                holder.img_shenhe.setImageResource(R.mipmap.icon_close);
+                holder.tv_shenhe.setText("审核不通过");
+                holder.tv_shenhe.setVisibility(View.VISIBLE);
+                Resources resource = context.getResources();
+                ColorStateList csl = resource.getColorStateList(R.color.pickerview_wheelview_textcolor_out);
+                holder.tv_shenhe.setTextColor(csl);
+                holder.layout_store.setEnabled(false);
+                break;
+            case "1"://审核通过
+                break;
+            case "2"://审核zhong
+                holder.img_shenhe.setVisibility(View.VISIBLE);
+                holder.img_right.setVisibility(View.GONE);
+                holder.img_shenhe.setImageResource(R.mipmap.icon_time2);
+                holder.tv_shenhe.setText("审核中");
+                holder.tv_shenhe.setVisibility(View.VISIBLE);
+                resource = context.getResources();
+                csl = resource.getColorStateList(R.color.textOrange);
+                holder.tv_shenhe.setTextColor(csl);
+                holder.layout_store.setEnabled(false);
+                break;
+        }
 
         if (list.get(position).ID.equals(CheShiLiShopApplication.storeID)) {
             holder.layout_store.setBackgroundResource(R.drawable.bg_store_style2);

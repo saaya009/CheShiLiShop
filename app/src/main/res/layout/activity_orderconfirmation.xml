@@ -344,6 +344,7 @@
             android:layout_height="25dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"
             android:layout_toLeftOf="@+id/btn_confirm"
             android:background="@drawable/bg_button_style"
             android:text="取消订单"

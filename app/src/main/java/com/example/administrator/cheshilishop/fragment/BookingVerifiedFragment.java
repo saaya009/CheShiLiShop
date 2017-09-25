@@ -73,8 +73,9 @@ public class BookingVerifiedFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> view, View view1, int i, long l) {
                 Intent intent = new Intent(getActivity(), OrderConfirmationActivity.class);
+                intent.putExtra("ServiceID",list.get(i).ServiceID);
                 intent.putExtra("AppointID",list.get(i).ID);
-                intent.putExtra("type", list.get(i).Status);
+                intent.putExtra("type",list.get(i).Status);
                 startActivity(intent);
             }
         });

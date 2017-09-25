@@ -84,17 +84,20 @@ public class BookingAllAdapter extends BaseAdapter {
                     holder.mTvStatus.setText("已验证");
                     break;
                 case "2":
-                    holder.mTvStatus.setText("已预约");
+                    holder.mTvStatus.setText("用户取消");
+                    break;
+                case "3":
+                    holder.mTvStatus.setText("商家取消");
                     break;
                 case "0":
                     holder.mTvStatus.setText("已预约");
                     break;
             }
-            holder.mTvEndtime.setText(DateUtil.stampToDate(list.get(position).AppointDate));
+            holder.mTvEndtime.setText(DateUtil.stampToDate3(list.get(position).AddTime));
             holder.mTvOrdernumber.setText(list.get(position).ServiceID);
-            holder.mTvShopname.setText(list.get(position).UserMobile);
+            holder.mTvShopname.setText(list.get(position).ProductName);
             holder.mTvMoney.setText("¥" + list.get(position).AllMoney);
-            holder.mTvBookingtime.setText("预约时间: " + DateUtil.stampToDate3(list.get(position).AddTime));
+            holder.mTvBookingtime.setText("预约时间: " + DateUtil.stampToDate3(list.get(position).AppointDate));
             JSONObject descri = null;
             try {
                 descri = new JSONObject(list.get(position).ProductDescri);

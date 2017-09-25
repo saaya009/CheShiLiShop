@@ -86,7 +86,7 @@ public class OrderConfirmationActivity extends BaseActivity {
     private String appointID;
     private String serviceID;
     private String confirmCode;
-    private int type;
+    private String type;
 
     @Override
     protected void loadViewLayout(Bundle savedInstanceState) {
@@ -123,10 +123,10 @@ public class OrderConfirmationActivity extends BaseActivity {
         appointID = getIntent().getStringExtra("AppointID");
         serviceID = getIntent().getStringExtra("ServiceID");
         confirmCode = getIntent().getStringExtra("ConfirmCode");
-        type = getIntent().getExtras().getInt("type");
+        type = getIntent().getStringExtra("type");
 
         switch (type) {
-            case 1://扫码
+            case "1"://扫码
                 if ("0".equals(appointID)){
                     getServiceData();
                     mTvType.setText("未预约");
@@ -138,29 +138,36 @@ public class OrderConfirmationActivity extends BaseActivity {
                 mLayoutConfirm.setVisibility(View.VISIBLE);
                 mLayoutSuc.setVisibility(View.GONE);
                 break;
-            case 2://列表
-                getServiceData();
+            case "2"://列表
+                getAppointData();
                 mTvType.setText("用户取消");
                 mLayoutSuc.setVisibility(View.GONE);
                 mLayoutConfirm.setVisibility(View.INVISIBLE);
                 break;
-            case 3://列表
-                getServiceData();
+            case "3"://列表
+                getAppointData();
                 mTvType.setText("商家取消");
                 mLayoutSuc.setVisibility(View.GONE);
                 mLayoutConfirm.setVisibility(View.INVISIBLE);
                 break;
-            case 4://已履约
-                getServiceData();
+            case "4"://已履约
+                getAppointData();
                 mTvType.setText("已验证");
                 mLayoutSuc.setVisibility(View.GONE);
                 mLayoutConfirm.setVisibility(View.INVISIBLE);
                 break;
-            case 5://查看订单
+            case "5"://查看订单
                 getServiceData();
                 mTvType.setText("已验证");
                 mLayoutSuc.setVisibility(View.VISIBLE);
                 mLayoutConfirm.setVisibility(View.INVISIBLE);
+                break;
+            case "0"://
+                mTvType.setText("已预约");
+                getAppointData();
+                mBtnConfirm.setVisibility(View.GONE);
+                mLayoutConfirm.setVisibility(View.VISIBLE);
+                mLayoutSuc.setVisibility(View.GONE);
                 break;
             default:
                 getServiceData();
@@ -209,6 +216,8 @@ public class OrderConfirmationActivity extends BaseActivity {
                     JSONObject jsonObject = new JSONObject(result);
                     String status = jsonObject.getString("Status");
                     if ("0".equals(status)) {
+                        ToastUtils.show(OrderConfirmationActivity.this,"取消订单");
+                        finish();
                     } else if ("-1".equals(status)) {
                         Intent intent = new Intent(OrderConfirmationActivity.this, SuccessActivity.class);
                         startActivity(intent);
@@ -283,7 +292,7 @@ public class OrderConfirmationActivity extends BaseActivity {
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 RequestParams errParams = new RequestParams();
                 errParams.add("LogCont", new String(responseBody));
-                errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                errParams.add("Url", UrlUtils.confirmService());
                 errParams.add("PostData", params.toString());
                 errParams.add("WToken", CheShiLiShopApplication.wtoken);
                 RestClient.post(UrlUtils.insertErrLog(), errParams, OrderConfirmationActivity.this, new AsyncHttpResponseHandler() {
@@ -334,6 +343,9 @@ public class OrderConfirmationActivity extends BaseActivity {
                     if ("0".equals(Status)) {
                         String data = jsonObject.getString("Data");
                         BookingBean bookingBean = JSON.parseObject(data, BookingBean.class);
+                        if (!bookingBean.StoreID.equals(CheShiLiShopApplication.storeID)&& Status.equals("1")){
+                            ToastUtils.show(OrderConfirmationActivity.this,"预约并不是当前店面，是你名下的店面");
+                        }
                         mTvTel.setText(bookingBean.UserMobile);
                         if (!TextUtils.isEmpty(bookingBean.ProductImg)) {
                             Glide.with(context)
@@ -443,7 +455,8 @@ public class OrderConfirmationActivity extends BaseActivity {
                         mTvOffer.setText(Float.parseFloat(service.AllMoney) - Float.parseFloat(service.OrderOutPocket) + "");
                         mTvPreferential.setText(service.OrderOutPocket);
                     } else {
-                        ToastUtils.show(OrderConfirmationActivity.this, jsonObject.getString("Data"));
+                        ToastUtils.show(OrderConfirmationActivity.this,"辨认失败");
+                        finish();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

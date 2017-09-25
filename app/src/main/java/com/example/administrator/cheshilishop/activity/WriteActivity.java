@@ -16,6 +16,7 @@ import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -43,6 +44,7 @@ import com.example.administrator.cheshilishop.photochoose.CropImageActivity;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
 import com.example.administrator.cheshilishop.widget.TimePickerView;
+import com.example.administrator.cheshilishop.widget.TimePickerView2;
 import com.lljjcoder.city_20170724.CityPickerView;
 import com.lljjcoder.city_20170724.bean.CityBean;
 import com.lljjcoder.city_20170724.bean.DistrictBean;
@@ -137,8 +139,6 @@ public class WriteActivity extends BaseActivity {
     RelativeLayout mLayoutImg1;
     @BindView(R.id.img_close2)
     ImageView mImgClose2;
-    @BindView(R.id.et_yingyetime)
-    TextView mEtYingyetime;
     @BindView(R.id.et_yingyemianji)
     EditText mEtYingyemianji;
     @BindView(R.id.et_bankname)
@@ -147,6 +147,12 @@ public class WriteActivity extends BaseActivity {
     EditText mEtBanknum;
     @BindView(R.id.et_bank)
     EditText mEtBank;
+    @BindView(R.id.tv_city1)
+    TextView mTvCity1;
+    @BindView(R.id.tv_endtime)
+    TextView mTvEndtime;
+    @BindView(R.id.tv_choose)
+    TextView mTvChoose;
 
     //营业期限
     private String expired;
@@ -182,6 +188,14 @@ public class WriteActivity extends BaseActivity {
     private String path2 = "";
     private int conut = 0;
     private TimePickerView pvTime;
+    private TimePickerView2 startTime;
+    private TimePickerView2 endTime;
+    private TextView tv_starttime;
+    private AlertDialog dialog;
+    private String choose = " ";
+
+    private String start = "";
+    private String end = "";
 
     @Override
     protected void loadViewLayout(Bundle savedInstanceState) {
@@ -201,6 +215,7 @@ public class WriteActivity extends BaseActivity {
 
     @Override
     protected void findViewById() {
+        tv_starttime = findViewById(R.id.tv_starttime);
     }
 
     @Override
@@ -214,7 +229,9 @@ public class WriteActivity extends BaseActivity {
         mLayoutImg2.setOnClickListener(this);
         mImgClose1.setOnClickListener(this);
         mImgClose2.setOnClickListener(this);
-        mEtYingyetime.setOnClickListener(this);
+        tv_starttime.setOnClickListener(this);
+        mTvEndtime.setOnClickListener(this);
+        mTvChoose.setOnClickListener(this);
     }
 
     @Override
@@ -234,6 +251,38 @@ public class WriteActivity extends BaseActivity {
             public void onTimeSelect(Date date) {
                 mTvTime.setText(getTime(date));
                 expired = date.getTime() + "";
+            }
+        });
+
+        // 营业时间开始选择器
+        startTime = new TimePickerView2(this, TimePickerView2.Type.HOURS_MINS);
+        // 控制时间范围
+        startTime.setTime(new Date());
+        startTime.setCyclic(false);
+        startTime.setCancelable(true);
+        // 时间选择后回调
+        startTime.setOnTimeSelectListener(new TimePickerView2.OnTimeSelectListener() {
+
+            @Override
+            public void onTimeSelect(String date) {
+                tv_starttime.setText(date);
+                start = date;
+            }
+        });
+
+        // 营业时间结束选择器
+        endTime = new TimePickerView2(this, TimePickerView2.Type.HOURS_MINS);
+        // 控制时间范围
+        endTime.setTime(new Date());
+        endTime.setCyclic(false);
+        endTime.setCancelable(true);
+        // 时间选择后回调
+        endTime.setOnTimeSelectListener(new TimePickerView2.OnTimeSelectListener() {
+
+            @Override
+            public void onTimeSelect(String date) {
+                mTvEndtime.setText(date);
+                end = date;
             }
         });
     }
@@ -377,7 +426,55 @@ public class WriteActivity extends BaseActivity {
                 mImgClose1.setVisibility(View.GONE);
                 mLayoutImg1.setEnabled(true);
                 break;
-            case R.id.et_yingyetime://选择营业时间
+            case R.id.tv_starttime://营业开始时间
+                startTime.show();
+                break;
+            case R.id.tv_endtime://营业开始时间
+                endTime.show();
+                break;
+            case R.id.tv_choose://选择面积单位
+                final Dialog bottomDialog3 = new Dialog(this, R.style.BottomDialog);
+                View contentView3 = LayoutInflater.from(this).inflate(R.layout.dialog_wdevicetype, null);
+                bottomDialog3.setContentView(contentView3);
+                ViewGroup.LayoutParams layoutParams3 = contentView3.getLayoutParams();
+                layoutParams3.width = getResources().getDisplayMetrics().widthPixels;
+                contentView3.setLayoutParams(layoutParams3);
+                contentView3.findViewById(R.id.layout1).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        choose = "米";
+                        mTvChoose.setText("米");
+                        bottomDialog3.dismiss();
+                    }
+                });
+                contentView3.findViewById(R.id.layout2).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        choose = "亩";
+                        mTvChoose.setText("亩");
+                        bottomDialog3.dismiss();
+                    }
+                });
+                contentView3.findViewById(R.id.layout2).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        choose = "公顷";
+                        mTvChoose.setText("公顷");
+                        bottomDialog3.dismiss();
+                    }
+                });
+                contentView3.findViewById(R.id.layout2).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        choose = "平方千米";
+                        mTvChoose.setText("平方千米");
+                        bottomDialog3.dismiss();
+                    }
+                });
+                bottomDialog3.getWindow().setGravity(Gravity.BOTTOM);
+                bottomDialog3.getWindow().setWindowAnimations(R.style.BottomDialog_Animation);
+                bottomDialog3.setCanceledOnTouchOutside(true);
+                bottomDialog3.show();
                 break;
         }
     }
@@ -457,8 +554,11 @@ public class WriteActivity extends BaseActivity {
         } else {
             params.add("Descri", mEtDescri.getText().toString().trim());
         }
-
-        params.add("OpenTime", mEtYingyetime.getText().toString().trim());
+        if (start.length() > 0 && end.length() > 0) {
+            params.add("OpenTime", start + "-" + end);
+        } else {
+            params.add("OpenTime", "");
+        }
         params.add("OpenArea", mEtYingyemianji.getText().toString().trim());
         RestClient.post(UrlUtils.addStore(), params, this, new AsyncHttpResponseHandler() {
             @Override
@@ -731,6 +831,7 @@ public class WriteActivity extends BaseActivity {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
         return format.format(date);
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

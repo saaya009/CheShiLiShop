@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Process;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -28,7 +27,6 @@ import com.example.administrator.cheshilishop.utils.UrlUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.orhanobut.hawk.Hawk;
-import com.uuzuche.lib_zxing.activity.CaptureActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
     protected TextView topbar_tv_title;
     protected ImageView topbar_iv_back;
     protected TextView topbar_iv_right;
+    @BindView(R.id.image_ad)
+    ImageView mImageAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                     } else {
                         CheShiLiShopApplication.storeID = "0";
-//                        ToastUtils.show(MainActivity.this, jsonObject.getString("Data"));
                     }
 
                 } catch (JSONException e) {
@@ -158,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
         mLayoutCommission.setOnClickListener(mOnClickListener);
         mLayoutUserinfo.setOnClickListener(mOnClickListener);
         mLayoutChange.setOnClickListener(mOnClickListener);
-
+        mImageAd.setOnClickListener(mOnClickListener);
         mLayoutOrder.setOnClickListener(mOnClickListener);
 
         topbar_iv_back.setImageResource(R.mipmap.icon_service);
@@ -228,8 +227,9 @@ public class MainActivity extends AppCompatActivity {
                     dialog2.setConfirm("拨打");
 
                     break;
+                case R.id.image_ad:
                 case R.id.topbar_iv_right://推广
-                    intent = new Intent(MainActivity.this,TuiGuangActivity.class);
+                    intent = new Intent(MainActivity.this, TuiGuangActivity.class);
                     startActivity(intent);
                     break;
             }
@@ -242,25 +242,26 @@ public class MainActivity extends AppCompatActivity {
         // 扫描二维码/条码回传
         if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
             if (data != null) {
+
                 String content = URLDecoder.decode(data.getStringExtra("codedContent"));
-                Log.d("Qcode", content);
-                int index1 = content.indexOf("AppointID");
-                int index2 = content.indexOf("ServiceID");
-                int index3 = content.indexOf("ConfirmCode");
-                int index4 = content.indexOf("&Type");
-                String AppointID = content.substring(index1 + 10);
-                String ConfirmCode = content.substring(index3 + 12, index4);
-                String ServiceID = content.substring(index2 + 10, index1 - 1);
-//                if ("0".equals(AppointID)){
-//                    getAppointData(AppointID,ConfirmCode,ServiceID);
-//                }else {
-                Intent intent = new Intent(MainActivity.this, OrderConfirmationActivity.class);
-                intent.putExtra("AppointID", AppointID);
-                intent.putExtra("ConfirmCode", ConfirmCode);
-                intent.putExtra("ServiceID", ServiceID);
-                intent.putExtra("type", 1);
-                startActivity(intent);
-//                }
+                if (content.indexOf("AppointID") != -1) {
+                    Log.d("Qcode", content);
+                    int index1 = content.indexOf("AppointID");
+                    int index2 = content.indexOf("ServiceID");
+                    int index3 = content.indexOf("ConfirmCode");
+                    int index4 = content.indexOf("&Type");
+                    String AppointID = content.substring(index1 + 10);
+                    String ConfirmCode = content.substring(index3 + 12, index4);
+                    String ServiceID = content.substring(index2 + 10, index1 - 1);
+                    Intent intent = new Intent(MainActivity.this, OrderConfirmationActivity.class);
+                    intent.putExtra("AppointID", AppointID);
+                    intent.putExtra("ConfirmCode", ConfirmCode);
+                    intent.putExtra("ServiceID", ServiceID);
+                    intent.putExtra("type","1");
+                    startActivity(intent);
+                }else {
+                    ToastUtils.show(MainActivity.this,"无法识别二维码");
+                }
 
 
             }
@@ -287,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
                         intent.putExtra("AppointID", AppointID);
                         intent.putExtra("ConfirmCode", ConfirmCode);
                         intent.putExtra("ServiceID", ServiceID);
-                        intent.putExtra("type", 1);
+                        intent.putExtra("type","1");
                         startActivity(intent);
 
                     } else if ("-1".equals(Status)) {

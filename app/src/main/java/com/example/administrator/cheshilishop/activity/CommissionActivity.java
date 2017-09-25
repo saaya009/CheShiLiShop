@@ -159,9 +159,8 @@ public class CommissionActivity extends BaseActivity {
                 c.setTime(date);
                 int year = c.get(Calendar.YEAR);
                 int month = c.get(Calendar.MONTH);
-                int day = c.get(Calendar.DAY_OF_MONTH);
-
-                getData(year, month, day);
+                Log.d("时间",year+"==="+month);
+                getData(year, month+1, 1);
             }
         });
 
@@ -268,8 +267,8 @@ public class CommissionActivity extends BaseActivity {
         Log.d("日期2", "endTime=" + endTime);
         final RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
-        params.add("StartTime", startTims + "");
-        params.add("EndTime", endTime + "");
+        params.add("StartTime",(startTims + "").substring(0,(startTims + "").length()-3));
+        params.add("EndTime", (endTime + "").substring(0,(endTime + "").length()-3));
         params.add("Rows", size + "");
         params.add("N", page + "");
         params.add("StoreID", CheShiLiShopApplication.storeID);

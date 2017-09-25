@@ -295,4 +295,10 @@ public class ServiceActivity extends BaseActivity {
         list.addAll(hashSet);
         return list;
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getData();
+    }
 }

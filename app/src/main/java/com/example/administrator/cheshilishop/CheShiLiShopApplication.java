@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by Ayase
  */
-public class CheShiLiShopApplication extends MobApplication {
+public class CheShiLiShopApplication extends Application {
     private List<Activity> activityList = new LinkedList<Activity>();
     private static CheShiLiShopApplication instance;
     public static String wtoken = "";
@@ -25,7 +25,7 @@ public class CheShiLiShopApplication extends MobApplication {
     public static StoreBean store = new StoreBean();
     public static StoreBean newStore = new StoreBean();
     public static Context applicationContext;
-    public static String AddTime = "1504777259";
+    public static String AddTime = "1506149920";
     public static String address = "";
     public static int pic_limit = 5;
     public static List<List<Boolean>> status;

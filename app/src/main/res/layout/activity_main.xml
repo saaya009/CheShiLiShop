@@ -202,14 +202,14 @@
                         android:layout_height="35dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="25dp"
-                        android:src="@mipmap/icon_time"/>
+                        android:src="@mipmap/icon_tag"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp"
-                        android:text="预约管理"
+                        android:text="订单管理"
                         android:textColor="@color/black"
                         android:textSize="17dp"/>
 
@@ -246,6 +246,7 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/image_ad"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/icon_ad"/>

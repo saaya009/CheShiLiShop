@@ -7,8 +7,8 @@ android {
         applicationId "com.example.administrator.cheshilishop"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 201
-        versionName "2.01"
+        versionCode 204
+        versionName "2.04"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     dexOptions {
@@ -47,7 +47,6 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile 'com.bm.photoview:library:1.4.1'
-    compile files('libs/alipaySdk-20170710.jar')
     compile 'com.jakewharton:butterknife:8.0.1'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
     compile 'de.hdodenhof:circleimageview:2.1.0'
@@ -57,12 +56,10 @@ dependencies {
     compile 'com.makeramen:roundedimageview:2.2.1'
     compile project(path: ':citypickerview')
     compile 'cn.yipianfengye.android:zxing-library:2.2'
-    compile files('libs/ShareSDK-Wechat-Favorite-3.1.0.jar')
     compile files('libs/MobCommons-2017.0914.1125.jar')
     compile files('libs/MobTools-2017.0914.1125.jar')
     compile files('libs/ShareSDK-Core-3.1.0.jar')
     compile files('libs/ShareSDK-Wechat-3.1.0.jar')
     compile files('libs/ShareSDK-Wechat-Core-3.1.0.jar')
-    compile files('libs/ShareSDK-Wechat-Favorite-3.1.0.jar')
     compile files('libs/ShareSDK-Wechat-Moments-3.1.0.jar')
 }

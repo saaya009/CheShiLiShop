@@ -1,5 +1,8 @@
 package com.example.administrator.cheshilishop.activity;
 
+import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -37,7 +40,7 @@ public class BookingManagementActivity extends BaseActivity{
 
     @Override
     protected void loadViewLayout(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_servicemanagement);
+        setContentView(R.layout.activity_bookingmanagement);
         ButterKnife.bind(this);
     }
 
@@ -48,7 +51,7 @@ public class BookingManagementActivity extends BaseActivity{
 
     @Override
     protected TopView getTopViews() {
-        return new TopView(topbar_iv_back, topbar_tv_title);
+        return new TopView(topbar_iv_back, topbar_tv_title,topbar_iv_right);
     }
 
     @Override
@@ -59,13 +62,23 @@ public class BookingManagementActivity extends BaseActivity{
 
     @Override
     protected void setListener() {
-
+        topbar_iv_right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(BookingManagementActivity.this,FuWuActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
     protected void processLogic() {
         topbar_tv_title.setText("预约管理");
-
+        topbar_iv_right.setVisibility(View.VISIBLE);
+        topbar_iv_right.setText("服务");
+        Resources resource = getResources();
+        ColorStateList csl = resource.getColorStateList(R.color.colorPrimaryDark);
+        topbar_iv_right.setTextColor(csl);
         aFragment = new BookingAllFragment();
         eFragment = new BookingEndFragment();
         vFragment = new BookingVerifiedFragment();

@@ -19,6 +19,7 @@ public class ServiceBean implements Serializable {
     public String ConfirmCode;
     public String ConfirmCodeExpired;
     public String StoreID;
+    public String TimeLine;
     public String ServiceNum;
     public String ServiceGapPrice;
     public String ServiceDescri;

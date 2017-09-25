@@ -126,6 +126,10 @@ public class AddServiceActivity extends BaseActivity {
         final RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
         params.add("StoreID", CheShiLiShopApplication.storeID);
+        if (productIDs.length() == 0){
+            ToastUtils.show(AddServiceActivity.this,"请选择服务");
+            return;
+        }
         productIDs = productIDs.substring(0, productIDs.length() - 1);
         params.add("ProductIDs", productIDs);
         RestClient.post(UrlUtils.addServices(), params, this, new AsyncHttpResponseHandler() {
@@ -181,10 +185,7 @@ public class AddServiceActivity extends BaseActivity {
      * 获取数据
      */
     private void getData() {
-        final RequestParams params = new RequestParams();
-        params.add("WToken", CheShiLiShopApplication.wtoken);
-        params.add("StoreID", CheShiLiShopApplication.storeID);
-        RestClient.post(UrlUtils.queryProductServiceJson(), params, this, new AsyncHttpResponseHandler() {
+        RestClient.get(UrlUtils.queryProductServiceJson(), this, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);
@@ -333,7 +334,6 @@ public class AddServiceActivity extends BaseActivity {
                     e.printStackTrace();
                 }
                 errParams.add("Url", UrlUtils.queryServiceAppointDetail());
-                errParams.add("PostData", params.toString());
                 errParams.add("WToken", CheShiLiShopApplication.wtoken);
                 RestClient.post(UrlUtils.insertErrLog(), errParams, AddServiceActivity.this, new AsyncHttpResponseHandler() {
                     @Override

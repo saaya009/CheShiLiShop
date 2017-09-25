@@ -14,6 +14,7 @@ import com.example.administrator.cheshilishop.TopView;
 import com.example.administrator.cheshilishop.utils.FileUtils;
 import com.example.administrator.cheshilishop.utils.InviteUtils;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
+import com.mob.MobSDK;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import butterknife.BindView;
@@ -76,6 +77,7 @@ public class TuiGuangActivity extends BaseActivity {
     protected void onClickEvent(View paramView) {
         switch (paramView.getId()) {
             case R.id.image_btn://
+                MobSDK.init(this,"20f356f80a794","a4aecdd80a872f2d6e0d68a8711df702");
                 share();
                 break;
             case R.id.image_btn2://
@@ -99,7 +101,7 @@ public class TuiGuangActivity extends BaseActivity {
         oks.setText("扫码注册车势力，钜惠豪礼抢不停");
         // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
         Resources res = TuiGuangActivity.this.getResources();
-        Bitmap bmp = BitmapFactory.decodeResource(res, R.mipmap.icon_logo);
+        Bitmap bmp = BitmapFactory.decodeResource(res, R.mipmap.ic_launcher_sj3);
         oks.setImagePath(FileUtils.saveBitmap(TuiGuangActivity.this, bmp));
         // 确保SDcard下面存在此张图片
         // url仅在微信（包括好友和朋友圈）中使用

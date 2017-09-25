@@ -962,7 +962,16 @@
                         android:textSize="15dp"/>
 
                     <TextView
-                        android:id="@+id/et_yingyetime"
+                        android:id="@+id/tv_starttime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toRightOf="@id/tv_shopname"
+                        android:text="开始时间"
+                        android:textSize="15dp"/>
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -970,7 +979,19 @@
                         android:layout_marginLeft="20dp"
                         android:layout_toRightOf="@id/tv_shopname"
                         android:background="@null"
-                        android:hint="选择时间"
+                        android:text="-"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"/>
+                    <TextView
+                        android:id="@+id/tv_endtime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toRightOf="@id/tv_shopname"
+                        android:background="@null"
+                        android:text="结束时间"
                         android:textSize="15dp"/>
 
 
@@ -981,13 +1002,14 @@
                     android:layout_height="1dp"
                     android:layout_marginLeft="20dp"
                     android:background="@color/gray"/>
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@color/white"
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_mianji"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -1004,14 +1026,27 @@
                         android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
-                        android:layout_toRightOf="@id/tv_shopname"
+                        android:layout_toRightOf="@id/tv_mianji"
                         android:background="@null"
-                        android:hint="单位:平方米"
+                        android:hint="请输入营业面积"
                         android:inputType="number"
                         android:textSize="15dp"/>
 
+                    <TextView
+                        android:id="@+id/tv_choose"
+                        android:layout_marginRight="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="20dp"
+                        android:text="平方米"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"/>
 
-                </LinearLayout>
+
+                </RelativeLayout>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"

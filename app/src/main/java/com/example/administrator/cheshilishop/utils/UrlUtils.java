@@ -281,7 +281,17 @@ public class UrlUtils {
      */
     public static String delCategory() {
         String url = null;
-        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/Prod/DelCategory").buildUpon();
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/StoreService/DelService").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
+
+    /**
+     * 查询服务列表
+     */
+    public static String queryService() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/StoreService/QueryServiceList").buildUpon();
         url = uribBuilder.build().toString();
         return url;
     }
