@@ -100,7 +100,9 @@ public class AmountView extends LinearLayout implements View.OnClickListener, Te
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        double num = Double.parseDouble(s.toString());
+        if (!"-".equals(s)){
+            double num = Double.parseDouble(s.toString());
+        }
     }
 
     @Override

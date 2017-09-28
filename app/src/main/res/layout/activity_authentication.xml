@@ -11,6 +11,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <LinearLayout
+            android:id="@+id/layout_next"
+            android:background="@color/gray"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/btn_next"
+                android:text="下一步"
+                android:textSize="18dp"
+                android:textColor="@color/white"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/bg_button_style"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+
 
         <ScrollView
             android:layout_above="@+id/layout_next"
@@ -104,31 +126,19 @@
 3、甲乙双方之间对本协议项目下未尽事宜应通过友好协商解决。"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
+
+
+                <CheckBox
+                    android:id="@+id/cb_confirm"
+                    android:text="确认同意申请须知"
+                    android:layout_margin="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
 
 
         </ScrollView>
-        <LinearLayout
-            android:id="@+id/layout_next"
-            android:background="@color/gray"
-            android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:layout_alignParentBottom="true">
 
-            <Button
-                android:id="@+id/btn_next"
-                android:text="下一步"
-                android:textSize="18dp"
-                android:textColor="@color/white"
-                android:layout_marginTop="25dp"
-                android:layout_marginBottom="25dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/bg_button_style"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
-        </LinearLayout>
 
     </RelativeLayout>
 </LinearLayout>

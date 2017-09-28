@@ -6,7 +6,7 @@
     <RelativeLayout
         android:id="@+id/top_view"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="50dp"
         android:background="@color/white" >
 
         <ImageView
@@ -19,6 +19,17 @@
             android:paddingRight="8dp"
             android:src="@mipmap/icon_back"
              />
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/topbar_pay"
+            android:layout_width="45dp"
+            android:layout_toRightOf="@id/topbar_iv_back"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:src="@mipmap/icon_pay"
+            />
 
         <TextView
             android:id="@+id/topbar_tv_title"

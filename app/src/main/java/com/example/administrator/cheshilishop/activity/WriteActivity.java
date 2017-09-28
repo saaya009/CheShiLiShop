@@ -249,8 +249,8 @@ public class WriteActivity extends BaseActivity {
 
             @Override
             public void onTimeSelect(Date date) {
-                mTvTime.setText(getTime(date));
-                expired = date.getTime() + "";
+                mTvExpired.setText(getTime(date));
+                expired = (date.getTime() + "").substring(0,(date.getTime() + "").length()-3);
             }
         });
 
@@ -327,7 +327,6 @@ public class WriteActivity extends BaseActivity {
                             ProvinceID = province.getId();
                             CityID = city.getId();
                             CountyID = district.getId();
-                            CheShiLiShopApplication.address = province.getName() + city.getName() + district.getName();
                         }
 
                     }
@@ -349,7 +348,7 @@ public class WriteActivity extends BaseActivity {
                     @Override
                     public void onClick(View view) {
                         type = "0";
-                        mEtType.setText("旗舰店");
+                        mEtType.setText("一站式");
                         bottomDialog.dismiss();
                     }
                 });
@@ -357,7 +356,7 @@ public class WriteActivity extends BaseActivity {
                     @Override
                     public void onClick(View view) {
                         type = "1";
-                        mEtType.setText("综合店");
+                        mEtType.setText("汽修厂");
                         bottomDialog.dismiss();
                     }
                 });
@@ -365,7 +364,15 @@ public class WriteActivity extends BaseActivity {
                     @Override
                     public void onClick(View view) {
                         type = "2";
-                        mEtType.setText("专营店");
+                        mEtType.setText("美容店");
+                        bottomDialog.dismiss();
+                    }
+                });
+                contentView.findViewById(R.id.layout4).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        type = "3";
+                        mEtType.setText("轮胎");
                         bottomDialog.dismiss();
                     }
                 });
@@ -522,13 +529,20 @@ public class WriteActivity extends BaseActivity {
             return;
         }
         if (path.length() == 0) {
-            ToastUtils.show(this, "请上传店铺图片");
+            ToastUtils.show(this, "请上传店铺海报");
             return;
         }
         if (path2.length() == 0) {
-            ToastUtils.show(this, "请上传店铺图片");
+            ToastUtils.show(this, "请上传营业执照");
             return;
         }
+        try {
+            params.put("Img", new File(path), "image/png");
+            params.put("CerImg",new File(path2),"image/png");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
 
         params.add("Phone", phone);
         params.add("Tel", mEtTel.getText().toString().trim());
@@ -560,21 +574,22 @@ public class WriteActivity extends BaseActivity {
             params.add("OpenTime", "");
         }
         params.add("OpenArea", mEtYingyemianji.getText().toString().trim());
+        final LoadingDialog dialog = new LoadingDialog(WriteActivity.this);
+        dialog.show();
         RestClient.post(UrlUtils.addStore(), params, this, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
+                    dialog.dismiss();
                     String result = new String(responseBody);
                     Log.d("添加店铺", result);
                     JSONObject jsonObject = new JSONObject(result);
                     String Status = jsonObject.getString("Status");
                     if ("0".equals(Status)) {
-                        String data = jsonObject.getString("Data");
-                        CheShiLiShopApplication.newStore = JSON.parseObject(data, StoreBean.class);
-                        mDialog = new LoadingDialog(WriteActivity.this);
-                        mDialog.show();
-                        uploadPic(path);
-                        uploadPic(path2);
+                        Intent intent = new Intent(WriteActivity.this, ExamineActivity.class);
+                        intent.putExtra("id",jsonObject.getString("ID"));
+                        startActivity(intent);
+                        finish();
                     } else if ("-1".equals(Status)) {
                         Intent intent = new Intent(WriteActivity.this, LoginActivity.class);
                         startActivity(intent);
@@ -833,10 +848,4 @@ public class WriteActivity extends BaseActivity {
     }
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

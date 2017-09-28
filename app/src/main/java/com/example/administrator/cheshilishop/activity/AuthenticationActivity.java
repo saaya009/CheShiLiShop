@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 
 import com.example.administrator.cheshilishop.BaseActivity;
 import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.TopView;
+import com.example.administrator.cheshilishop.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +25,8 @@ public class AuthenticationActivity extends BaseActivity {
 
     @BindView(R.id.btn_next)
     Button mBtnNext;
+    @BindView(R.id.cb_confirm)
+    CheckBox mCbConfirm;
 
     @Override
     protected void loadViewLayout(Bundle savedInstanceState) {
@@ -56,12 +61,16 @@ public class AuthenticationActivity extends BaseActivity {
 
     @Override
     protected void onClickEvent(View paramView) {
-        switch (paramView.getId()){
+        switch (paramView.getId()) {
             case R.id.btn_next:
-                Intent intent = new Intent(this,WriteActivity.class);
-                startActivity(intent);
-                finish();
-                break;
+                if (mCbConfirm.isChecked()) {
+                    Intent intent = new Intent(this, WriteActivity.class);
+                    startActivity(intent);
+                    finish();
+                    break;
+                } else {
+                    ToastUtils.show(AuthenticationActivity.this,"请点击同意申请须知");
+                }
         }
     }
 

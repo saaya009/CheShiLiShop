@@ -72,10 +72,18 @@ public class SetStoreActivity extends BaseActivity {
         lv_store.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                updateDefaultStore(list.get(i).ID);
+                if (list.get(i).Approved.equals("1")){
+                    updateDefaultStore(list.get(i).ID);
+                }else if (list.get(i).Approved.equals("2")){
+                    Intent intent = new Intent(SetStoreActivity.this,ExamineActivity.class);
+                    intent.putExtra("id",list.get(i).ID);
+                    startActivity(intent);
+                }
+
             }
         });
         topbar_iv_right.setOnClickListener(this);
+
     }
 
     @Override

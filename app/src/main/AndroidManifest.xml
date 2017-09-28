@@ -107,10 +107,9 @@
         <activity android:name=".activity.RichscanActivity"/>
         <activity android:name=".activity.FuWuActivity"/>
         <activity android:name=".activity.FuWuDataActivity"/>
-    <!-- 以MobApplication作为项目Application -->
-
-
-        <!-- 其它的activity -->
+        <activity android:name=".activity.RegActivity"/>
+        <activity android:name=".activity.MyWalletActivity"/>
+        <activity android:name=".activity.AccountListActivity"/>
 
         <!-- ShareSDK的activity -->
         <activity

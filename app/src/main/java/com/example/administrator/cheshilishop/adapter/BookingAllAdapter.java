@@ -83,11 +83,14 @@ public class BookingAllAdapter extends BaseAdapter {
                 case "4":
                     holder.mTvStatus.setText("已验证");
                     break;
-                case "2":
+                case "1":
                     holder.mTvStatus.setText("用户取消");
                     break;
-                case "3":
+                case "2":
                     holder.mTvStatus.setText("商家取消");
+                    break;
+                case "3":
+                    holder.mTvStatus.setText("未履约");
                     break;
                 case "0":
                     holder.mTvStatus.setText("已预约");

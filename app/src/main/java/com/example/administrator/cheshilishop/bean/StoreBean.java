@@ -36,6 +36,16 @@ public class StoreBean implements Serializable {
     public String Params;
     public String LeagueID;
     public String Approved;
+    public String OpenTime;
+    public String BankName;
+    public String BankNo;
+    public String BankCompany;
+    public String CerImg;
+    public String OpenArea;
+    public String AddressNames;
+
+
+
 
 
 

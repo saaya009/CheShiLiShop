@@ -38,4 +38,5 @@
 
     <color name="province_line_border">#D0D0D0</color>
     <color name="coffee">#AC620F</color>
+    <color name="bg_black">#494D59</color>
 </resources>

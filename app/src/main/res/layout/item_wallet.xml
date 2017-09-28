@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="65dp">
+
+        <TextView
+            android:id="@+id/tv_type"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:text="分享给好友"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_below="@id/tv_type"
+            android:id="@+id/tv_time"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="20dp"
+            android:textSize="14dp"
+            android:text="2017-09-05 13:13:13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tv_amount"
+            android:layout_marginRight="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:textSize="20dp"
+            android:textColor="@color/orange"
+            android:text="+37.00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+<TextView
+    android:layout_marginLeft="15dp"
+    android:background="@color/gray"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"/>
+</LinearLayout>

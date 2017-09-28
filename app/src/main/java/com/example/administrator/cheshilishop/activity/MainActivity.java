@@ -69,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
     protected TextView topbar_iv_right;
     @BindView(R.id.image_ad)
     ImageView mImageAd;
+    @BindView(R.id.topbar_pay)
+    ImageView mTopbarPay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         // 检测软件更新方法
+        mTopbarPay.setVisibility(View.VISIBLE);
         UpgradeHelper.checkAppVersion(MainActivity.this, true);
         Hawk.init(MainActivity.this).build();
         initView();
@@ -166,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
         topbar_iv_right.setVisibility(View.VISIBLE);
         topbar_iv_right.setText("推广");
         topbar_iv_right.setTextColor(csl);
+        mTopbarPay.setOnClickListener(mOnClickListener);
     }
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -232,6 +236,10 @@ public class MainActivity extends AppCompatActivity {
                     intent = new Intent(MainActivity.this, TuiGuangActivity.class);
                     startActivity(intent);
                     break;
+                case R.id.topbar_pay://我的钱包
+                    intent = new Intent(MainActivity.this, MyWalletActivity.class);
+                    startActivity(intent);
+                    break;
             }
         }
     };
@@ -257,10 +265,10 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("AppointID", AppointID);
                     intent.putExtra("ConfirmCode", ConfirmCode);
                     intent.putExtra("ServiceID", ServiceID);
-                    intent.putExtra("type","1");
+                    intent.putExtra("type", "1");
                     startActivity(intent);
-                }else {
-                    ToastUtils.show(MainActivity.this,"无法识别二维码");
+                } else {
+                    ToastUtils.show(MainActivity.this, "无法识别二维码");
                 }
 
 
@@ -288,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
                         intent.putExtra("AppointID", AppointID);
                         intent.putExtra("ConfirmCode", ConfirmCode);
                         intent.putExtra("ServiceID", ServiceID);
-                        intent.putExtra("type","1");
+                        intent.putExtra("type", "1");
                         startActivity(intent);
 
                     } else if ("-1".equals(Status)) {

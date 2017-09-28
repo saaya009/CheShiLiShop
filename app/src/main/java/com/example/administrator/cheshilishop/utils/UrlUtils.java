@@ -8,7 +8,7 @@ import android.net.Uri;
  */
 
 public class UrlUtils {
-    public static String BASE_URL = "http://api.cheshili.com.cn";
+    public static String BASE_URL = "http://api.cheshili.com.cn:8000";
 
     /**
      * 登录
@@ -292,6 +292,46 @@ public class UrlUtils {
     public static String queryService() {
         String url = null;
         Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/StoreService/QueryServiceList").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
+
+    /**
+     * 注册
+     */
+    public static String registerUser() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/Login/RegisterUser").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
+
+    /**
+     * 修改Service是否可用
+     */
+    public static String NAService() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/StoreService/NAService").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
+
+    /**
+     * 获取我的余额
+     */
+    public static String queryAccountCount() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/Account/QueryAccountCount").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
+
+    /**
+     * 获取我的账单列表
+     */
+    public static String queryAccountList() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/Account/QueryAccountList").buildUpon();
         url = uribBuilder.build().toString();
         return url;
     }

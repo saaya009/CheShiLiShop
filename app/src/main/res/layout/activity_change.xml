@@ -79,6 +79,7 @@
         android:layout_width="match_parent"
         android:layout_height="45dp">
         <TextView
+            android:id="@+id/text"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
             android:textColor="@color/black"
@@ -87,21 +88,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-        <TextView
-            android:id="@+id/tv_enable"
-            android:layout_marginLeft="100dp"
-            android:textColor="@color/black"
-            android:textSize="17dp"
-            android:text="启动"
-            android:gravity="center_vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
 
         <ImageView
-            android:layout_marginRight="20dp"
-            android:layout_alignParentRight="true"
+            android:src="@mipmap/icon_choose_off"
+            android:id="@+id/btn_choose"
+            android:layout_marginLeft="20dp"
             android:layout_centerVertical="true"
-            android:src="@mipmap/icon_right"
+            android:layout_toRightOf="@id/text"
+            android:layout_width="65dp"
+            android:layout_height="30dp"/>
+
+        <TextView
+            android:id="@+id/tv_type"
+            android:layout_toRightOf="@id/btn_choose"
+            android:layout_centerVertical="true"
+            android:textColor="@color/black"
+            android:textSize="17dp"
+            android:layout_marginLeft="10dp"
+            android:text="禁用"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -129,7 +133,7 @@
             android:layout_marginLeft="100dp"
             android:textColor="@color/black"
             android:textSize="17dp"
-            android:text="自定义"
+            android:text="不可用"
             android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
@@ -150,13 +154,49 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
 
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/layout_data"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:textColor="@color/black"
+            android:textSize="17dp"
+            android:text="预约内容"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_marginLeft="100dp"
+            android:textColor="@color/black"
+            android:textSize="17dp"
+            android:text="请选择日期"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <ImageView
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/icon_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/layout"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
+
             android:layout_marginTop="10dp"
             android:layout_marginLeft="15dp"
             android:textColor="@color/black"
@@ -279,7 +319,6 @@
 
 
     <TextView
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:background="@color/gray"
         android:layout_width="match_parent"
@@ -301,15 +340,15 @@
             android:textSize="17dp"/>
 
         <com.example.administrator.cheshilishop.widget.AmountView
-            android:layout_gravity="center_vertical"
             android:id="@+id/amount_view"
-            app:btnTextSize="14sp"
-            app:btnWidth="36dp"
-            app:tvWidth="50dp"
             android:layout_width="150dp"
             android:layout_height="36dp"
             android:layout_centerInParent="true"
-            android:layout_marginLeft="15dp"/>
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            app:btnTextSize="14sp"
+            app:btnWidth="36dp"
+            app:tvWidth="50dp"/>
 
     </LinearLayout>
 

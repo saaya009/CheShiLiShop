@@ -1,6 +1,7 @@
 package com.example.administrator.cheshilishop.activity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -103,7 +104,14 @@ public class StoreDataActivity extends BaseActivity {
     RelativeLayout mLayoutImg2;
     @BindView(R.id.layout_main)
     LinearLayout mLayoutMain;
+    @BindView(R.id.tv_bankname)
+    TextView mTvBankname;
+    @BindView(R.id.tv_banknum)
+    TextView mTvBanknum;
+    @BindView(R.id.tv_bank)
+    TextView mTvBank;
     private StoreBean mStore;
+    private String mId;
 
     @Override
     protected void loadViewLayout(Bundle savedInstanceState) {
@@ -134,6 +142,8 @@ public class StoreDataActivity extends BaseActivity {
     @Override
     protected void processLogic() {
         setTopTitle("查看店面信息");
+        mId = getIntent().getStringExtra("id");
+        Log.d("mId2", mId);
         getStore();
     }
 
@@ -149,7 +159,7 @@ public class StoreDataActivity extends BaseActivity {
     private void getStore() {
         final RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
-        params.add("ID",CheShiLiShopApplication.newStore.ID);
+        params.add("ID", mId);
         RestClient.post(UrlUtils.queryStoreDetail(), params, this, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -179,13 +189,13 @@ public class StoreDataActivity extends BaseActivity {
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 RequestParams errParams = new RequestParams();
                 try {
-                    errParams.add("LogCont", URLEncoder.encode(new String(responseBody),"UTF-8"));
+                    errParams.add("LogCont", URLEncoder.encode(new String(responseBody), "UTF-8"));
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
-                errParams.add("PostData",params.toString());
-                errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData", params.toString());
+                errParams.add("WToken", CheShiLiShopApplication.wtoken);
                 RestClient.post(UrlUtils.insertErrLog(), errParams, StoreDataActivity.this, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -211,19 +221,22 @@ public class StoreDataActivity extends BaseActivity {
         mEtChargeMan.setText(mStore.ChargeMan);
         mEtMobile.setText(mStore.Phone);
         mEtTel.setText(mStore.Tel);
-        mTvExpired.setText(DateUtil.stampToDate3(mStore.Expired));
-        switch (mStore.Type){
+        mTvExpired.setText(DateUtil.stampToDate2(mStore.Expired));
+        switch (mStore.Type) {
             case "0":
-                mEtType.setText("旗舰店");
+                mEtType.setText("一站式");
                 break;
             case "1":
-                mEtType.setText("综合店");
+                mEtType.setText("汽修厂");
                 break;
             case "2":
-                mEtType.setText("专营店");
+                mEtType.setText("美容店");
+                break;
+            case "3":
+                mEtType.setText("轮胎");
                 break;
         }
-        switch (mStore.WDeviceType){
+        switch (mStore.WDeviceType) {
             case "0":
                 mEtWdeviceType.setText("手工");
                 break;
@@ -233,18 +246,26 @@ public class StoreDataActivity extends BaseActivity {
         }
         mEtWdeviceNum.setText(mStore.WDeviceNum);
         mEtWpostions.setText(mStore.WPostions);
-        mTvCity.setText(CheShiLiShopApplication.address);
         mEtAdress.setText(mStore.Address);
-        mEtLatitude.setText(mStore.Latitude);
-        mEtLongitude.setText(mStore.Longitude);
-        mEtDescri.setText(mStore.Descri);
-        try {
-            JSONArray image = new JSONArray(mStore.DataImg);
-            Glide.with(this).load(image.getString(0)).into(mImg1);
-            Glide.with(this).load(image.getString(1)).into(mImg2);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (Double.parseDouble(mStore.Latitude) != 0){
+            mEtLatitude.setText(mStore.Latitude);
         }
-
+        if (Double.parseDouble(mStore.Longitude) != 0){
+            mEtLongitude.setText(mStore.Longitude);
+        }
+        if (!mStore.Descri.equals("[]")) {
+            try {
+                JSONObject descri = new JSONObject(mStore.Descri);
+                mEtDescri.setText(descri.getString("text1"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        Glide.with(this).load(mStore.Img).into(mImg1);
+        Glide.with(this).load(mStore.CerImg).into(mImg1);
+        mTvBankname.setText(mStore.BankName);
+        mTvBanknum.setText(mStore.BankNo);
+        mTvBank.setText(mStore.BankCompany);
+        mTvCity.setText(mStore.AddressNames);
     }
 }

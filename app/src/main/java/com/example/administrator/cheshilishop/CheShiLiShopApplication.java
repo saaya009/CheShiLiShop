@@ -25,8 +25,7 @@ public class CheShiLiShopApplication extends Application {
     public static StoreBean store = new StoreBean();
     public static StoreBean newStore = new StoreBean();
     public static Context applicationContext;
-    public static String AddTime = "1506149920";
-    public static String address = "";
+    public static String AddTime = "1506337869";
     public static int pic_limit = 5;
     public static List<List<Boolean>> status;
 

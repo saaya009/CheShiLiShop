@@ -110,9 +110,12 @@ public class Amount2View extends LinearLayout implements View.OnClickListener, T
 
     @Override
     public void afterTextChanged(Editable s) {
-        if (s.toString().isEmpty())
+        if (s.toString().isEmpty()){
             return;
-        amount = Double.valueOf(s.toString());
+        }
+        if (!s.toString().equals("-")) {
+            amount = Double.valueOf(s.toString());
+        }
         if (amount > goods_storage) {
             etAmount.setText(goods_storage + "");
             return;

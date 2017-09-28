@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <include layout="@layout/topbar"/>
+    <TextView
+        android:background="@color/gray"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+    <TextView
+        android:id="@+id/tv_date"
+        android:background="@color/white"
+        android:gravity="center"
+        android:textSize="18dp"
+        android:textColor="@color/black"
+        android:text="2016年10月▼"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"/>
+
+    <TextView
+        android:background="@color/gray"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <LinearLayout
+        android:layout_margin="20dp"
+        android:id="@+id/layout_null"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+        <ImageView
+            android:layout_marginTop="100dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/icon_null"
+            android:layout_width="180dp"
+            android:layout_height="180dp"/>
+        <TextView
+            android:textSize="16dp"
+            android:layout_gravity="center_horizontal"
+            android:text="暂时还没有相关记录哟"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_null"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            android:text="去首页"
+            android:background="@drawable/bg_button_home_style"
+            android:layout_width="100dp"
+            android:layout_height="30dp"/>
+    </LinearLayout>
+
+    <com.example.administrator.cheshilishop.widget.refresh.MaterialRefreshLayout
+        android:id="@+id/mrl_experience"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layout_btn"
+        android:layout_marginBottom="10dp"
+        app:isLoadMore="true"
+        app:overlay="true"
+        app:progress_show_arrow="true"
+        app:wave_color="@android:color/transparent">
+
+        <ListView
+            android:background="@color/white"
+            android:id="@+id/lv_wallet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null">
+        </ListView>
+    </com.example.administrator.cheshilishop.widget.refresh.MaterialRefreshLayout>
+
+
+</LinearLayout>

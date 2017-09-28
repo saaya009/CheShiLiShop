@@ -13,7 +13,7 @@
         android:layout_centerInParent="true"
         android:textSize="15dp"
         android:textColor="@color/black"
-        android:text="旗舰店"
+        android:text="一站式"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     </RelativeLayout>
@@ -31,7 +31,7 @@
             android:layout_centerInParent="true"
             android:textSize="15dp"
             android:textColor="@color/black"
-            android:text="综合店"
+            android:text="汽修厂"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </RelativeLayout>
@@ -49,7 +49,25 @@
             android:layout_centerInParent="true"
             android:textSize="15dp"
             android:textColor="@color/black"
-            android:text="专营店"
+            android:text="美容店"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    <TextView
+        android:background="@color/gray"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
+    <RelativeLayout
+        android:id="@+id/layout4"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_centerInParent="true"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:text="轮胎"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </RelativeLayout>

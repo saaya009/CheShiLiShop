@@ -1,5 +1,6 @@
 package com.example.administrator.cheshilishop.activity;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.cheshilishop.BaseActivity;
@@ -34,6 +38,8 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,8 +54,6 @@ public class ChangeActivity extends BaseActivity {
 
     @BindView(R.id.et_Descri)
     EditText mEtDescri;
-    @BindView(R.id.tv_enable)
-    TextView mTvEnable;
     @BindView(R.id.tv_appointType)
     TextView mTvAppointType;
     @BindView(R.id.cb_1)
@@ -72,6 +76,15 @@ public class ChangeActivity extends BaseActivity {
     LinearLayout mLayoutTime;
     @BindView(R.id.layout)
     LinearLayout mLayout;
+    @BindView(R.id.btn_choose)
+    ImageView mBtnChoose;
+    @BindView(R.id.tv_type)
+    TextView mTvType;
+    @BindView(R.id.tv_date)
+    TextView mTvDate;
+    @BindView(R.id.layout_data)
+    RelativeLayout mLayoutData;
+
 
     private AmountView mAmountView;
     private Amount2View mAmountView2;
@@ -83,11 +96,19 @@ public class ChangeActivity extends BaseActivity {
     private String id;
     private String productID;
     private String AppointCont = "";
+    private boolean flag = false;
+    final int DATE_DIALOG = 1;
+
+    int mYear, mMonth, mDay;
 
     @Override
     protected void loadViewLayout(Bundle savedInstanceState) {
         setContentView(R.layout.activity_change);
         ButterKnife.bind(this);
+        final Calendar ca = Calendar.getInstance();
+        mYear = ca.get(Calendar.YEAR);
+        mMonth = ca.get(Calendar.MONTH);
+        mDay = ca.get(Calendar.DAY_OF_MONTH);
     }
 
     @Override
@@ -122,10 +143,11 @@ public class ChangeActivity extends BaseActivity {
             }
         });
 
-        mTvEnable.setOnClickListener(this);
         mTvAppointType.setOnClickListener(this);
         mBtnCommit.setOnClickListener(this);
         topbar_iv_right.setOnClickListener(this);
+        mBtnChoose.setOnClickListener(this);
+        mTvDate.setOnClickListener(this);
     }
 
     @Override
@@ -140,34 +162,34 @@ public class ChangeActivity extends BaseActivity {
     @Override
     protected void onClickEvent(View paramView) {
         switch (paramView.getId()) {
-            case R.id.tv_enable://是否启用
-                final Dialog bottomDialog = new Dialog(this, R.style.BottomDialog);
-                View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_enable, null);
-                bottomDialog.setContentView(contentView);
-                ViewGroup.LayoutParams layoutParams = contentView.getLayoutParams();
-                layoutParams.width = getResources().getDisplayMetrics().widthPixels;
-                contentView.setLayoutParams(layoutParams);
-                contentView.findViewById(R.id.layout1).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        bottomDialog.dismiss();
-                        mTvEnable.setText("启用");
-                        enable = 1 + "";
-                    }
-                });
-                contentView.findViewById(R.id.layout2).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        bottomDialog.dismiss();
-                        mTvEnable.setText("禁用");
-                        enable = 0 + "";
-                    }
-                });
-                bottomDialog.getWindow().setGravity(Gravity.BOTTOM);
-                bottomDialog.getWindow().setWindowAnimations(R.style.BottomDialog_Animation);
-                bottomDialog.setCanceledOnTouchOutside(true);
-                bottomDialog.show();
-                break;
+//            case R.id.tv_enable://是否启用
+//                final Dialog bottomDialog = new Dialog(this, R.style.BottomDialog);
+//                View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_enable, null);
+//                bottomDialog.setContentView(contentView);
+//                ViewGroup.LayoutParams layoutParams = contentView.getLayoutParams();
+//                layoutParams.width = getResources().getDisplayMetrics().widthPixels;
+//                contentView.setLayoutParams(layoutParams);
+//                contentView.findViewById(R.id.layout1).setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        bottomDialog.dismiss();
+//                        mTvEnable.setText("启用");
+//                        enable = 1 + "";
+//                    }
+//                });
+//                contentView.findViewById(R.id.layout2).setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        bottomDialog.dismiss();
+//                        mTvEnable.setText("禁用");
+//                        enable = 0 + "";
+//                    }
+//                });
+//                bottomDialog.getWindow().setGravity(Gravity.BOTTOM);
+//                bottomDialog.getWindow().setWindowAnimations(R.style.BottomDialog_Animation);
+//                bottomDialog.setCanceledOnTouchOutside(true);
+//                bottomDialog.show();
+//                break;
             case R.id.tv_appointType://日期类型
                 final Dialog bottomDialog2 = new Dialog(this, R.style.BottomDialog);
                 View contentView2 = LayoutInflater.from(this).inflate(R.layout.dialog_appointtype, null);
@@ -205,7 +227,9 @@ public class ChangeActivity extends BaseActivity {
                         appointtype = 1 + "";
                         mLayoutTime.setOnClickListener(null);
                         mTvAppointType.setText("一次预约");
+                        AppointCont = "";
                         mLayout.setVisibility(View.GONE);
+                        mLayoutData.setVisibility(View.VISIBLE);
                         mCb1.setClickable(false);
                         mCb2.setClickable(false);
                         mCb3.setClickable(false);
@@ -323,6 +347,7 @@ public class ChangeActivity extends BaseActivity {
                     public void onClick(View view) {
                         bottomDialog2.dismiss();
                         appointtype = 6 + "";
+                        AppointCont = "";
                         mTvAppointType.setText("自定义");
                         mLayout.setVisibility(View.VISIBLE);
                         mCb1.setClickable(true);
@@ -345,7 +370,53 @@ public class ChangeActivity extends BaseActivity {
             case R.id.topbar_iv_right://
                 delete();
                 break;
+            case R.id.btn_choose://选择状态
+                if (!flag) {
+                    mTvType.setText("启用");
+                    mBtnChoose.setImageResource(R.mipmap.icon_choose_on);
+                    enable = 1 + "";
+                    naService(enable);
+                } else {
+                    mTvType.setText("禁用");
+                    mBtnChoose.setImageResource(R.mipmap.icon_choose_off);
+                    enable = 0 + "";
+                    naService(enable);
+                }
+                flag = !flag;
+                break;
+            case R.id.tv_date://只有一次选择日期
+                showDialog(DATE_DIALOG);
+                break;
         }
+    }
+
+    /**
+     * 设置服务是否可用
+     * @param enable
+     */
+    private void naService(String enable) {
+        RequestParams params = new RequestParams();
+        params.add("WToken",CheShiLiShopApplication.wtoken);
+        params.add("ID",id);
+        params.add("Enable",enable);
+        RestClient.post(UrlUtils.NAService(), params, ChangeActivity.this, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String result = new String(responseBody);
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    String Status = jsonObject.getString("Status");
+                    Log.d("禁用服务",result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
     }
 
     /**
@@ -404,6 +475,39 @@ public class ChangeActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case DATE_DIALOG:
+                DatePickerDialog dialog = new DatePickerDialog(this, mdateListener, mYear, mMonth, mDay);
+                DatePicker dp = dialog.getDatePicker();
+                dp.setMinDate(new Date().getTime());
+                return dialog;
+        }
+        return null;
+    }
+
+    /**
+     * 设置日期 利用StringBuffer追加
+     */
+    public void display() {
+        mTvDate.setText(new StringBuffer().append(mYear + 1).append("-").append(mMonth).append("-").append(mDay).append(" "));
+        AppointCont = mTvDate.getText().toString().trim();
+    }
+
+    private DatePickerDialog.OnDateSetListener mdateListener = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+            mYear = year-1;
+            mMonth = monthOfYear+1;
+            mDay = dayOfMonth;
+            display();
+        }
+    };
+
+
     /**
      * 提交数据
      */
@@ -445,6 +549,10 @@ public class ChangeActivity extends BaseActivity {
             Log.d("星期", AppointCont);
             params.add("AppointCont", AppointCont);
         } else if ("6".equals(appointtype) && TextUtils.isEmpty(AppointCont)) {
+            ToastUtils.show(ChangeActivity.this, "请选择可预约时间！");
+            return;
+        }
+        if ("1".equals(appointtype) && TextUtils.isEmpty(AppointCont)){
             ToastUtils.show(ChangeActivity.this, "请选择可预约时间！");
             return;
         }
@@ -517,10 +625,4 @@ public class ChangeActivity extends BaseActivity {
         return true;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

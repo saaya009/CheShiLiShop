@@ -1,7 +1,9 @@
 package com.example.administrator.cheshilishop.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -22,6 +24,7 @@ public class ExamineActivity extends BaseActivity {
     Button mBtnMain;
     @BindView(R.id.btn_date)
     Button mBtnDate;
+    private String mId;
 
     @Override
     protected void loadViewLayout(Bundle savedInstanceState) {
@@ -53,6 +56,8 @@ public class ExamineActivity extends BaseActivity {
     @Override
     protected void processLogic() {
         setTopTitle("申请添加店面");
+        mId = getIntent().getStringExtra("id");
+
     }
 
     @Override
@@ -65,6 +70,8 @@ public class ExamineActivity extends BaseActivity {
                 break;
             case R.id.btn_date://查看资料
                 intent = new Intent(this,StoreDataActivity.class);
+                intent.putExtra("id",mId);
+                Log.d("mId1", mId);
                 startActivity(intent);
                 break;
         }
