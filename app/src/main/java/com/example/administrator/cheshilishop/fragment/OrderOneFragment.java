@@ -25,6 +25,7 @@ import com.example.administrator.cheshilishop.bean.BookingBean;
 import com.example.administrator.cheshilishop.bean.UserInfoBean;
 import com.example.administrator.cheshilishop.bean.UserRegisterBean;
 import com.example.administrator.cheshilishop.net.RestClient;
+import com.example.administrator.cheshilishop.net.RestClient;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
 import com.example.administrator.cheshilishop.widget.refresh.MaterialRefreshLayout;
@@ -77,12 +78,6 @@ public class OrderOneFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
                 getActivity().finish();
-            }
-        });
-        lv_order.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> view, View view1, int i, long l) {
-
             }
         });
 

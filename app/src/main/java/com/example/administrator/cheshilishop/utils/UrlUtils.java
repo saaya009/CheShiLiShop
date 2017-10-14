@@ -8,7 +8,7 @@ import android.net.Uri;
  */
 
 public class UrlUtils {
-    public static String BASE_URL = "http://api.cheshili.com.cn:8000";
+    public static String BASE_URL = "http://47.94.94.94";
 
     /**
      * 登录
@@ -218,7 +218,7 @@ public class UrlUtils {
      */
     public static String addStore() {
         String url = null;
-        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/Store/AddStore").buildUpon();
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/Store/AddStoreAll").buildUpon();
         url = uribBuilder.build().toString();
         return url;
     }
@@ -332,6 +332,16 @@ public class UrlUtils {
     public static String queryAccountList() {
         String url = null;
         Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/Account/QueryAccountList").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
+
+    /**
+     * 清除缓存
+     */
+    public static String flushRedisByLeagueID() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/LeagueInfo/FlushRedisByLeagueID").buildUpon();
         url = uribBuilder.build().toString();
         return url;
     }

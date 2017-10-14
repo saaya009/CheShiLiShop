@@ -213,6 +213,25 @@ public class DateUtil {
 		return date;
 	}
 
+	/*
+    * 将时间戳转换为时间
+    */
+	public static String stampToDate4(String time){
+		Long Time = new Long(time);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+		String date = sdf.format(new Date(Time*1000));
+		return date;
+	}
+	/*
+        * 将时间戳转换为时间
+        */
+	public static String stampToDate5(String time){
+		Long Time = new Long(time);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+		String date = sdf.format(new Date(Time*1000));
+		return date;
+	}
+
 
 	/*
     * 将时间戳转换为时间

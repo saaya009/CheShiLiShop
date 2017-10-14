@@ -51,8 +51,6 @@ import cz.msebera.android.httpclient.Header;
 public class AccountListActivity extends BaseActivity {
 
 
-    @BindView(R.id.tv_date)
-    TextView mTvDate;
     @BindView(R.id.lv_wallet)
     ListView mLvWallet;
 
@@ -92,8 +90,8 @@ public class AccountListActivity extends BaseActivity {
 
     @Override
     protected void setListener() {
-        mTvDate.setOnClickListener(this);
-        refreshLayout = findViewById(R.id.mrl_experience);;
+        refreshLayout = findViewById(R.id.mrl_experience);
+        ;
         layout_null = findViewById(R.id.layout_null);
         btn_null = findViewById(R.id.btn_null);
         btn_null.setOnClickListener(new View.OnClickListener() {
@@ -110,13 +108,13 @@ public class AccountListActivity extends BaseActivity {
             public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
                 page = 1;
                 list.clear();
-                getData(year, month, page);
+                getData(page);
             }
 
             @Override
             public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
                 page++;
-                getData(year, month, page);
+                getData(page);
             }
         });
     }
@@ -124,73 +122,20 @@ public class AccountListActivity extends BaseActivity {
     @Override
     protected void processLogic() {
         setTopTitle("交易明细");
-
-        Calendar cal = Calendar.getInstance();
-        year = cal.get(Calendar.YEAR);
-        month = cal.get(Calendar.MONTH)+1;
-        mTvDate.setText(year+"年"+month+"月");
-        getData(year, month, page);
-
-        // 时间选择器
-        pvTime = new TimePickerView(this, TimePickerView.Type.YEAR_MONTH_DAY);
-        // 控制时间范围
-        pvTime.setTime(new Date());
-        pvTime.setCyclic(false);
-        pvTime.setCancelable(true);
-        // 时间选择后回调
-        pvTime.setOnTimeSelectListener(new TimePickerView.OnTimeSelectListener() {
-
-            @Override
-            public void onTimeSelect(Date date) {
-                mTvDate.setText(getTime(date));
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                Calendar c = Calendar.getInstance();
-                c.setTime(date);
-                int year = c.get(Calendar.YEAR);
-                int month = c.get(Calendar.MONTH)+1;
-                getData(year, month, page);
-                Log.d("时间",year+"==="+month);
-            }
-        });
+        getData(page);
     }
 
     @Override
     protected void onClickEvent(View paramView) {
-        switch (paramView.getId()){
-            case R.id.tv_date://选择时间
-                pvTime.show();
-                break;
-        }
     }
 
     /**
      * 获取交易记录
      */
-    private void getData(int year, int month, final int page) {
-        Calendar cal = Calendar.getInstance();
-        cal.set(year, month, 0);
-        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        Date date = null;
-        Date date2 = null;
-        try {
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            date = df.parse(year + "-" + month + "-" + dayOfMonth);
-            date2 = df.parse(year + "-" + month + "-1");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Calendar endcal = Calendar.getInstance();
-        endcal.setTime(date);
-        long endTime = endcal.getTimeInMillis();
-        Calendar startcal = Calendar.getInstance();
-        startcal.setTime(date2);
-        long startTims = startcal.getTimeInMillis();
-        Log.d("日期1", "start=" + startTims);
-        Log.d("日期2", "endTime=" + endTime);
+    private void getData(final int page) {
+
         final RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
-        params.add("StartTime",(startTims + "").substring(0,(startTims + "").length()-3));
-        params.add("EndTime", (endTime + "").substring(0,(endTime + "").length()-3));
         params.add("Rows", size + "");
         params.add("N", page + "");
         params.add("StoreID", CheShiLiShopApplication.storeID);
@@ -266,10 +211,5 @@ public class AccountListActivity extends BaseActivity {
     }
 
 
-
-    public static String getTime(Date date) {
-        java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy年MM月");
-        return format.format(date);
-    }
 
 }

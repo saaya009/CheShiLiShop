@@ -17,6 +17,7 @@ import com.example.administrator.cheshilishop.utils.UrlUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -63,40 +64,61 @@ public class WalletAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.item_wallet, null);
             holder.tv_type = convertView.findViewById(R.id.tv_type);
             holder.tv_time = convertView.findViewById(R.id.tv_time);
+            holder.tv_type2 = convertView.findViewById(R.id.tv_type2);
             holder.tv_amount = convertView.findViewById(R.id.tv_amount);
+            holder.tv_date = convertView.findViewById(R.id.tv_date);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        switch (list.get(position).Type){
-            case "0":
-                holder.tv_type.setText("充值");
-                break;
-            case "1":
-                holder.tv_type.setText("提现");
-                break;
-            case "2":
-                holder.tv_type.setText("消费");
-                break;
-            case "3":
-                holder.tv_type.setText("转账");
-                break;
-            case "4":
-                holder.tv_type.setText("活动");
-                break;
-            case "5":
-                holder.tv_type.setText("红包");
-                break;
-            case "6":
-                holder.tv_type.setText("服务收入");
-                break;
-        }
-        holder.tv_time.setText(DateUtil.stampToDate2(list.get(position).AddTime));
-        if (Double.parseDouble(list.get(position).Amount)>0){
-            holder.tv_amount.setText("+"+list.get(position).Amount);
-        }
+        try {
+            JSONObject data = new JSONObject(list.get(position).Data);
+            switch (data.getString("AccountTransType")) {
+                case "0":
+                    holder.tv_type.setText("订单");
+                    break;
+                case "1":
+                    holder.tv_type.setText("红包");
+                    break;
+                case "2":
+                    holder.tv_type.setText("充值");
+                    break;
+                case "3":
+                    holder.tv_type.setText("银行卡");
+                    break;
+                case "4":
+                    holder.tv_type.setText("佣金");
+                    break;
+                case "5":
+                    holder.tv_type.setText("服务收入");
+                    break;
+                case "6":
+                    holder.tv_type.setText("优惠券");
+                case "7":
+                    holder.tv_type.setText("平均");
+                    break;
+            }
+            holder.tv_type2.setText(data.getString("Text"));
+            holder.tv_time.setText(DateUtil.stampToDate(list.get(position).AddTime));
+            if (list.get(position).InOrOut.equals("1")) {
+                holder.tv_amount.setText("+" + list.get(position).Amount);
+            } else {
+                holder.tv_amount.setText("-" + list.get(position).Amount);
+            }
+            if (position != 0 && Integer.parseInt(DateUtil.stampToDate4(list.get(position).AddTime)) != Integer.parseInt(DateUtil.stampToDate4(list.get(position - 1).AddTime))) {
+                holder.tv_date.setVisibility(View.VISIBLE);
+                holder.tv_date.setText(DateUtil.stampToDate5(list.get(position).AddTime));
+            }else  if (position ==0){
+                holder.tv_date.setVisibility(View.VISIBLE);
+                holder.tv_date.setText(DateUtil.stampToDate5(list.get(position).AddTime));
+            }else {
+                holder.tv_date.setVisibility(View.GONE);
+            }
 
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         return convertView;
 
@@ -105,7 +127,9 @@ public class WalletAdapter extends BaseAdapter {
 
     static class ViewHolder {
         TextView tv_type;
+        TextView tv_type2;
         TextView tv_time;
         TextView tv_amount;
+        TextView tv_date;
     }
 }

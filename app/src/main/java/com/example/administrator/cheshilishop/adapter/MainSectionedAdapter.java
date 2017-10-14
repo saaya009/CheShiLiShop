@@ -66,13 +66,15 @@ public class MainSectionedAdapter extends SectionedBaseAdapter {
         }
         ((TextView) layout.findViewById(R.id.tv_name)).setText(rlist.get(section).get(position).ProductName);
         ((TextView) layout.findViewById(R.id.tv_context)).setText(rlist.get(section).get(position).Descri);
-        ((TextView) layout.findViewById(R.id.tv_money)).setText("¥"+rlist.get(section).get(position).GapPrice);
+        Double price = Double.parseDouble(rlist.get(section).get(position).ProductPrice)+Double.parseDouble(rlist.get(section).get(position).GapPrice);
+        ((TextView) layout.findViewById(R.id.tv_money)).setText("¥"+price);
+        ((TextView) layout.findViewById(R.id.tv_money2)).setText("由原价"+rlist.get(section).get(position).ProductPrice+"和差值"
+                +rlist.get(section).get(position).GapPrice+"组合而成");
         (layout.findViewById(R.id.btn_change)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, ChangeActivity.class);
-                intent.putExtra("ID",rlist.get(section).get(position).ID);
-                intent.putExtra("productID",rlist.get(section).get(position).ProductID);
+                intent.putExtra("ProductBean",rlist.get(section).get(position));
                 mContext.startActivity(intent);
             }
         });

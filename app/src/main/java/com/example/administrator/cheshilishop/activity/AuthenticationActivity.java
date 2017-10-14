@@ -69,7 +69,7 @@ public class AuthenticationActivity extends BaseActivity {
                     finish();
                     break;
                 } else {
-                    ToastUtils.show(AuthenticationActivity.this,"请点击同意申请须知");
+                    ToastUtils.show(AuthenticationActivity.this,"请下拉阅读并点击同意申请须知");
                 }
         }
     }

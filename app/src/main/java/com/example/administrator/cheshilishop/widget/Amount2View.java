@@ -22,7 +22,7 @@ import com.example.administrator.cheshilishop.R;
 public class Amount2View extends LinearLayout implements View.OnClickListener, TextWatcher {
 
     private static final String TAG = "AmountView";
-    private double amount = 0; //购买数量
+    private double amount = 1; //购买数量
     private int goods_storage = 15; //商品库存
 
     private OnAmountChangeListener mListener;
@@ -74,6 +74,10 @@ public class Amount2View extends LinearLayout implements View.OnClickListener, T
 
     public void setGoods_storage(int goods_storage) {
         this.goods_storage = goods_storage;
+    }
+    public void setAmount(Double amount) {
+        this.amount = amount;
+        etAmount.setText(this.amount+"");
     }
 
     @Override

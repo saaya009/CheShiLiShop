@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class StoreBean implements Serializable {
     public String ID;
     public String Name;
-    public String SortName;
+    public String ShortName;
     public String ChargeMan;
     public String ChargeTitle;
     public String Phone;

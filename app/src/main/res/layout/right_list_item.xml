@@ -16,7 +16,7 @@
     <TextView
         android:id="@+id/tv_context"
         android:textSize="13dp"
-        android:text="小车普洗小车普洗小车普洗小车普洗小车普洗小车普洗小车普洗小车普洗小车普洗小车普洗小车普洗小车普洗小车普洗"
+        android:text=""
         android:layout_marginLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
@@ -32,6 +32,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/orange" />
+
+        <TextView
+            android:layout_toRightOf="@+id/tv_money"
+            android:id="@+id/tv_money2"
+            android:textSize="10dp"
+            android:text=""
+            android:layout_alignBaseline="@id/tv_money"
+            android:layout_marginRight="70dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colortext" />
 
         <Button
             android:id="@+id/btn_change"

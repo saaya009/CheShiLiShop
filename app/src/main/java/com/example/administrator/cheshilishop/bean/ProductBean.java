@@ -23,6 +23,7 @@ public class ProductBean implements Serializable {
     public String ProductName;
     public String CategoryName;
     public String CategoryID;
+    public String ProductPrice;
 
     public String Name;
     public String BusinessPrice;

@@ -82,6 +82,8 @@ public class OrderConfirmationActivity extends BaseActivity {
     Button mBtnHome;
     @BindView(R.id.layout_suc)
     RelativeLayout mLayoutSuc;
+    @BindView(R.id.tv_mobile)
+    TextView mTvMobile;
 
     private String appointID;
     private String serviceID;
@@ -126,25 +128,26 @@ public class OrderConfirmationActivity extends BaseActivity {
         type = getIntent().getStringExtra("type");
 
         switch (type) {
-            case "1"://扫码
-                if ("0".equals(appointID)){
+            case "0"://
+                if ("0".equals(appointID)) {
                     getServiceData();
                     mTvType.setText("未预约");
                     mBtnCancel.setVisibility(View.GONE);
-                }else {
+                } else {
                     mTvType.setText("已预约");
                     getAppointData();
                 }
                 mLayoutConfirm.setVisibility(View.VISIBLE);
+                mBtnConfirm.setVisibility(View.INVISIBLE);
                 mLayoutSuc.setVisibility(View.GONE);
                 break;
-            case "2"://列表
+            case "1"://列表
                 getAppointData();
                 mTvType.setText("用户取消");
                 mLayoutSuc.setVisibility(View.GONE);
                 mLayoutConfirm.setVisibility(View.INVISIBLE);
                 break;
-            case "3"://列表
+            case "2"://列表
                 getAppointData();
                 mTvType.setText("商家取消");
                 mLayoutSuc.setVisibility(View.GONE);
@@ -162,10 +165,28 @@ public class OrderConfirmationActivity extends BaseActivity {
                 mLayoutSuc.setVisibility(View.VISIBLE);
                 mLayoutConfirm.setVisibility(View.INVISIBLE);
                 break;
-            case "0"://
-                mTvType.setText("已预约");
+            case "3"://
+                mTvType.setText("未履约");
                 getAppointData();
                 mBtnConfirm.setVisibility(View.GONE);
+                mLayoutConfirm.setVisibility(View.VISIBLE);
+                mLayoutSuc.setVisibility(View.GONE);
+                break;
+            case "9"://
+                mTvType.setText("已服务");
+                getServiceData();
+                mLayoutSuc.setVisibility(View.GONE);
+                mLayoutConfirm.setVisibility(View.INVISIBLE);
+                break;
+            case "99"://扫码
+                if ("0".equals(appointID)) {
+                    getServiceData();
+                    mTvType.setText("未预约");
+                    mBtnCancel.setVisibility(View.GONE);
+                } else {
+                    mTvType.setText("已预约");
+                    getAppointData();
+                }
                 mLayoutConfirm.setVisibility(View.VISIBLE);
                 mLayoutSuc.setVisibility(View.GONE);
                 break;
@@ -188,12 +209,12 @@ public class OrderConfirmationActivity extends BaseActivity {
                 confirmService();
                 break;
             case R.id.btn_list://去列表
-                Intent intent = new Intent(this,BookingManagementActivity.class);
+                Intent intent = new Intent(this, BookingManagementActivity.class);
                 startActivity(intent);
                 finish();
                 break;
             case R.id.btn_home://去首页
-                intent = new Intent(this,MainActivity.class);
+                intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 finish();
                 break;
@@ -216,14 +237,14 @@ public class OrderConfirmationActivity extends BaseActivity {
                     JSONObject jsonObject = new JSONObject(result);
                     String status = jsonObject.getString("Status");
                     if ("0".equals(status)) {
-                        ToastUtils.show(OrderConfirmationActivity.this,"取消订单");
+                        ToastUtils.show(OrderConfirmationActivity.this, "取消订单");
                         finish();
                     } else if ("-1".equals(status)) {
                         Intent intent = new Intent(OrderConfirmationActivity.this, SuccessActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
-                        ToastUtils.show(OrderConfirmationActivity.this,"取消失败");
+                        ToastUtils.show(OrderConfirmationActivity.this, "取消失败");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -269,13 +290,13 @@ public class OrderConfirmationActivity extends BaseActivity {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);
                 try {
-                    Log.d("确认预约",result);
+                    Log.d("确认预约", result);
                     JSONObject jsonObject = new JSONObject(result);
                     String status = jsonObject.getString("Status");
                     if ("0".equals(status)) {
                         Intent intent = new Intent(OrderConfirmationActivity.this, SuccessActivity.class);
-                        intent.putExtra("AppointID",appointID);
-                        intent.putExtra("ServiceID",serviceID);
+                        intent.putExtra("AppointID", appointID);
+                        intent.putExtra("ServiceID", serviceID);
                         startActivity(intent);
                         finish();
                     } else if ("-1".equals(status)) {
@@ -343,27 +364,30 @@ public class OrderConfirmationActivity extends BaseActivity {
                     if ("0".equals(Status)) {
                         String data = jsonObject.getString("Data");
                         BookingBean bookingBean = JSON.parseObject(data, BookingBean.class);
-                        if (!bookingBean.StoreID.equals(CheShiLiShopApplication.storeID)&& Status.equals("1")){
-                            ToastUtils.show(OrderConfirmationActivity.this,"预约并不是当前店面，是你名下的店面");
+                        if (!bookingBean.StoreID.equals(CheShiLiShopApplication.storeID) && Status.equals("1")) {
+                            ToastUtils.show(OrderConfirmationActivity.this, "预约并不是当前店面，是你名下的店面");
                         }
-                        mTvTel.setText(bookingBean.UserMobile);
-                        if (!TextUtils.isEmpty(bookingBean.ProductImg)) {
+                        DataBean dataBean = JSON.parseObject(bookingBean.Data, DataBean.class);
+                        mTvTel.setText(dataBean.UserMobile);
+                        if (!TextUtils.isEmpty(dataBean.ProductImg)) {
                             Glide.with(context)
-                                    .load(UrlUtils.BASE_URL + "/Img/" + bookingBean.ProductImg)
+                                    .load(UrlUtils.BASE_URL + "/Img/" + dataBean.ProductImg)
                                     .into(mImgLogo);
                         }
-                        mTvShopname.setText(bookingBean.ProductName);
-                        mTvMoney.setText(bookingBean.AllMoney);
-                        JSONObject descri = new JSONObject(bookingBean.ProductDescri);
+                        mTvShopname.setText(dataBean.ProductName);
+                        mTvMoney.setText(dataBean.AllMoney);
+                        Log.d("预约详情2", dataBean.ProductDescri);
+                        JSONObject descri = new JSONObject(dataBean.ProductDescri);
                         mTvStatus.setText(descri.getString("title"));
                         mTvNumber.setText("x1");
                         mTvNumber2.setText("共1件商品");
-                        mTvOrder.setText(bookingBean.OrderID);
+                        mTvOrder.setText(dataBean.OrderID);
                         mTvOdertime.setText(DateUtil.stampToDate(bookingBean.AddTime));
-                        mTvBookingtime.setText(DateUtil.stampToDate3(bookingBean.AppointDate));
-                        mTvAmount.setText(bookingBean.AllMoney);
-                        mTvOffer.setText(Float.parseFloat(bookingBean.AllMoney) - Float.parseFloat(bookingBean.OrderOutPocket) + "");
-                        mTvPreferential.setText(bookingBean.OrderOutPocket);
+                        mTvBookingtime.setText(DateUtil.stampToDate3(bookingBean.AppointTimeS));
+                        mTvAmount.setText(dataBean.AllMoney);
+                        mTvMobile.setText(dataBean.UserMobile);
+                        mTvOffer.setText(Float.parseFloat(dataBean.AllMoney) - Float.parseFloat(dataBean.OrderOutPocket) + "");
+                        mTvPreferential.setText(dataBean.OrderOutPocket);
                     } else if ("-1".equals(Status)) {
                         Intent intent = new Intent(OrderConfirmationActivity.this, LoginActivity.class);
                         startActivity(intent);
@@ -448,6 +472,7 @@ public class OrderConfirmationActivity extends BaseActivity {
                         mTvStatus.setText(descri.getString("title"));
                         mTvNumber.setText("x1");
                         mTvNumber2.setText("共1件商品");
+                        mTvMobile.setText(service.UserMobile);
                         mTvOrder.setText(service.OrderID);
                         mTvOdertime.setText(DateUtil.stampToDate(service.AddTime));
                         mTvBookingtime.setVisibility(View.GONE);
@@ -455,7 +480,7 @@ public class OrderConfirmationActivity extends BaseActivity {
                         mTvOffer.setText(Float.parseFloat(service.AllMoney) - Float.parseFloat(service.OrderOutPocket) + "");
                         mTvPreferential.setText(service.OrderOutPocket);
                     } else {
-                        ToastUtils.show(OrderConfirmationActivity.this,"辨认失败");
+                        ToastUtils.show(OrderConfirmationActivity.this, "辨认失败");
                         finish();
                     }
                 } catch (JSONException e) {

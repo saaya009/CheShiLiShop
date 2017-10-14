@@ -6,6 +6,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -47,6 +49,9 @@ public class OrderTreeActivity extends BaseActivity{
     private ListView mTree;
     private SimpleTreeAdapter mAdapter;
 
+    private LinearLayout layout_null;
+    private Button btn_null;
+
     private List<UserRegisterBean> list = new ArrayList<UserRegisterBean>();
     private List<UserRegisterBean> list2 = new ArrayList<UserRegisterBean>();
     private List<UserRegisterBean> list3 = new ArrayList<UserRegisterBean>();
@@ -69,6 +74,16 @@ public class OrderTreeActivity extends BaseActivity{
     @Override
     protected void findViewById() {
         mTree = findViewById(R.id.id_tree);
+        layout_null = findViewById(R.id.layout_null);
+        btn_null = findViewById(R.id.btn_null);
+        btn_null.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(OrderTreeActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     @Override
@@ -89,17 +104,19 @@ public class OrderTreeActivity extends BaseActivity{
     private void initDatas() {
 
         for (int i = 0; i < list.size(); i++) {
+            int num1 = mDatas2.size()+1;
             mDatas2.add(new FileBean(mDatas2.size()+1, 0,
                     list.get(i).Mobile.substring(0,3)+"****"+list.get(i).Mobile.substring(7,list.get(i).Mobile.length())  + "\n" + list.get(i).RealName+"/"+list.get(i).NickName));
             if (!TextUtils.isEmpty(list.get(i).Children)) {
                 list2 = JSON.parseArray(list.get(i).Children, UserRegisterBean.class);
                 for (int j = 0; j < list2.size(); j++) {
-                    mDatas2.add(new FileBean(mDatas2.size()+1, i + 1,
+                    int num2= mDatas2.size()+1;
+                    mDatas2.add(new FileBean(mDatas2.size()+1, num1,
                             list2.get(j).Mobile.substring(0,3)+"****"+list2.get(j).Mobile.substring(7,list2.get(j).Mobile.length()) + "\n" + list2.get(j).RealName+"/"+list2.get(j).NickName));
                     if (!TextUtils.isEmpty(list2.get(j).Children)) {
                         list3 = JSON.parseArray(list2.get(j).Children, UserRegisterBean.class);
                         for (int n = 0; n < list3.size(); n++) {
-                            mDatas2.add(new FileBean(mDatas2.size()+1, j + 1 + i + 1,
+                            mDatas2.add(new FileBean(mDatas2.size()+1,num2,
                                     list3.get(n).Mobile.substring(0,3)+"****"+list3.get(n).Mobile.substring(7,list3.get(n).Mobile.length()) + "\n" + list3.get(n).RealName+"/"+list3.get(n).NickName));
                         }
                     }
@@ -167,6 +184,9 @@ public class OrderTreeActivity extends BaseActivity{
                         Intent intent = new Intent(OrderTreeActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
+                    }else if ("1".equals(Status)) {
+                        layout_null.setVisibility(View.VISIBLE);
+                        mTree.setVisibility(View.GONE);
                     } else {
                         ToastUtils.show(OrderTreeActivity.this, jsonObject.getString("Data"));
                     }
@@ -184,7 +204,7 @@ public class OrderTreeActivity extends BaseActivity{
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
+                errParams.add("Url",UrlUtils.queryUserRegisterJson());
                 errParams.add("PostData",params.toString());
                 errParams.add("WToken",CheShiLiShopApplication.wtoken);
                 RestClient.post(UrlUtils.insertErrLog(), errParams, OrderTreeActivity.this, new AsyncHttpResponseHandler() {

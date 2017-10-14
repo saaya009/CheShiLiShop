@@ -5,19 +5,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
     <include layout="@layout/topbar"/>
-    <TextView
-        android:background="@color/gray"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
-    <TextView
-        android:id="@+id/tv_date"
-        android:background="@color/white"
-        android:gravity="center"
-        android:textSize="18dp"
-        android:textColor="@color/black"
-        android:text="2016年10月▼"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"/>
+
 
     <TextView
         android:background="@color/gray"

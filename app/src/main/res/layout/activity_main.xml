@@ -86,13 +86,6 @@
 
                 </LinearLayout>
 
-                <TextView
-                    android:layout_width="1px"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@color/white"/>
-
                 <LinearLayout
                     android:id="@+id/layout_userinfo"
                     android:layout_width="0dp"
@@ -117,6 +110,13 @@
                         android:textSize="18dp"/>
 
                 </LinearLayout>
+
+                <TextView
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/white"/>
 
             </LinearLayout>
 
@@ -232,14 +232,14 @@
                         android:layout_height="35dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="25dp"
-                        android:src="@mipmap/icon_money"/>
+                        android:src="@mipmap/icon_pay"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp"
-                        android:text="佣金记录"
+                        android:text="我的钱包"
                         android:textColor="@color/black"
                         android:textSize="17dp"/>
                 </LinearLayout>

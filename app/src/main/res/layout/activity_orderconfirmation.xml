@@ -164,8 +164,36 @@
                     android:textColor="@color/black"
                     android:textSize="16dp"/>
 
+
                 <TextView
                     android:id="@+id/tv_order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="16dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+
+                android:background="@color/white">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="15dp"
+                    android:text="用户名称:"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"/>
+
+
+                <TextView
+                    android:id="@+id/tv_mobile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -324,7 +352,7 @@
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
-        android:visibility="gone">
+        >
 
         <Button
             android:id="@+id/btn_confirm"
@@ -344,7 +372,6 @@
             android:layout_height="25dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:layout_alignParentRight="true"
             android:layout_toLeftOf="@+id/btn_confirm"
             android:background="@drawable/bg_button_style"
             android:text="取消订单"
@@ -353,6 +380,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:visibility="gone"
         android:id="@+id/layout_suc"
         android:layout_width="match_parent"
         android:layout_height="50dp"

@@ -66,7 +66,7 @@ public class BookingAllAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.item_booking, null);
             holder.mTvTel = convertView.findViewById(R.id.tv_tel);
             holder.mTvStatus = convertView.findViewById(R.id.tv_status);
-            holder.mTvEndtime = convertView.findViewById(R.id.tv_endtime);
+            holder.tv_bookingtime = convertView.findViewById(R.id.tv_bookingtime);
             holder.mTvOrdernumber = convertView.findViewById(R.id.tv_ordernumber);
             holder.mTvShopname = convertView.findViewById(R.id.tv_shopname);
             holder.mTvMoney = convertView.findViewById(R.id.tv_money);
@@ -78,7 +78,7 @@ public class BookingAllAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         if (!TextUtils.isEmpty(list.get(position).ID)) {
-            holder.mTvTel.setText(list.get(position).UserID);
+            holder.mTvTel.setText(list.get(position).ID);
             switch (list.get(position).Status) {
                 case "4":
                     holder.mTvStatus.setText("已验证");
@@ -96,21 +96,15 @@ public class BookingAllAdapter extends BaseAdapter {
                     holder.mTvStatus.setText("已预约");
                     break;
             }
-            holder.mTvEndtime.setText(DateUtil.stampToDate3(list.get(position).AddTime));
-            holder.mTvOrdernumber.setText(list.get(position).ServiceID);
+            holder.tv_bookingtime.setText(DateUtil.stampToDate3(list.get(position).AddTime));
+            holder.mTvOrdernumber.setText(list.get(position).OrderID);
             holder.mTvShopname.setText(list.get(position).ProductName);
             holder.mTvMoney.setText("¥" + list.get(position).AllMoney);
-            holder.mTvBookingtime.setText("预约时间: " + DateUtil.stampToDate3(list.get(position).AppointDate));
-            JSONObject descri = null;
-            try {
-                descri = new JSONObject(list.get(position).ProductDescri);
-                holder.mTvService.setText(descri.getString("title"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            if (!TextUtils.isEmpty(list.get(position).Imgs)) {
+            holder.mTvBookingtime.setText("预约时间: " + DateUtil.stampToDate3(list.get(position).AppointTimeS));
+            holder.mTvService.setText(list.get(position).StoreName);
+            if (!TextUtils.isEmpty(list.get(position).ProductImg)) {
                 Glide.with(context)
-                        .load(UrlUtils.BASE_URL + "/Img/" + list.get(position).Imgs)
+                        .load(UrlUtils.BASE_URL + "/Img/" + list.get(position).ProductImg)
                         .into(holder.mImgLogo);
             }
         }
@@ -122,7 +116,7 @@ public class BookingAllAdapter extends BaseAdapter {
     static class ViewHolder {
         TextView mTvTel;
         TextView mTvStatus;
-        TextView mTvEndtime;
+        TextView tv_bookingtime;
         TextView mTvOrdernumber;
         ImageView mImgLogo;
         TextView mTvShopname;

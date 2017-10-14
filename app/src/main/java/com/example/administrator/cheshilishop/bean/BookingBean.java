@@ -33,6 +33,7 @@ public class BookingBean implements Serializable {
     public String OrderOutPocket;
     public String AllMoney;
     public String StoreImg;
+    public String Data;
     public String StoreDescri;
     public String StoreLeagueID;
 

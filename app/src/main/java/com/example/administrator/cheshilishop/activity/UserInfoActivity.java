@@ -1,25 +1,17 @@
 package com.example.administrator.cheshilishop.activity;
 
 import android.app.Activity;
-import android.app.DownloadManager;
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.LocalBroadcastManager;
@@ -56,13 +48,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URLEncoder;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -100,6 +88,10 @@ public class UserInfoActivity extends BaseActivity {
     LinearLayout mLayoutUserinfo;
     @BindView(R.id.btn_exit)
     Button mBtnExit;
+    @BindView(R.id.layout_mywallet)
+    RelativeLayout mLayoutMywallet;
+    @BindView(R.id.layout_push)
+    RelativeLayout mLayoutPush;
 
     private SelectImgPopupWindow selectImgPopupWindow;
     private static String localTempImageFileName = "";
@@ -146,6 +138,8 @@ public class UserInfoActivity extends BaseActivity {
         mBtnExit.setOnClickListener(this);
         mLayoutUserinfo.setOnClickListener(this);
         mLayoutVersion.setOnClickListener(this);
+        mLayoutMywallet.setOnClickListener(this);
+        mLayoutPush.setOnClickListener(this);
     }
 
     @Override
@@ -179,7 +173,49 @@ public class UserInfoActivity extends BaseActivity {
             case R.id.layout_version://版本更新
                 UpgradeHelper.checkAppVersion(UserInfoActivity.this, false);
                 break;
+            case R.id.layout_mywallet://我的钱包
+                intent = new Intent(UserInfoActivity.this, MyWalletActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.layout_push://清空缓存
+                push();
+                break;
         }
+    }
+
+    /**
+     * 清空缓存
+     */
+    private void push() {
+        RequestParams params = new RequestParams();
+        params.add("WToken",CheShiLiShopApplication.wtoken);
+        RestClient.post(UrlUtils.flushRedisByLeagueID(), params,this, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String result = new String(responseBody);
+                try {
+                    Log.d("清空缓存", result);
+                    JSONObject json = new JSONObject(result);
+                    String Status = json.getString("Status");
+                    if ("0".equals(Status)) {
+                        ToastUtils.show(UserInfoActivity.this, "已清空");
+                    } else if ("-1".equals(Status)) {
+                        Intent intent = new Intent(UserInfoActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        ToastUtils.show(UserInfoActivity.this, json.getString("Data"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
     }
 
     /**
@@ -229,7 +265,7 @@ public class UserInfoActivity extends BaseActivity {
                                     .load(UrlUtils.BASE_URL + "/Img/" + CheShiLiShopApplication.user.Img)
                                     .into(mImgAvatar);
                         }
-                        mTvUsername.setText(CheShiLiShopApplication.user.NickName);
+                        mTvUsername.setText(CheShiLiShopApplication.user.Mobile);
                     } else if ("-1".equals(Status)) {
                         Intent intent = new Intent(UserInfoActivity.this, LoginActivity.class);
                         startActivity(intent);
@@ -246,13 +282,13 @@ public class UserInfoActivity extends BaseActivity {
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 RequestParams errParams = new RequestParams();
                 try {
-                    errParams.add("LogCont", URLEncoder.encode(new String(responseBody),"UTF-8"));
+                    errParams.add("LogCont", URLEncoder.encode(new String(responseBody), "UTF-8"));
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
-                errParams.add("PostData",params.toString());
-                errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData", params.toString());
+                errParams.add("WToken", CheShiLiShopApplication.wtoken);
                 RestClient.post(UrlUtils.insertErrLog(), errParams, UserInfoActivity.this, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -354,13 +390,13 @@ public class UserInfoActivity extends BaseActivity {
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 RequestParams errParams = new RequestParams();
                 try {
-                    errParams.add("LogCont", URLEncoder.encode(new String(responseBody),"UTF-8"));
+                    errParams.add("LogCont", URLEncoder.encode(new String(responseBody), "UTF-8"));
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
-                errParams.add("PostData",params.toString());
-                errParams.add("WToken",CheShiLiShopApplication.wtoken);
+                errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                errParams.add("PostData", params.toString());
+                errParams.add("WToken", CheShiLiShopApplication.wtoken);
                 RestClient.post(UrlUtils.insertErrLog(), errParams, UserInfoActivity.this, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -375,6 +411,7 @@ public class UserInfoActivity extends BaseActivity {
             }
         });
     }
+
 
 
     private static class MyReceiver extends BroadcastReceiver {

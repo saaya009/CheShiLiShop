@@ -76,7 +76,6 @@ public class FuWuAdapter extends BaseAdapter {
         if (!TextUtils.isEmpty(list.get(position).ID)) {
             holder.mTvTel.setText(list.get(position).UserID);
             holder.mTvStatus.setText("已服务");
-            holder.mTvEndtime.setText(DateUtil.stampToDate3(list.get(position).AddTime));
             holder.mTvOrdernumber.setText(list.get(position).ServiceID);
             holder.mTvShopname.setText(list.get(position).ProductName);
             holder.mTvMoney.setText("¥" + list.get(position).AllMoney);

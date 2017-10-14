@@ -24,6 +24,7 @@ import com.example.administrator.cheshilishop.BaseActivity;
 import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.TopView;
+import com.example.administrator.cheshilishop.bean.ProductBean;
 import com.example.administrator.cheshilishop.dialog.TwoButtonAndContentCustomDialog;
 import com.example.administrator.cheshilishop.net.RestClient;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
@@ -93,8 +94,7 @@ public class ChangeActivity extends BaseActivity {
     private String LimitNum;
     private String enable = "1";
     private String appointtype = "0";
-    private String id;
-    private String productID;
+    private ProductBean product;
     private String AppointCont = "";
     private boolean flag = false;
     final int DATE_DIALOG = 1;
@@ -153,10 +153,73 @@ public class ChangeActivity extends BaseActivity {
     @Override
     protected void processLogic() {
         setTopTitle("编辑服务");
-        id = getIntent().getExtras().getString("ID");
-        productID = getIntent().getExtras().getString("productID");
-        topbar_iv_right.setVisibility(View.VISIBLE);
+        product = (ProductBean) getIntent().getSerializableExtra("ProductBean");  ;
+        topbar_iv_right.setVisibility(View.GONE);
         topbar_iv_right.setText("删除");
+        mAmountView2.setAmount(Double.parseDouble(product.GapPrice));
+        mEtDescri.setText(product.Descri);
+
+        if (product.Enable.equals("1")){
+            mTvType.setText("启用");
+            mBtnChoose.setImageResource(R.mipmap.icon_choose_on);
+            enable = 1 + "";
+        }else {
+            mTvType.setText("禁用");
+            mBtnChoose.setImageResource(R.mipmap.icon_choose_off);
+            enable = 0 + "";
+        }
+        switch (product.AppointType){
+            case "0":
+                appointtype = 0 + "";
+                mTvAppointType.setText("不使用");
+                mLayout.setVisibility(View.GONE);
+                mLayoutData.setVisibility(View.GONE);
+                break;
+            case "1":
+                appointtype = 1 + "";
+                mLayoutTime.setOnClickListener(null);
+                mTvAppointType.setText("一次预约");
+                AppointCont = "";
+                mLayout.setVisibility(View.GONE);
+                mLayoutData.setVisibility(View.VISIBLE);
+                break;
+            case "2":
+                appointtype = 2 + "";
+                mLayoutTime.setOnClickListener(null);
+                mTvAppointType.setText("每天");
+                mLayout.setVisibility(View.GONE);
+                mLayoutData.setVisibility(View.GONE);
+                break;
+            case "3":
+                appointtype = 3 + "";
+                mLayoutTime.setOnClickListener(null);
+                mTvAppointType.setText("法定工作日");
+                mLayout.setVisibility(View.GONE);
+                mLayoutData.setVisibility(View.GONE);
+                break;
+            case "4":
+                appointtype = 4 + "";
+                mLayoutTime.setOnClickListener(null);
+                mTvAppointType.setText("法定节假日");
+                mLayout.setVisibility(View.GONE);
+                mLayoutData.setVisibility(View.GONE);
+                break;
+            case "5":
+                appointtype = 5 + "";
+                mLayoutTime.setOnClickListener(null);
+                mTvAppointType.setText("周五至周日");
+                mLayout.setVisibility(View.GONE);
+                mLayoutData.setVisibility(View.GONE);
+                break;
+            case "6":
+                appointtype = 6 + "";
+                AppointCont = "";
+                mTvAppointType.setText("自定义");
+                mLayout.setVisibility(View.VISIBLE);
+                mLayoutData.setVisibility(View.GONE);
+                break;
+
+        }
     }
 
     @Override
@@ -204,20 +267,7 @@ public class ChangeActivity extends BaseActivity {
                         appointtype = 0 + "";
                         mTvAppointType.setText("不使用");
                         mLayout.setVisibility(View.GONE);
-                        mCb1.setClickable(false);
-                        mCb2.setClickable(false);
-                        mCb3.setClickable(false);
-                        mCb4.setClickable(false);
-                        mCb5.setClickable(false);
-                        mCb6.setClickable(false);
-                        mCb7.setClickable(false);
-                        mCb1.setChecked(false);
-                        mCb2.setChecked(false);
-                        mCb3.setChecked(false);
-                        mCb4.setChecked(false);
-                        mCb5.setChecked(false);
-                        mCb6.setChecked(false);
-                        mCb7.setChecked(false);
+                        mLayoutData.setVisibility(View.GONE);
                     }
                 });
                 contentView2.findViewById(R.id.layout2).setOnClickListener(new View.OnClickListener() {
@@ -230,20 +280,6 @@ public class ChangeActivity extends BaseActivity {
                         AppointCont = "";
                         mLayout.setVisibility(View.GONE);
                         mLayoutData.setVisibility(View.VISIBLE);
-                        mCb1.setClickable(false);
-                        mCb2.setClickable(false);
-                        mCb3.setClickable(false);
-                        mCb4.setClickable(false);
-                        mCb5.setClickable(false);
-                        mCb6.setClickable(false);
-                        mCb7.setClickable(false);
-                        mCb1.setChecked(false);
-                        mCb2.setChecked(false);
-                        mCb3.setChecked(false);
-                        mCb4.setChecked(false);
-                        mCb5.setChecked(false);
-                        mCb6.setChecked(false);
-                        mCb7.setChecked(false);
                     }
                 });
                 contentView2.findViewById(R.id.layout3).setOnClickListener(new View.OnClickListener() {
@@ -254,20 +290,7 @@ public class ChangeActivity extends BaseActivity {
                         mLayoutTime.setOnClickListener(null);
                         mTvAppointType.setText("每天");
                         mLayout.setVisibility(View.GONE);
-                        mCb1.setClickable(false);
-                        mCb2.setClickable(false);
-                        mCb3.setClickable(false);
-                        mCb4.setClickable(false);
-                        mCb5.setClickable(false);
-                        mCb6.setClickable(false);
-                        mCb7.setClickable(false);
-                        mCb1.setChecked(false);
-                        mCb2.setChecked(false);
-                        mCb3.setChecked(false);
-                        mCb4.setChecked(false);
-                        mCb5.setChecked(false);
-                        mCb6.setChecked(false);
-                        mCb7.setChecked(false);
+                        mLayoutData.setVisibility(View.GONE);
                     }
                 });
                 contentView2.findViewById(R.id.layout4).setOnClickListener(new View.OnClickListener() {
@@ -278,20 +301,7 @@ public class ChangeActivity extends BaseActivity {
                         mLayoutTime.setOnClickListener(null);
                         mTvAppointType.setText("法定工作日");
                         mLayout.setVisibility(View.GONE);
-                        mCb1.setClickable(false);
-                        mCb2.setClickable(false);
-                        mCb3.setClickable(false);
-                        mCb4.setClickable(false);
-                        mCb5.setClickable(false);
-                        mCb6.setClickable(false);
-                        mCb7.setClickable(false);
-                        mCb1.setChecked(false);
-                        mCb2.setChecked(false);
-                        mCb3.setChecked(false);
-                        mCb4.setChecked(false);
-                        mCb5.setChecked(false);
-                        mCb6.setChecked(false);
-                        mCb7.setChecked(false);
+                        mLayoutData.setVisibility(View.GONE);
                     }
                 });
                 contentView2.findViewById(R.id.layout5).setOnClickListener(new View.OnClickListener() {
@@ -302,20 +312,7 @@ public class ChangeActivity extends BaseActivity {
                         mLayoutTime.setOnClickListener(null);
                         mTvAppointType.setText("法定节假日");
                         mLayout.setVisibility(View.GONE);
-                        mCb1.setClickable(false);
-                        mCb2.setClickable(false);
-                        mCb3.setClickable(false);
-                        mCb4.setClickable(false);
-                        mCb5.setClickable(false);
-                        mCb6.setClickable(false);
-                        mCb7.setClickable(false);
-                        mCb1.setChecked(false);
-                        mCb2.setChecked(false);
-                        mCb3.setChecked(false);
-                        mCb4.setChecked(false);
-                        mCb5.setChecked(false);
-                        mCb6.setChecked(false);
-                        mCb7.setChecked(false);
+                        mLayoutData.setVisibility(View.GONE);
                     }
                 });
                 contentView2.findViewById(R.id.layout6).setOnClickListener(new View.OnClickListener() {
@@ -326,20 +323,7 @@ public class ChangeActivity extends BaseActivity {
                         mLayoutTime.setOnClickListener(null);
                         mTvAppointType.setText("周五至周日");
                         mLayout.setVisibility(View.GONE);
-                        mCb1.setClickable(false);
-                        mCb2.setClickable(false);
-                        mCb3.setClickable(false);
-                        mCb4.setClickable(false);
-                        mCb5.setClickable(false);
-                        mCb6.setClickable(false);
-                        mCb7.setClickable(false);
-                        mCb1.setChecked(false);
-                        mCb2.setChecked(false);
-                        mCb3.setChecked(false);
-                        mCb4.setChecked(false);
-                        mCb5.setChecked(false);
-                        mCb6.setChecked(false);
-                        mCb7.setChecked(false);
+                        mLayoutData.setVisibility(View.GONE);
                     }
                 });
                 contentView2.findViewById(R.id.layout7).setOnClickListener(new View.OnClickListener() {
@@ -350,13 +334,7 @@ public class ChangeActivity extends BaseActivity {
                         AppointCont = "";
                         mTvAppointType.setText("自定义");
                         mLayout.setVisibility(View.VISIBLE);
-                        mCb1.setClickable(true);
-                        mCb2.setClickable(true);
-                        mCb3.setClickable(true);
-                        mCb4.setClickable(true);
-                        mCb5.setClickable(true);
-                        mCb6.setClickable(true);
-                        mCb7.setClickable(true);
+                        mLayoutData.setVisibility(View.GONE);
                     }
                 });
                 bottomDialog2.getWindow().setGravity(Gravity.BOTTOM);
@@ -397,7 +375,7 @@ public class ChangeActivity extends BaseActivity {
     private void naService(String enable) {
         RequestParams params = new RequestParams();
         params.add("WToken",CheShiLiShopApplication.wtoken);
-        params.add("ID",id);
+        params.add("ID",product.ID);
         params.add("Enable",enable);
         RestClient.post(UrlUtils.NAService(), params, ChangeActivity.this, new AsyncHttpResponseHandler() {
             @Override
@@ -425,12 +403,13 @@ public class ChangeActivity extends BaseActivity {
     private void delete() {
         final RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
-        params.add("ID", productID);
+        params.add("ID", product.ID);
         RestClient.post(UrlUtils.delCategory(), params, this, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
                     String result = new String(responseBody);
+                    Log.d("删除",result);
                     JSONObject jsonObject = new JSONObject(result);
                     String Status = jsonObject.getString("Status");
                     if ("0".equals(Status)) {
@@ -514,14 +493,14 @@ public class ChangeActivity extends BaseActivity {
     private void commit() {
         final RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
-        params.add("ID", id);
+        params.add("ID", product.ID);
         params.add("StoreID", CheShiLiShopApplication.storeID);
-        params.add("ProductID", productID);
+        params.add("ProductID", product.ProductID);
         params.add("GapPrice", gapPrice);
         params.add("Descri", mEtDescri.getText().toString().trim());
         params.add("Enable", enable);
         params.add("AppointType", appointtype);
-        params.add("LimitNum", LimitNum);
+        params.add("LimitNum", "99999");
         if (mCb1.isChecked()) {
             AppointCont = AppointCont + "1,";
         }

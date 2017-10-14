@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -16,6 +17,8 @@ import com.example.administrator.cheshilishop.utils.InviteUtils;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
 import com.mob.MobSDK;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,6 +72,11 @@ public class TuiGuangActivity extends BaseActivity {
         mPath = UrlUtils.BASE_URL
                 + "/wechat/www/web/main/index.html?R=home/wechatLogin.html%3FRegisterFrom%3D4%26RegisterCont%3D"
                 + InviteUtils.getInviteCode(CheShiLiShopApplication.storeID);
+        int index = mPath.indexOf("\n");
+        if (index!= -1){
+            mPath = mPath.substring(0,mPath.length()-1);
+        }
+        Log.d("推广",mPath);
         Bitmap mBitmap = CodeUtils.createImage(mPath, 400, 400, null);
         mImageCode.setImageBitmap(mBitmap);
     }

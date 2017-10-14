@@ -362,6 +362,7 @@
                         android:textSize="15dp"/>
 
                     <EditText
+                        android:inputType="number"
                         android:id="@+id/et_mobile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -703,6 +704,7 @@
                         android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="23dp"
+                        android:inputType="number"
                         android:layout_toRightOf="@id/tv_shopname"
                         android:background="@null"
                         android:hint="请输入洗车机器数量"
@@ -742,6 +744,7 @@
                         android:layout_marginLeft="23dp"
                         android:layout_toRightOf="@id/tv_shopname"
                         android:background="@null"
+                        android:inputType="number"
                         android:hint="请输入洗车工位数量"
                         android:textSize="15dp"/>
 

@@ -71,10 +71,11 @@ public class SuccessActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.btn_order://去订单
-                intent = new Intent(this,OrderConfirmationActivity.class);
-                intent.putExtra("AppointID",appointID);
-                intent.putExtra("ServiceID",serviceID);
-                intent.putExtra("type",5);
+                if (!"0".equals(appointID)){
+                    intent = new Intent(this,BookingManagementActivity.class);
+                }else {
+                    intent = new Intent(this,FuWuActivity.class);
+                }
                 startActivity(intent);
                 finish();
                 break;

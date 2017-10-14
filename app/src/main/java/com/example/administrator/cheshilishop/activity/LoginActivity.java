@@ -167,6 +167,7 @@ public class LoginActivity extends BaseActivity {
         String wtoken = Hawk.get("wtoken", "");
         if (!"".equals(wtoken)) {
             CheShiLiShopApplication.wtoken = wtoken;
+            push();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -307,5 +308,25 @@ public class LoginActivity extends BaseActivity {
         return true;
     }
 
+    /**
+     * 清空缓存
+     */
+    private void push() {
+        RequestParams params = new RequestParams();
+        params.add("Wtoken", CheShiLiShopApplication.wtoken);
+        RestClient.post(UrlUtils.flushRedisByLeagueID(), params, this, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String result = new String(responseBody);
+                Log.d("清空缓存", result);
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+    }
 
 }

@@ -69,8 +69,7 @@ public class MainActivity extends AppCompatActivity {
     protected TextView topbar_iv_right;
     @BindView(R.id.image_ad)
     ImageView mImageAd;
-    @BindView(R.id.topbar_pay)
-    ImageView mTopbarPay;
+    private String mStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         // 检测软件更新方法
-        mTopbarPay.setVisibility(View.VISIBLE);
         UpgradeHelper.checkAppVersion(MainActivity.this, true);
         Hawk.init(MainActivity.this).build();
         initView();
@@ -97,8 +95,8 @@ public class MainActivity extends AppCompatActivity {
                     String result = new String(responseBody);
                     Log.d("默认店铺", result);
                     JSONObject jsonObject = new JSONObject(result);
-                    String Status = jsonObject.getString("Status");
-                    if ("0".equals(Status)) {
+                    mStatus = jsonObject.getString("Status");
+                    if ("0".equals(mStatus)) {
                         String data = jsonObject.getString("Data");
                         CheShiLiShopApplication.store = JSON.parseObject(data, StoreBean.class);
                         CheShiLiShopApplication.storeID = CheShiLiShopApplication.store.ID;
@@ -106,13 +104,15 @@ public class MainActivity extends AppCompatActivity {
                                 .load(UrlUtils.BASE_URL + "/Img/" + CheShiLiShopApplication.store.Img)
                                 .into(mImgLogo);
                         mTvDescri.setText(CheShiLiShopApplication.store.Name);
-                    } else if ("-1".equals(Status)) {
+                    } else if ("-1".equals(mStatus)) {
                         CheShiLiShopApplication.wtoken = "";
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         Hawk.delete("wtoken");
                         startActivity(intent);
                         finish();
-                    } else {
+                    } else if ("1".equals(mStatus)) {
+                        mImgLogo.setImageResource(R.mipmap.icon_logo);
+                        mTvDescri.setText("无店铺");
                         CheShiLiShopApplication.storeID = "0";
                     }
 
@@ -169,78 +169,127 @@ public class MainActivity extends AppCompatActivity {
         topbar_iv_right.setVisibility(View.VISIBLE);
         topbar_iv_right.setText("推广");
         topbar_iv_right.setTextColor(csl);
-        mTopbarPay.setOnClickListener(mOnClickListener);
     }
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             Intent intent;
-            switch (view.getId()) {
-                case R.id.layout_scan://扫一扫
-                    intent = new Intent(MainActivity.this,
-                            RichscanActivity.class);
-                    startActivityForResult(intent, REQUEST_CODE_SCAN);
-                    break;
-                case R.id.layout_booking://预约管理
-                    intent = new Intent(MainActivity.this,
-                            BookingManagementActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.layout_manager://服务管理
-                    intent = new Intent(MainActivity.this,
-                            ServiceActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.layout_userinfo://账户信息
-                    intent = new Intent(MainActivity.this,
-                            UserInfoActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.layout_commission://佣金管理
-                    intent = new Intent(MainActivity.this,
-                            CommissionActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.layout_change://更改店面
-                    intent = new Intent(MainActivity.this,
-                            SetStoreActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.layout_order://三级分销
-                    intent = new Intent(MainActivity.this,
-                            OrderManagementActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.topbar_iv_back://客服电话
+            if ("1".equals(mStatus)) {
+                switch (view.getId()) {
+                    case R.id.layout_scan://扫一扫
+                      ToastUtils.show(MainActivity.this,"请先添加店面");
+                        break;
+                    case R.id.layout_booking://预约管理
+                        ToastUtils.show(MainActivity.this,"请先添加店面");
+                        break;
+                    case R.id.layout_manager://服务管理
+                        ToastUtils.show(MainActivity.this,"请先添加店面");
+                        break;
+                    case R.id.layout_userinfo://账户信息
+                        intent = new Intent(MainActivity.this,
+                                UserInfoActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.layout_commission://我的钱包
+                        ToastUtils.show(MainActivity.this,"请先添加店面");
+                        break;
+                    case R.id.layout_change://更改店面
+                        intent = new Intent(MainActivity.this,
+                                SetStoreActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.layout_order://三级分销
+                        ToastUtils.show(MainActivity.this,"请先添加店面");
+                        break;
+                    case R.id.topbar_iv_back://客服电话
 
-                    TwoButtonAndContentCustomDialog dialog2 = new TwoButtonAndContentCustomDialog(MainActivity.this, R.style.Translucent_NoTitle) {
-                        @Override
-                        public void doConfirm() {
-                            super.doConfirm();
-                            Intent intentNumber = new Intent(Intent.ACTION_DIAL);
-                            Uri dataNumber = Uri.parse("tel:" + "053185523333");
-                            intentNumber.setData(dataNumber);
-                            startActivity(intentNumber);
-                        }
-                    };
-                    dialog2.show();
-                    dialog2.setContent("0531-85523333");
-                    dialog2.setTitle("客服电话");
-                    dialog2.setCancel("取消");
-                    dialog2.setConfirm("拨打");
+                        TwoButtonAndContentCustomDialog dialog2 = new TwoButtonAndContentCustomDialog(MainActivity.this, R.style.Translucent_NoTitle) {
+                            @Override
+                            public void doConfirm() {
+                                super.doConfirm();
+                                Intent intentNumber = new Intent(Intent.ACTION_DIAL);
+                                Uri dataNumber = Uri.parse("tel:" + "053185523333");
+                                intentNumber.setData(dataNumber);
+                                startActivity(intentNumber);
+                            }
+                        };
+                        dialog2.show();
+                        dialog2.setContent("0531-85523333");
+                        dialog2.setTitle("客服电话");
+                        dialog2.setCancel("取消");
+                        dialog2.setConfirm("拨打");
 
-                    break;
-                case R.id.image_ad:
-                case R.id.topbar_iv_right://推广
-                    intent = new Intent(MainActivity.this, TuiGuangActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.topbar_pay://我的钱包
-                    intent = new Intent(MainActivity.this, MyWalletActivity.class);
-                    startActivity(intent);
-                    break;
+                        break;
+                    case R.id.image_ad:
+                    case R.id.topbar_iv_right://推广
+                        ToastUtils.show(MainActivity.this,"请先添加店面");
+                        break;
+                }
+            } else {
+                switch (view.getId()) {
+                    case R.id.layout_scan://扫一扫
+                        intent = new Intent(MainActivity.this,
+                                RichscanActivity.class);
+                        startActivityForResult(intent, REQUEST_CODE_SCAN);
+                        break;
+                    case R.id.layout_booking://预约管理
+                        intent = new Intent(MainActivity.this,
+                                BookingManagementActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.layout_manager://服务管理
+                        intent = new Intent(MainActivity.this,
+                                ServiceActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.layout_userinfo://账户信息
+                        intent = new Intent(MainActivity.this,
+                                UserInfoActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.layout_commission://我的钱包
+                        intent = new Intent(MainActivity.this,
+                                MyWalletActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.layout_change://更改店面
+                        intent = new Intent(MainActivity.this,
+                                SetStoreActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.layout_order://三级分销
+                        intent = new Intent(MainActivity.this,
+                                OrderManagementActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.topbar_iv_back://客服电话
+
+                        TwoButtonAndContentCustomDialog dialog2 = new TwoButtonAndContentCustomDialog(MainActivity.this, R.style.Translucent_NoTitle) {
+                            @Override
+                            public void doConfirm() {
+                                super.doConfirm();
+                                Intent intentNumber = new Intent(Intent.ACTION_DIAL);
+                                Uri dataNumber = Uri.parse("tel:" + "053185523333");
+                                intentNumber.setData(dataNumber);
+                                startActivity(intentNumber);
+                            }
+                        };
+                        dialog2.show();
+                        dialog2.setContent("0531-85523333");
+                        dialog2.setTitle("客服电话");
+                        dialog2.setCancel("取消");
+                        dialog2.setConfirm("拨打");
+
+                        break;
+                    case R.id.image_ad:
+                    case R.id.topbar_iv_right://推广
+                        intent = new Intent(MainActivity.this, TuiGuangActivity.class);
+                        startActivity(intent);
+                        break;
+                }
             }
+
         }
     };
 
@@ -250,7 +299,6 @@ public class MainActivity extends AppCompatActivity {
         // 扫描二维码/条码回传
         if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
             if (data != null) {
-
                 String content = URLDecoder.decode(data.getStringExtra("codedContent"));
                 if (content.indexOf("AppointID") != -1) {
                     Log.d("Qcode", content);
@@ -265,7 +313,7 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("AppointID", AppointID);
                     intent.putExtra("ConfirmCode", ConfirmCode);
                     intent.putExtra("ServiceID", ServiceID);
-                    intent.putExtra("type", "1");
+                    intent.putExtra("type", "99");
                     startActivity(intent);
                 } else {
                     ToastUtils.show(MainActivity.this, "无法识别二维码");
@@ -367,4 +415,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         getStore();
     }
+
+
+
 }

@@ -206,9 +206,8 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
+                        android:textColor="@color/black"
                         android:layout_toRightOf="@id/tv_shopname"
-                        android:background="@null"
-                        android:hint=""
                         android:textSize="15dp"/>
 
 
@@ -237,7 +236,8 @@
                         android:textSize="15dp"/>
 
                     <TextView
-                        android:id="@+id/et_shortName"
+                        android:text="sdasdasdsa"
+                        android:id="@+id/tv_shortName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -279,6 +279,7 @@
                         android:textSize="15dp"/>
 
                     <TextView
+                        android:textColor="@color/black"
                         android:id="@+id/et_chargeMan"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -286,7 +287,6 @@
                         android:layout_marginLeft="40dp"
                         android:layout_toRightOf="@id/tv_people"
                         android:background="@null"
-                        android:hint=""
                         android:textSize="15dp"/>
 
 
@@ -315,6 +315,7 @@
                         android:textSize="15dp"/>
 
                     <TextView
+                        android:textColor="@color/black"
                         android:id="@+id/et_chargeTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -360,6 +361,7 @@
                         android:textSize="15dp"/>
 
                     <TextView
+                        android:textColor="@color/black"
                         android:id="@+id/et_mobile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -564,6 +566,7 @@
 
 
                     <TextView
+                        android:textColor="@color/black"
                         android:id="@+id/tv_expired"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -601,6 +604,7 @@
 
 
                     <TextView
+                        android:textColor="@color/black"
                         android:id="@+id/et_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -638,6 +642,7 @@
 
 
                     <TextView
+                        android:textColor="@color/black"
                         android:id="@+id/et_wdeviceType"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -645,7 +650,6 @@
                         android:layout_marginLeft="25dp"
                         android:layout_toRightOf="@id/tv_WDeviceType"
                         android:background="@null"
-                        android:hint=""
                         android:textSize="15dp"/>
 
 
@@ -676,6 +680,7 @@
                         android:textSize="15dp"/>
 
                     <TextView
+                        android:textColor="@color/black"
                         android:id="@+id/et_wdeviceNum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -713,6 +718,7 @@
                         android:textSize="15dp"/>
 
                     <TextView
+                        android:textColor="@color/black"
                         android:id="@+id/et_wpostions"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -721,7 +727,6 @@
                         android:layout_marginLeft="23dp"
                         android:layout_toRightOf="@id/tv_shopname"
                         android:background="@null"
-                        android:hint=""
                         android:textSize="15dp"/>
 
 
@@ -751,14 +756,13 @@
 
 
                     <TextView
+                        android:textColor="@color/black"
                         android:id="@+id/tv_city"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="37dp"
                         android:layout_toRightOf="@id/tv_city1"
-                        android:background="@null"
-                        android:hint=""
                         android:textSize="15dp"/>
 
 
@@ -796,8 +800,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
                         android:layout_toRightOf="@id/tv_shopname"
-                        android:background="@null"
-                        android:hint=""
+                        android:textColor="@color/black"
                         android:textSize="15dp"/>
 
 
@@ -833,8 +836,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
                         android:layout_toRightOf="@id/tv_shopname"
-                        android:background="@null"
-                        android:hint=""
+                        android:textColor="@color/black"
                         android:textSize="15dp"/>
 
 
@@ -870,8 +872,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
                         android:layout_toRightOf="@id/tv_shopname"
-                        android:background="@null"
-                        android:hint=""
+                        android:textColor="@color/black"
                         android:textSize="15dp"/>
 
 
@@ -907,8 +908,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
                         android:layout_toRightOf="@id/tv_shopname"
-                        android:background="@null"
-                        android:hint=""
+                        android:textColor="@color/black"
                         android:textSize="15dp"/>
 
 
@@ -953,21 +953,6 @@
                                 android:background="@color/white">
 
                                 <ImageView
-                                    android:layout_width="40dp"
-                                    android:layout_height="40dp"
-                                    android:layout_centerHorizontal="true"
-                                    android:layout_marginTop="20dp"
-                                    android:src="@mipmap/icon_add"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_centerHorizontal="true"
-                                    android:layout_marginTop="70dp"
-                                    android:text="上传店铺图片（必填）"
-                                    android:textSize="15dp"/>
-
-                                <ImageView
                                     android:id="@+id/img1"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
@@ -996,20 +981,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent">
 
-                                <ImageView
-                                    android:layout_width="40dp"
-                                    android:layout_height="40dp"
-                                    android:layout_centerHorizontal="true"
-                                    android:layout_marginTop="20dp"
-                                    android:src="@mipmap/icon_add"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_centerHorizontal="true"
-                                    android:layout_marginTop="70dp"
-                                    android:text="上传店铺图片（必填）"
-                                    android:textSize="15dp"/>
 
                                 <ImageView
                                     android:id="@+id/img2"

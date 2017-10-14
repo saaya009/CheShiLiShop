@@ -1,13 +1,9 @@
 package com.example.administrator.cheshilishop.activity;
 
-import android.content.Intent;
-import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -16,7 +12,6 @@ import com.example.administrator.cheshilishop.BaseActivity;
 import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.TopView;
-import com.example.administrator.cheshilishop.bean.BookingBean;
 import com.example.administrator.cheshilishop.bean.ServiceBean;
 import com.example.administrator.cheshilishop.net.RestClient;
 import com.example.administrator.cheshilishop.utils.DateUtil;
@@ -27,8 +22,6 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,6 +63,8 @@ public class FuWuDataActivity extends BaseActivity {
     TextView mTvPreferential;
     @BindView(R.id.tv_type)
     TextView mTvType;
+    @BindView(R.id.tv_mobile)
+    TextView mTvMobile;
 
 
     private String appointID;
@@ -117,9 +112,6 @@ public class FuWuDataActivity extends BaseActivity {
     }
 
 
-
-
-
     /**
      * 根据服务ID获取数据
      */
@@ -154,10 +146,11 @@ public class FuWuDataActivity extends BaseActivity {
                         mTvOdertime.setText(DateUtil.stampToDate(service.AddTime));
                         mTvBookingtime.setText(DateUtil.stampToDate(service.TimeLine));
                         mTvAmount.setText(service.AllMoney);
+                        mTvMobile.setText(service.UserMobile);
                         mTvOffer.setText(Float.parseFloat(service.AllMoney) - Float.parseFloat(service.OrderOutPocket) + "");
                         mTvPreferential.setText(service.OrderOutPocket);
                     } else {
-                        ToastUtils.show(FuWuDataActivity.this,"辨认失败");
+                        ToastUtils.show(FuWuDataActivity.this, "辨认失败");
                         finish();
                     }
                 } catch (JSONException e) {

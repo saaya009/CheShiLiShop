@@ -149,18 +149,23 @@ public class SimpleTreeAdapter<T> extends TreeListViewAdapter<T> {
 
         if (node.getId() == 1) {
             viewHolder.up.setVisibility(View.INVISIBLE);
+            viewHolder.down.setVisibility(View.VISIBLE);
             viewHolder.layout_shop.setVisibility(View.VISIBLE);
             viewHolder.left.setVisibility(View.VISIBLE);
         } else if (node.getId() == datas.size()) {
             viewHolder.down.setVisibility(View.INVISIBLE);
+            viewHolder.up.setVisibility(View.VISIBLE);
             viewHolder.layout_shop.setVisibility(View.INVISIBLE);
             viewHolder.left.setVisibility(View.INVISIBLE);
         } else if (!node.isRoot() && node.getParent().getChildren().get(node.getParent().getChildren().size() - 1).getId() == node.getId()) {
             viewHolder.down.setVisibility(View.INVISIBLE);
+            viewHolder.up.setVisibility(View.VISIBLE);
             viewHolder.layout_shop.setVisibility(View.INVISIBLE);
             viewHolder.left.setVisibility(View.INVISIBLE);
         } else {
+            viewHolder.up.setVisibility(View.VISIBLE);
             viewHolder.down.setVisibility(View.VISIBLE);
+            viewHolder.layout_shop.setVisibility(View.INVISIBLE);
         }
 
 

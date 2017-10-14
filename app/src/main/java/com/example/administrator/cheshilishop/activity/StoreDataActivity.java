@@ -1,11 +1,9 @@
 package com.example.administrator.cheshilishop.activity;
 
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -25,7 +23,6 @@ import com.example.administrator.cheshilishop.utils.UrlUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,8 +43,6 @@ public class StoreDataActivity extends BaseActivity {
     TextView mTvShopname;
     @BindView(R.id.et_shopname)
     TextView mEtShopname;
-    @BindView(R.id.et_shortName)
-    TextView mEtShortName;
     @BindView(R.id.tv_people)
     TextView mTvPeople;
     @BindView(R.id.et_chargeMan)
@@ -110,6 +105,8 @@ public class StoreDataActivity extends BaseActivity {
     TextView mTvBanknum;
     @BindView(R.id.tv_bank)
     TextView mTvBank;
+    @BindView(R.id.tv_shortName)
+    TextView mTvShortName;
     private StoreBean mStore;
     private String mId;
 
@@ -216,7 +213,7 @@ public class StoreDataActivity extends BaseActivity {
      */
     private void loadData() {
         mEtShopname.setText(mStore.Name);
-        mEtShortName.setText(mStore.SortName);
+        mTvShortName.setText(mStore.ShortName);
         mEtChargeTitle.setText(mStore.ChargeTitle);
         mEtChargeMan.setText(mStore.ChargeMan);
         mEtMobile.setText(mStore.Phone);
@@ -247,10 +244,10 @@ public class StoreDataActivity extends BaseActivity {
         mEtWdeviceNum.setText(mStore.WDeviceNum);
         mEtWpostions.setText(mStore.WPostions);
         mEtAdress.setText(mStore.Address);
-        if (Double.parseDouble(mStore.Latitude) != 0){
+        if (Double.parseDouble(mStore.Latitude) != 0) {
             mEtLatitude.setText(mStore.Latitude);
         }
-        if (Double.parseDouble(mStore.Longitude) != 0){
+        if (Double.parseDouble(mStore.Longitude) != 0) {
             mEtLongitude.setText(mStore.Longitude);
         }
         if (!mStore.Descri.equals("[]")) {
@@ -261,8 +258,8 @@ public class StoreDataActivity extends BaseActivity {
                 e.printStackTrace();
             }
         }
-        Glide.with(this).load(mStore.Img).into(mImg1);
-        Glide.with(this).load(mStore.CerImg).into(mImg1);
+        Glide.with(this).load(UrlUtils.BASE_URL + "/Img/" + mStore.Img).into(mImg1);
+        Glide.with(this).load(UrlUtils.BASE_URL + "/Img/" + mStore.CerImg).into(mImg2);
         mTvBankname.setText(mStore.BankName);
         mTvBanknum.setText(mStore.BankNo);
         mTvBank.setText(mStore.BankCompany);

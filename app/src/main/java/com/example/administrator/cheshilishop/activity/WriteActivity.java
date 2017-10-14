@@ -441,7 +441,7 @@ public class WriteActivity extends BaseActivity {
                 break;
             case R.id.tv_choose://选择面积单位
                 final Dialog bottomDialog3 = new Dialog(this, R.style.BottomDialog);
-                View contentView3 = LayoutInflater.from(this).inflate(R.layout.dialog_wdevicetype, null);
+                View contentView3 = LayoutInflater.from(this).inflate(R.layout.dialog_choose, null);
                 bottomDialog3.setContentView(contentView3);
                 ViewGroup.LayoutParams layoutParams3 = contentView3.getLayoutParams();
                 layoutParams3.width = getResources().getDisplayMetrics().widthPixels;
@@ -573,7 +573,7 @@ public class WriteActivity extends BaseActivity {
         } else {
             params.add("OpenTime", "");
         }
-        params.add("OpenArea", mEtYingyemianji.getText().toString().trim());
+        params.add("OpenArea", mEtYingyemianji.getText().toString().trim()+"米");
         final LoadingDialog dialog = new LoadingDialog(WriteActivity.this);
         dialog.show();
         RestClient.post(UrlUtils.addStore(), params, this, new AsyncHttpResponseHandler() {
@@ -586,8 +586,9 @@ public class WriteActivity extends BaseActivity {
                     JSONObject jsonObject = new JSONObject(result);
                     String Status = jsonObject.getString("Status");
                     if ("0".equals(Status)) {
+                        JSONObject data = jsonObject.getJSONObject("Data");
                         Intent intent = new Intent(WriteActivity.this, ExamineActivity.class);
-                        intent.putExtra("id",jsonObject.getString("ID"));
+                        intent.putExtra("id",data.getString("ID"));
                         startActivity(intent);
                         finish();
                     } else if ("-1".equals(Status)) {
