@@ -17,6 +17,7 @@ import com.example.administrator.cheshilishop.net.RestClient;
 import com.example.administrator.cheshilishop.utils.DateUtil;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
+import com.example.administrator.cheshilishop.widget.roundedimageview.RoundedImageView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -35,10 +36,16 @@ import cz.msebera.android.httpclient.util.TextUtils;
 public class FuWuDataActivity extends BaseActivity {
 
 
-    @BindView(R.id.tv_tel)
-    TextView mTvTel;
+    @BindView(R.id.tv_type)
+    TextView mTvType;
+    @BindView(R.id.image_id)
+    ImageView mImageId;
+    @BindView(R.id.tv_ordernum)
+    TextView mTvOrdernum;
+    @BindView(R.id.tv_times)
+    TextView mTvTimes;
     @BindView(R.id.img_logo)
-    ImageView mImgLogo;
+    RoundedImageView mImgLogo;
     @BindView(R.id.tv_shopname)
     TextView mTvShopname;
     @BindView(R.id.tv_money)
@@ -49,10 +56,14 @@ public class FuWuDataActivity extends BaseActivity {
     TextView mTvNumber;
     @BindView(R.id.tv_number2)
     TextView mTvNumber2;
-    @BindView(R.id.tv_order)
-    TextView mTvOrder;
-    @BindView(R.id.tv_odertime)
-    TextView mTvOdertime;
+    @BindView(R.id.tv_service)
+    TextView mTvService;
+    @BindView(R.id.tv_ordertime)
+    TextView mTvOrdertime;
+    @BindView(R.id.tv_name)
+    TextView mTvName;
+    @BindView(R.id.tv_mobile)
+    TextView mTvMobile;
     @BindView(R.id.tv_bookingtime)
     TextView mTvBookingtime;
     @BindView(R.id.tv_Amount)
@@ -61,12 +72,6 @@ public class FuWuDataActivity extends BaseActivity {
     TextView mTvOffer;
     @BindView(R.id.tv_preferential)
     TextView mTvPreferential;
-    @BindView(R.id.tv_type)
-    TextView mTvType;
-    @BindView(R.id.tv_mobile)
-    TextView mTvMobile;
-
-
     private String appointID;
     private String serviceID;
     private String confirmCode;
@@ -130,25 +135,32 @@ public class FuWuDataActivity extends BaseActivity {
                     if ("0".equals(Status)) {
                         String data = jsonObject.getString("Data");
                         ServiceBean service = JSON.parseObject(data, ServiceBean.class);
-                        mTvTel.setText(service.UserMobile);
+                        mTvMobile.setText(service.UserMobile);
                         if (!TextUtils.isEmpty(service.ProductImg)) {
                             Glide.with(context)
                                     .load(UrlUtils.BASE_URL + "/Img/" + service.ProductImg)
                                     .into(mImgLogo);
                         }
                         mTvShopname.setText(service.ProductName);
-                        mTvMoney.setText(service.AllMoney);
-                        JSONObject descri = new JSONObject(service.ProductDescri);
-                        mTvStatus.setText(descri.getString("title"));
+                        mTvMoney.setText("¥ "+service.AllMoney);
+                        if (!"null".equals(service.ProductDescri)) {
+                            JSONObject descri = new JSONObject(service.ProductDescri);
+                            mTvStatus.setText(descri.getString("title"));
+                        } else {
+                            mTvStatus.setText("");
+                        }
                         mTvNumber.setText("x1");
                         mTvNumber2.setText("共1件商品");
-                        mTvOrder.setText(service.OrderID);
-                        mTvOdertime.setText(DateUtil.stampToDate(service.AddTime));
-                        mTvBookingtime.setText(DateUtil.stampToDate(service.TimeLine));
-                        mTvAmount.setText(service.AllMoney);
                         mTvMobile.setText(service.UserMobile);
-                        mTvOffer.setText(Float.parseFloat(service.AllMoney) - Float.parseFloat(service.OrderOutPocket) + "");
-                        mTvPreferential.setText(service.OrderOutPocket);
+                        mTvOrdernum.setText("订单编号："+service.OrderID);
+                        mTvService.setText(service.ID);
+                        mTvOrdertime.setText(DateUtil.stampToDate(service.AddTime));
+                        mTvBookingtime.setVisibility(View.GONE);
+                        mTvAmount.setText(service.AllMoney);
+                        mTvName.setText(service.UserRealName);
+                        mTvTimes.setText("已完成第"+service.ServiceNum+"次服务");
+                        mTvOffer.setText("¥ "+(Float.parseFloat(service.AllMoney) - Float.parseFloat(service.OrderOutPocket)));
+                        mTvPreferential.setText("¥ "+service.OrderOutPocket);
                     } else {
                         ToastUtils.show(FuWuDataActivity.this, "辨认失败");
                         finish();
@@ -181,5 +193,4 @@ public class FuWuDataActivity extends BaseActivity {
             }
         });
     }
-
 }

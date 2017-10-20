@@ -23,6 +23,7 @@ import com.example.administrator.cheshilishop.utils.UrlUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -55,8 +56,6 @@ public class StoreDataActivity extends BaseActivity {
     TextView mEtMobile;
     @BindView(R.id.et_tel)
     TextView mEtTel;
-    @BindView(R.id.tv_time)
-    TextView mTvTime;
     @BindView(R.id.tv_expired)
     TextView mTvExpired;
     @BindView(R.id.tv_type)
@@ -107,6 +106,16 @@ public class StoreDataActivity extends BaseActivity {
     TextView mTvBank;
     @BindView(R.id.tv_shortName)
     TextView mTvShortName;
+    @BindView(R.id.tv_data)
+    TextView mTvData;
+    @BindView(R.id.tv_starttime)
+    TextView mTvStarttime;
+    @BindView(R.id.tv_endtime)
+    TextView mTvEndtime;
+    @BindView(R.id.tv_mianji)
+    TextView mTvMianji;
+    @BindView(R.id.tv_yingyemianji)
+    TextView mTvYingyemianji;
     private StoreBean mStore;
     private String mId;
 
@@ -218,7 +227,8 @@ public class StoreDataActivity extends BaseActivity {
         mEtChargeMan.setText(mStore.ChargeMan);
         mEtMobile.setText(mStore.Phone);
         mEtTel.setText(mStore.Tel);
-        mTvExpired.setText(DateUtil.stampToDate2(mStore.Expired));
+        mTvExpired.setText(mStore.Expired);
+//        mTvStarttime.setText(mStore);
         switch (mStore.Type) {
             case "0":
                 mEtType.setText("一站式");
@@ -264,5 +274,30 @@ public class StoreDataActivity extends BaseActivity {
         mTvBanknum.setText(mStore.BankNo);
         mTvBank.setText(mStore.BankCompany);
         mTvCity.setText(mStore.AddressNames);
+        try {
+            JSONArray params = new JSONArray(mStore.Params);
+            Log.d("内容",mStore.Params);
+            JSONObject object = params.getJSONObject(0);
+            JSONArray children = object.getJSONArray("Children");
+            for (int i = 0;i<children.length();i++){
+                JSONObject childrenObject = children.getJSONObject(i);
+                String name = childrenObject.getString("Name");
+               switch (name){
+                   case "营业结束时间":
+                        mTvEndtime.setText(childrenObject.getString("Value").substring(0,childrenObject.getString("Value").length()-2));
+                       break;
+                   case "营业开始时间":
+                       mTvStarttime.setText(childrenObject.getString("Value").substring(0,childrenObject.getString("Value").length()-2));
+                       break;
+                   case "店铺面积":
+                       mTvYingyemianji.setText(childrenObject.getString("Value"));
+                       break;
+               }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 }

@@ -42,6 +42,7 @@ public class MainSectioned2Adapter extends SectionedBaseAdapter {
     private LayoutInflater inflater;
 
     CheckBox checkBox;
+    TextView tv_money;
 
     HashMap<Integer, View> lmap = new HashMap<Integer, View>();
 
@@ -100,6 +101,7 @@ public class MainSectioned2Adapter extends SectionedBaseAdapter {
         if (lmap.get(position) == null) {
             convertView = inflater.inflate(R.layout.right_list2_item, parent, false);
             checkBox = convertView.findViewById(R.id.cb);
+            tv_money = convertView.findViewById(R.id.tv_money);
             convertView.setTag(checkBox);
         } else {
             checkBox = (CheckBox) convertView.getTag();
@@ -107,7 +109,7 @@ public class MainSectioned2Adapter extends SectionedBaseAdapter {
         checkBox.setText(rlist.get(section).get(position).Name);
 
         checkBox.setId(Integer.parseInt(rlist.get(section).get(position).ID));
-
+        tv_money.setText(rlist.get(section).get(position).Price);
         checkBox.setChecked( CheShiLiShopApplication.status.get(section).get(position));
         Log.d("选择", "section:" + section + "==position:" + position);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -138,6 +140,7 @@ public class MainSectioned2Adapter extends SectionedBaseAdapter {
 
     private final class ViewHolder {
         CheckBox cb;
+        TextView tv_money;
     }
 
 

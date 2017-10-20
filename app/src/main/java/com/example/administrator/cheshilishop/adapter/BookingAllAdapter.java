@@ -78,7 +78,7 @@ public class BookingAllAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         if (!TextUtils.isEmpty(list.get(position).ID)) {
-            holder.mTvTel.setText(list.get(position).ID);
+            holder.mTvTel.setText("订单编号: "+list.get(position).OrderID);
             switch (list.get(position).Status) {
                 case "4":
                     holder.mTvStatus.setText("已验证");
@@ -99,7 +99,7 @@ public class BookingAllAdapter extends BaseAdapter {
             holder.tv_bookingtime.setText(DateUtil.stampToDate3(list.get(position).AddTime));
             holder.mTvOrdernumber.setText(list.get(position).OrderID);
             holder.mTvShopname.setText(list.get(position).ProductName);
-            holder.mTvMoney.setText("¥" + list.get(position).AllMoney);
+            holder.mTvMoney.setText("¥ " + list.get(position).AllMoney);
             holder.mTvBookingtime.setText("预约时间: " + DateUtil.stampToDate3(list.get(position).AppointTimeS));
             holder.mTvService.setText(list.get(position).StoreName);
             if (!TextUtils.isEmpty(list.get(position).ProductImg)) {

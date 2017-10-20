@@ -163,7 +163,7 @@ public class AddServiceActivity extends BaseActivity {
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                errParams.add("Url", UrlUtils.addServices());
                 errParams.add("PostData", params.toString());
                 errParams.add("WToken", CheShiLiShopApplication.wtoken);
                 RestClient.post(UrlUtils.insertErrLog(), errParams, AddServiceActivity.this, new AsyncHttpResponseHandler() {
@@ -333,7 +333,7 @@ public class AddServiceActivity extends BaseActivity {
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                errParams.add("Url", UrlUtils.queryProductServiceJson());
                 errParams.add("WToken", CheShiLiShopApplication.wtoken);
                 RestClient.post(UrlUtils.insertErrLog(), errParams, AddServiceActivity.this, new AsyncHttpResponseHandler() {
                     @Override

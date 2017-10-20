@@ -10,6 +10,7 @@ import java.io.Serializable;
 public class DataBean implements Serializable {
     String OrderID;
     String AllMoney;
+    String ServiceID;
     String StoreImg;
     String StoreTel;
     String StoreName;
@@ -29,5 +30,6 @@ public class DataBean implements Serializable {
     String OrderOutPocket;
     String StoreChargeMan;
     String ServiceGapPrice;
+    String ServiceCount;
     String StoreChargeTitle;
 }

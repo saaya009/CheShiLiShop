@@ -12,6 +12,7 @@ public class ProductBean implements Serializable {
     public String StoreID;
     public String ProductID;
     public String GapPrice;
+    public String Price;
     public String Descri;
     public String Enable;
     public String AppointType;

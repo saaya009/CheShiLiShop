@@ -449,8 +449,8 @@ public class WriteActivity extends BaseActivity {
                 contentView3.findViewById(R.id.layout1).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        choose = "米";
-                        mTvChoose.setText("米");
+                        choose = "平方米";
+                        mTvChoose.setText("平方米");
                         bottomDialog3.dismiss();
                     }
                 });
@@ -462,7 +462,7 @@ public class WriteActivity extends BaseActivity {
                         bottomDialog3.dismiss();
                     }
                 });
-                contentView3.findViewById(R.id.layout2).setOnClickListener(new View.OnClickListener() {
+                contentView3.findViewById(R.id.layout3).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         choose = "公顷";
@@ -470,7 +470,7 @@ public class WriteActivity extends BaseActivity {
                         bottomDialog3.dismiss();
                     }
                 });
-                contentView3.findViewById(R.id.layout2).setOnClickListener(new View.OnClickListener() {
+                contentView3.findViewById(R.id.layout4).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         choose = "平方千米";

@@ -30,8 +30,9 @@ public class ServiceBean implements Serializable {
     public String UserMobile;
     public String UserNickName;
     public String OrderOutPocket;
+    public String ServiceCount;
     public String AllMoney;
-
+    public String StoreName;
 
 
 }

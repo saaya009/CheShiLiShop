@@ -8,7 +8,7 @@ import android.net.Uri;
  */
 
 public class UrlUtils {
-    public static String BASE_URL = "http://47.94.94.94";
+    public static String BASE_URL = "http://api.cheshili.com.cn";
 
     /**
      * 登录

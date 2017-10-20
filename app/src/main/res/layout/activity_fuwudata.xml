@@ -3,14 +3,16 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/gray"
+                android:background="@color/bg_gray"
                 android:orientation="vertical">
 
 
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/layout_suc"
+        android:layout_toEndOf="@+id/layout_suc">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,7 +30,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="55dp"
                 android:background="@mipmap/icon_confirmation">
 
                 <TextView
@@ -40,25 +42,48 @@
                     android:drawableLeft="@mipmap/icon_appointment"
                     android:text="   已服务"
                     android:textColor="@color/white"
-                    android:textSize="18dp"/>
+                    android:textSize="16dp"/>
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="10dp"
                 android:background="@color/white">
 
+                <ImageView
+                    android:layout_marginLeft="15dp"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/image_id"
+                    android:src="@mipmap/icon_id"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    />
+
                 <TextView
-                    android:id="@+id/tv_tel"
+                    android:layout_toRightOf="@id/image_id"
+                    android:id="@+id/tv_ordernum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="20dp"
-                    android:drawableLeft="@mipmap/icon_people"
-                    android:text=""
-                    android:textSize="17dp"/>
-            </LinearLayout>
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/black"
+                    android:layout_centerVertical="true"
+                    android:text="订单编号:3724893973298"
+                    android:textSize="14dp"/>
+
+
+                <TextView
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="7dp"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/tv_times"
+                    android:textColor="@color/orange"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text="剩余服务次数:3"
+                    android:textSize="12dp"/>
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -107,7 +132,7 @@
                         android:layout_height="50dp"
                         android:layout_below="@id/tv_shopname"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="15dp"
                         android:text="保养服务"
                         android:textSize="14dp"/>
 
@@ -118,7 +143,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_below="@id/tv_shopname"
                         android:layout_marginRight="10dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="15dp"
                         android:text="x1"
                         android:textSize="16dp"/>
 
@@ -145,10 +170,7 @@
                     android:textSize="16dp"/>
             </RelativeLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="@color/black"/>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -161,12 +183,71 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="15dp"
-                    android:text="订单编号:"
+                    android:text="服务编号:"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"/>
+
+
+                <TextView
+                    android:id="@+id/tv_service"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="16dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+
+                android:background="@color/white">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="15dp"
+                    android:text="下单时间:"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"/>
+
+
+                <TextView
+                    android:id="@+id/tv_ordertime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="16dp"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/black"/>
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/white">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="15dp"
+                    android:text="用户名称:"
                     android:textColor="@color/black"
                     android:textSize="16dp"/>
 
                 <TextView
-                    android:id="@+id/tv_order"
+                    android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -187,7 +268,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="15dp"
-                    android:text="用户号码:"
+                    android:text="用户电话:"
                     android:textColor="@color/black"
                     android:textSize="16dp"/>
 
@@ -203,32 +284,7 @@
             </LinearLayout>
 
             <LinearLayout
-
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@color/white">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="15dp"
-                    android:text="下单时间:"
-                    android:textColor="@color/black"
-                    android:textSize="16dp"/>
-
-                <TextView
-                    android:id="@+id/tv_odertime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
-                    android:text=""
-                    android:textColor="@color/black"
-                    android:textSize="16dp"/>
-            </LinearLayout>
-
-            <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="1dp"
@@ -239,7 +295,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="15dp"
-                    android:text="服务时间:"
+                    android:text="预约日期:"
                     android:textColor="@color/black"
                     android:textSize="16dp"/>
 
@@ -264,7 +320,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
-                    android:text="商品金额"
+                    android:text="商品金额:"
                     android:textColor="@color/black"
                     android:textSize="16dp"/>
 
@@ -290,7 +346,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
-                    android:text="优惠"
+                    android:text="优　　惠:"
                     android:textColor="@color/black"
                     android:textSize="16dp"/>
 
@@ -334,17 +390,7 @@
 
             </RelativeLayout>
 
-
-            <ImageView
-                android:id="@+id/image_ad"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:src="@mipmap/icon_ad2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
         </LinearLayout>
     </ScrollView>
-
-
 
 </RelativeLayout>

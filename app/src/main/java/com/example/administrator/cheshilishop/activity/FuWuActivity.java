@@ -132,7 +132,7 @@ public class FuWuActivity extends BaseActivity {
         params.add("StoreID",CheShiLiShopApplication.storeID);
         params.add("N",page+"");
         params.add("Rows",size+"");
-        params.add("Status","-1");
+        params.add("Status","1");
         RestClient.post(UrlUtils.queryService(), params, FuWuActivity.this, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -184,7 +184,7 @@ public class FuWuActivity extends BaseActivity {
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
+                errParams.add("Url",UrlUtils.queryService());
                 errParams.add("PostData",params.toString());
                 errParams.add("WToken",CheShiLiShopApplication.wtoken);
                 RestClient.post(UrlUtils.insertErrLog(), errParams, FuWuActivity.this, new AsyncHttpResponseHandler() {

@@ -209,7 +209,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp"
-                        android:text="订单管理"
+                        android:text="服务预约"
                         android:textColor="@color/black"
                         android:textSize="17dp"/>
 
