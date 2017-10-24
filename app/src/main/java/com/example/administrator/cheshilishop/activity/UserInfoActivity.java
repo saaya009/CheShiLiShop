@@ -286,7 +286,7 @@ public class UserInfoActivity extends BaseActivity {
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                errParams.add("Url", UrlUtils.getInfoByToken());
                 errParams.add("PostData", params.toString());
                 errParams.add("WToken", CheShiLiShopApplication.wtoken);
                 RestClient.post(UrlUtils.insertErrLog(), errParams, UserInfoActivity.this, new AsyncHttpResponseHandler() {
@@ -365,7 +365,7 @@ public class UserInfoActivity extends BaseActivity {
             e.printStackTrace();
         }
         params.add("WToken", CheShiLiShopApplication.wtoken);
-        params.add("Platform", "3");
+        params.add("Platform", "0");
         RestClient.post(UrlUtils.UploaImg(), params, UserInfoActivity.this, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -394,7 +394,7 @@ public class UserInfoActivity extends BaseActivity {
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                errParams.add("Url", UrlUtils.queryServiceAppointDetail());
+                errParams.add("Url", UrlUtils.UploaImg());
                 errParams.add("PostData", params.toString());
                 errParams.add("WToken", CheShiLiShopApplication.wtoken);
                 RestClient.post(UrlUtils.insertErrLog(), errParams, UserInfoActivity.this, new AsyncHttpResponseHandler() {
