@@ -943,7 +943,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
                         android:layout_toRightOf="@id/tv_shopname"
-                        android:text="开始时间"
+                        android:textColor="@color/black"
                         android:textSize="15dp"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -965,7 +965,7 @@
                         android:layout_marginLeft="20dp"
                         android:layout_toRightOf="@id/tv_shopname"
                         android:background="@null"
-                        android:text="结束时间"
+                        android:textColor="@color/black"
                         android:textSize="15dp"/>
 
 

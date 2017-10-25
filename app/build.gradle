@@ -7,8 +7,8 @@ android {
         applicationId "com.example.administrator.cheshilishop"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 217
-        versionName "2.17"
+        versionCode 218
+        versionName "2.18"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     dexOptions {

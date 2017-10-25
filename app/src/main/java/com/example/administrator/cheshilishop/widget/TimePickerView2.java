@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.administrator.cheshilishop.R;
+import com.example.administrator.cheshilishop.utils.DateUtil;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -122,8 +123,13 @@ public class TimePickerView2 extends BasePickerView implements View.OnClickListe
             return;
         } else {
             if (timeSelectListener != null) {
-//					Date date = WheelTime2.dateFormat.parse(wheelTime.getTime());
-                timeSelectListener.onTimeSelect(wheelTime.getTime());
+                try {
+                    Date date = WheelTime2.dateFormat.parse(wheelTime.getTime());
+                     timeSelectListener.onTimeSelect(DateUtil.dateToStrLong2(date));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
             }
             dismiss();
             return;

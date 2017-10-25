@@ -573,7 +573,7 @@ public class WriteActivity extends BaseActivity {
         } else {
             params.add("OpenTime", "");
         }
-        params.add("OpenArea", mEtYingyemianji.getText().toString().trim()+"米");
+        params.add("OpenArea", mEtYingyemianji.getText().toString().trim()+choose);
         final LoadingDialog dialog = new LoadingDialog(WriteActivity.this);
         dialog.show();
         RestClient.post(UrlUtils.addStore(), params, this, new AsyncHttpResponseHandler() {

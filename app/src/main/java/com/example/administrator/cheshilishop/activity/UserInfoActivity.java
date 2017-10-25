@@ -351,7 +351,6 @@ public class UserInfoActivity extends BaseActivity {
 
     /**
      * 上传头像
-     *
      * @param path
      */
     private void uploadPic(String path) {
@@ -388,7 +387,7 @@ public class UserInfoActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                RequestParams errParams = new RequestParams();
+                RequestParams errParams = new RequestParams ();
                 try {
                     errParams.add("LogCont", URLEncoder.encode(new String(responseBody), "UTF-8"));
                 } catch (UnsupportedEncodingException e) {

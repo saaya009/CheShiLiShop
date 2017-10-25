@@ -288,6 +288,7 @@
                         android:layout_marginLeft="40dp"
                         android:layout_toRightOf="@id/tv_people"
                         android:background="@null"
+                        android:maxLength="16"
                         android:hint="请输入负责人"
                         android:textSize="15dp"/>
 

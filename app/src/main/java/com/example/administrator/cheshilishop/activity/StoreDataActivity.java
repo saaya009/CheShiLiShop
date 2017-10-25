@@ -263,7 +263,7 @@ public class StoreDataActivity extends BaseActivity {
         if (!mStore.Descri.equals("[]")) {
             try {
                 JSONObject descri = new JSONObject(mStore.Descri);
-                mEtDescri.setText(descri.getString("text1"));
+                mEtDescri.setText(descri.getString("text"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -274,6 +274,7 @@ public class StoreDataActivity extends BaseActivity {
         mTvBanknum.setText(mStore.BankNo);
         mTvBank.setText(mStore.BankCompany);
         mTvCity.setText(mStore.AddressNames);
+        mTvYingyemianji.setText(mStore.OpenArea);
         try {
             JSONArray params = new JSONArray(mStore.Params);
             Log.d("内容",mStore.Params);
@@ -284,14 +285,12 @@ public class StoreDataActivity extends BaseActivity {
                 String name = childrenObject.getString("Name");
                switch (name){
                    case "营业结束时间":
-                        mTvEndtime.setText(childrenObject.getString("Value").substring(0,childrenObject.getString("Value").length()-2));
+                        mTvEndtime.setText(childrenObject.getString("Value").substring(0,childrenObject.getString("Value").length()-3));
                        break;
                    case "营业开始时间":
-                       mTvStarttime.setText(childrenObject.getString("Value").substring(0,childrenObject.getString("Value").length()-2));
+                       mTvStarttime.setText(childrenObject.getString("Value").substring(0,childrenObject.getString("Value").length()-3));
                        break;
-                   case "店铺面积":
-                       mTvYingyemianji.setText(childrenObject.getString("Value"));
-                       break;
+
                }
             }
 

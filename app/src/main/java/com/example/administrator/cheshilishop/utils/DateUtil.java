@@ -284,6 +284,18 @@ public class DateUtil {
 	}
 
 	/**
+	 * 将长时间格式Date时间转换为字符串 yyyy-MM-dd HH:mm:ss
+	 *
+	 * @param dateDate
+	 * @return
+	 */
+	public static String dateToStrLong2(Date dateDate) {
+		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+		String dateString = formatter.format(dateDate);
+		return dateString;
+	}
+
+	/**
 	 * 将短时间格式时间转换为字符串 yyyy-MM-dd
 	 */
 	public static String dateToStr(Date dateDate) {
