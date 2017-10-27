@@ -236,7 +236,7 @@
                         android:textSize="15dp"/>
 
                     <TextView
-                        android:text="sdasdasdsa"
+                        android:text=""
                         android:id="@+id/tv_shortName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -943,28 +943,6 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
                         android:layout_toRightOf="@id/tv_shopname"
-                        android:textColor="@color/black"
-                        android:textSize="15dp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="20dp"
-                        android:layout_toRightOf="@id/tv_shopname"
-                        android:background="@null"
-                        android:text="-"
-                        android:textColor="@color/black"
-                        android:textSize="15dp"/>
-                    <TextView
-                        android:id="@+id/tv_endtime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="20dp"
-                        android:layout_toRightOf="@id/tv_shopname"
-                        android:background="@null"
                         android:textColor="@color/black"
                         android:textSize="15dp"/>
 

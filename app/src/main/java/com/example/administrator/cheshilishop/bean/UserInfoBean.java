@@ -10,6 +10,7 @@ import java.io.Serializable;
 public class UserInfoBean implements Serializable {
     public String LeagueID;
     public String AddTime;
+    public String RealName;
     public String Enable;
     public String InviteCode;
     public String Data;

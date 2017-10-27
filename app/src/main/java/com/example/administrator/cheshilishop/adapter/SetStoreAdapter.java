@@ -113,13 +113,16 @@ public class SetStoreAdapter extends BaseAdapter {
         holder.tv_Address.setText(list.get(position).Address);
         switch (list.get(position).Type) {
             case "0":
-                holder.tv_type.setText("旗舰店");
+                holder.tv_type.setText("一站式");
                 break;
             case "1":
-                holder.tv_type.setText("综合店");
+                holder.tv_type.setText("汽修厂");
                 break;
             case "2":
-                holder.tv_type.setText("专营店");
+                holder.tv_type.setText("美容店");
+                break;
+            case "3":
+                holder.tv_type.setText("轮胎");
                 break;
         }
 

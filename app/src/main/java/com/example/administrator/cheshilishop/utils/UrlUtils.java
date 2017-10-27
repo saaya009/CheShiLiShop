@@ -345,4 +345,14 @@ public class UrlUtils {
         url = uribBuilder.build().toString();
         return url;
     }
+
+    /**
+     * 清除缓存
+     */
+    public static String updateNickName() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/LeagueInfo/UpdateNickName").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
 }

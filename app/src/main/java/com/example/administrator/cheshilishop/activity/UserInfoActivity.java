@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -15,11 +16,13 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -92,6 +95,12 @@ public class UserInfoActivity extends BaseActivity {
     RelativeLayout mLayoutMywallet;
     @BindView(R.id.layout_push)
     RelativeLayout mLayoutPush;
+    @BindView(R.id.tv_realname)
+    TextView mTvRealname;
+    @BindView(R.id.layout_name)
+    RelativeLayout mLayoutName;
+
+    private EditText et_name;
 
     private SelectImgPopupWindow selectImgPopupWindow;
     private static String localTempImageFileName = "";
@@ -140,6 +149,7 @@ public class UserInfoActivity extends BaseActivity {
         mLayoutVersion.setOnClickListener(this);
         mLayoutMywallet.setOnClickListener(this);
         mLayoutPush.setOnClickListener(this);
+        mLayoutName.setOnClickListener(this);
     }
 
     @Override
@@ -180,6 +190,10 @@ public class UserInfoActivity extends BaseActivity {
             case R.id.layout_push://清空缓存
                 push();
                 break;
+            case R.id.layout_name://修改姓名
+                intent = new Intent(UserInfoActivity.this, SetNameActivity.class);
+                startActivity(intent);
+                break;
         }
     }
 
@@ -188,8 +202,8 @@ public class UserInfoActivity extends BaseActivity {
      */
     private void push() {
         RequestParams params = new RequestParams();
-        params.add("WToken",CheShiLiShopApplication.wtoken);
-        RestClient.post(UrlUtils.flushRedisByLeagueID(), params,this, new AsyncHttpResponseHandler() {
+        params.add("WToken", CheShiLiShopApplication.wtoken);
+        RestClient.post(UrlUtils.flushRedisByLeagueID(), params, this, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);
@@ -265,6 +279,7 @@ public class UserInfoActivity extends BaseActivity {
                                     .load(UrlUtils.BASE_URL + "/Img/" + CheShiLiShopApplication.user.Img)
                                     .into(mImgAvatar);
                         }
+                        mTvRealname.setText(CheShiLiShopApplication.user.RealName);
                         mTvUsername.setText(CheShiLiShopApplication.user.Mobile);
                     } else if ("-1".equals(Status)) {
                         Intent intent = new Intent(UserInfoActivity.this, LoginActivity.class);
@@ -351,6 +366,7 @@ public class UserInfoActivity extends BaseActivity {
 
     /**
      * 上传头像
+     *
      * @param path
      */
     private void uploadPic(String path) {
@@ -387,7 +403,7 @@ public class UserInfoActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                RequestParams errParams = new RequestParams ();
+                RequestParams errParams = new RequestParams();
                 try {
                     errParams.add("LogCont", URLEncoder.encode(new String(responseBody), "UTF-8"));
                 } catch (UnsupportedEncodingException e) {
@@ -410,7 +426,6 @@ public class UserInfoActivity extends BaseActivity {
             }
         });
     }
-
 
 
     private static class MyReceiver extends BroadcastReceiver {
@@ -471,5 +486,11 @@ public class UserInfoActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+    }
+
+    @Override
+    protected void onResume() {
+        getData();
+        super.onResume();
     }
 }

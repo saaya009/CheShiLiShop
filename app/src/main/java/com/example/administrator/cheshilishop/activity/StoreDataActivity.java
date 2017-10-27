@@ -110,8 +110,6 @@ public class StoreDataActivity extends BaseActivity {
     TextView mTvData;
     @BindView(R.id.tv_starttime)
     TextView mTvStarttime;
-    @BindView(R.id.tv_endtime)
-    TextView mTvEndtime;
     @BindView(R.id.tv_mianji)
     TextView mTvMianji;
     @BindView(R.id.tv_yingyemianji)
@@ -228,7 +226,7 @@ public class StoreDataActivity extends BaseActivity {
         mEtMobile.setText(mStore.Phone);
         mEtTel.setText(mStore.Tel);
         mTvExpired.setText(mStore.Expired);
-//        mTvStarttime.setText(mStore);
+        mTvStarttime.setText(mStore.OpenTime);
         switch (mStore.Type) {
             case "0":
                 mEtType.setText("一站式");
@@ -280,19 +278,19 @@ public class StoreDataActivity extends BaseActivity {
             Log.d("内容",mStore.Params);
             JSONObject object = params.getJSONObject(0);
             JSONArray children = object.getJSONArray("Children");
-            for (int i = 0;i<children.length();i++){
-                JSONObject childrenObject = children.getJSONObject(i);
-                String name = childrenObject.getString("Name");
-               switch (name){
-                   case "营业结束时间":
-                        mTvEndtime.setText(childrenObject.getString("Value").substring(0,childrenObject.getString("Value").length()-3));
-                       break;
-                   case "营业开始时间":
-                       mTvStarttime.setText(childrenObject.getString("Value").substring(0,childrenObject.getString("Value").length()-3));
-                       break;
-
-               }
-            }
+//            for (int i = 0;i<children.length();i++){
+//                JSONObject childrenObject = children.getJSONObject(i);
+//                String name = childrenObject.getString("Name");
+//               switch (name){
+//                   case "营业结束时间":
+//                        mTvEndtime.setText(childrenObject.getString("Value").substring(0,childrenObject.getString("Value").length()-3));
+//                       break;
+//                   case "营业开始时间":
+//                       mTvStarttime.setText(childrenObject.getString("Value").substring(0,childrenObject.getString("Value").length()-3));
+//                       break;
+//
+//               }
+//            }
 
         } catch (JSONException e) {
             e.printStackTrace();

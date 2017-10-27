@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.example.administrator.cheshilishop"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 218
-        versionName "2.18"
+        versionCode 219
+        versionName "2.19"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     dexOptions {
@@ -27,7 +27,6 @@ android {
         }
     }
 }
-apply plugin: 'com.neenbedankt.android-apt'
 
 dependencies {
     compile 'com.github.lzyzsd:jsbridge:1.0.4'
@@ -48,13 +47,12 @@ dependencies {
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile 'com.bm.photoview:library:1.4.1'
     compile 'com.jakewharton:butterknife:8.0.1'
-    apt 'com.jakewharton:butterknife-compiler:8.0.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.0.1'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.github.bumptech.glide:glide:4.0.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
     compile 'com.orhanobut:hawk:2.0.1'
     compile 'com.makeramen:roundedimageview:2.2.1'
-    compile project(path: ':citypickerview')
     compile 'cn.yipianfengye.android:zxing-library:2.2'
     compile files('libs/MobCommons-2017.0914.1125.jar')
     compile files('libs/MobTools-2017.0914.1125.jar')
@@ -62,4 +60,5 @@ dependencies {
     compile files('libs/ShareSDK-Wechat-3.1.0.jar')
     compile files('libs/ShareSDK-Wechat-Core-3.1.0.jar')
     compile files('libs/ShareSDK-Wechat-Moments-3.1.0.jar')
+    implementation project(':citypickerview')
 }

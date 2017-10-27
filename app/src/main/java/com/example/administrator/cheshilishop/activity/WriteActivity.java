@@ -76,7 +76,6 @@ import cz.msebera.android.httpclient.Header;
  */
 public class WriteActivity extends BaseActivity {
 
-
     @BindView(R.id.tv_shopname)
     TextView mTvShopname;
     @BindView(R.id.et_shopname)
@@ -192,7 +191,7 @@ public class WriteActivity extends BaseActivity {
     private TimePickerView2 endTime;
     private TextView tv_starttime;
     private AlertDialog dialog;
-    private String choose = " ";
+    private String choose = "平方米";
 
     private String start = "";
     private String end = "";
@@ -562,7 +561,7 @@ public class WriteActivity extends BaseActivity {
         params.add("Latitude", mEtLatitude.getText().toString().trim());
         if (mEtDescri.getText().toString().trim().length() > 0) {
             Map<String, String> map = new HashMap<String, String>();
-            map.put("text1", mEtDescri.getText().toString().trim());
+            map.put("text", mEtDescri.getText().toString().trim());
             String jsonString = JSON.toJSONString(map);
             params.add("Descri", jsonString);
         } else {
