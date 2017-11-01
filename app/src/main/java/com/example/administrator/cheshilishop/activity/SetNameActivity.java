@@ -1,6 +1,8 @@
 package com.example.administrator.cheshilishop.activity;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -53,6 +55,9 @@ public class SetNameActivity extends BaseActivity {
     protected void findViewById() {
         topbar_iv_right.setOnClickListener(this);
         topbar_iv_right.setVisibility(View.VISIBLE);
+        Resources resource = this.getResources();
+        ColorStateList csl = resource.getColorStateList(R.color.blue);
+        topbar_iv_right.setTextColor(csl);
         topbar_iv_right.setText("确认");
     }
 

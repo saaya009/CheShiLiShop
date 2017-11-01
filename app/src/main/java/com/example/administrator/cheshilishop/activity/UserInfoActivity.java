@@ -259,15 +259,12 @@ public class UserInfoActivity extends BaseActivity {
      * 获取数据
      */
     public void getData() {
-        mDialog = new LoadingDialog(this);
-        mDialog.show();
         final RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
         RestClient.post(UrlUtils.getInfoByToken(), params, this, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);
-                mDialog.dismiss();
                 try {
                     Log.d("个人信息", result);
                     JSONObject json = new JSONObject(result);

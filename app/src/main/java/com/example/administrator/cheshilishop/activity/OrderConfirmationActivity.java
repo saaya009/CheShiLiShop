@@ -330,6 +330,8 @@ public class OrderConfirmationActivity extends BaseActivity {
                         Intent intent = new Intent(OrderConfirmationActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
+                    } else if  ("80".equals(status)) {
+                        ToastUtils.show(OrderConfirmationActivity.this,"您没有参与此活动");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -443,6 +445,8 @@ public class OrderConfirmationActivity extends BaseActivity {
                     } else if ("98".equals(Status)) {
                         ToastUtils.show(OrderConfirmationActivity.this, "这不是你预约的店铺！");
                         finish();
+                    }else if  ("80".equals(Status)) {
+                        ToastUtils.show(OrderConfirmationActivity.this,"您没有参与此活动");
                     } else {
                         ToastUtils.show(OrderConfirmationActivity.this, "这不是你预约的店铺！");
                         finish();
@@ -534,7 +538,9 @@ public class OrderConfirmationActivity extends BaseActivity {
                         mTvTimes.setText("剩余服务次数:" + service.ServiceNum);
                         mTvOffer.setText("¥ " + (Float.parseFloat(service.AllMoney) - Float.parseFloat(service.OrderOutPocket)));
                         mTvPreferential.setText("¥ " + service.OrderOutPocket);
-                    } else {
+                    }else if  ("80".equals(Status)) {
+                        ToastUtils.show(OrderConfirmationActivity.this,"您没有参与此活动");
+                    }  else {
                         ToastUtils.show(OrderConfirmationActivity.this, "辨认失败");
                         finish();
                     }
@@ -567,10 +573,4 @@ public class OrderConfirmationActivity extends BaseActivity {
         });
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }
