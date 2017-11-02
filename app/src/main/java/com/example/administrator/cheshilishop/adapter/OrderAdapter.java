@@ -76,8 +76,6 @@ public class OrderAdapter extends BaseAdapter {
             holder.tv_InviteId.setText(list.get(position).InviteCode);
         }
         return convertView;
-
-
     }
 
     static class ViewHolder {
