@@ -69,6 +69,10 @@ public class MainActivity extends AppCompatActivity {
     protected TextView topbar_iv_right;
     @BindView(R.id.image_ad)
     ImageView mImageAd;
+    @BindView(R.id.layout_server)
+    LinearLayout mLayoutServer;
+    @BindView(R.id.layout_activity)
+    LinearLayout mLayoutActivity;
     private String mStatus;
 
     @Override
@@ -162,7 +166,8 @@ public class MainActivity extends AppCompatActivity {
         mLayoutChange.setOnClickListener(mOnClickListener);
         mImageAd.setOnClickListener(mOnClickListener);
         mLayoutOrder.setOnClickListener(mOnClickListener);
-
+        mLayoutActivity.setOnClickListener(mOnClickListener);
+        mLayoutServer.setOnClickListener(mOnClickListener);
         topbar_iv_back.setImageResource(R.mipmap.icon_service);
         Resources resource = this.getResources();
         ColorStateList csl = resource.getColorStateList(R.color.blue);
@@ -178,13 +183,13 @@ public class MainActivity extends AppCompatActivity {
             if ("1".equals(mStatus)) {
                 switch (view.getId()) {
                     case R.id.layout_scan://扫一扫
-                      ToastUtils.show(MainActivity.this,"请先添加店面");
+                        ToastUtils.show(MainActivity.this, "请先添加店面");
                         break;
                     case R.id.layout_booking://预约管理
-                        ToastUtils.show(MainActivity.this,"请先添加店面");
+                        ToastUtils.show(MainActivity.this, "请先添加店面");
                         break;
                     case R.id.layout_manager://服务管理
-                        ToastUtils.show(MainActivity.this,"请先添加店面");
+                        ToastUtils.show(MainActivity.this, "请先添加店面");
                         break;
                     case R.id.layout_userinfo://账户信息
                         intent = new Intent(MainActivity.this,
@@ -192,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case R.id.layout_commission://我的钱包
-                        ToastUtils.show(MainActivity.this,"请先添加店面");
+                        ToastUtils.show(MainActivity.this, "请先添加店面");
                         break;
                     case R.id.layout_change://更改店面
                         intent = new Intent(MainActivity.this,
@@ -200,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case R.id.layout_order://三级分销
-                        ToastUtils.show(MainActivity.this,"请先添加店面");
+                        ToastUtils.show(MainActivity.this, "请先添加店面");
                         break;
                     case R.id.topbar_iv_back://客服电话
 
@@ -223,7 +228,14 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.image_ad:
                     case R.id.topbar_iv_right://推广
-                        ToastUtils.show(MainActivity.this,"请先添加店面");
+                        ToastUtils.show(MainActivity.this, "请先添加店面");
+                        break;
+                    case R.id.layout_server://服务管理
+                        intent = new Intent(MainActivity.this,
+                                ServericeManagementActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.layout_activity://活动管理
                         break;
                 }
             } else {
@@ -285,6 +297,16 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.image_ad:
                     case R.id.topbar_iv_right://推广
                         intent = new Intent(MainActivity.this, TuiGuangActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.layout_server://服务管理
+                        intent = new Intent(MainActivity.this,
+                                ServericeManagementActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.layout_activity://活动管理
+                        intent = new Intent(MainActivity.this,
+                                ActivityManagementActivity.class);
                         startActivity(intent);
                         break;
                 }
@@ -415,7 +437,6 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         getStore();
     }
-
 
 
 }

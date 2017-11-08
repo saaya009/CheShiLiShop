@@ -95,7 +95,7 @@ public class ServiceActivity extends BaseActivity {
     @Override
     protected void processLogic() {
         mLayoutNext.setVisibility(View.GONE);
-        setTopTitle("服务管理");
+        setTopTitle("产品管理");
         topbar_iv_right.setVisibility(View.VISIBLE);
         topbar_iv_right.setText("添加服务");
         Resources resource = getResources();

@@ -12,9 +12,11 @@ import com.example.administrator.cheshilishop.BaseActivity;
 import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.TopView;
 import com.example.administrator.cheshilishop.adapter.BookingAdapter;
-import com.example.administrator.cheshilishop.fragment.BookingAllFragment;
-import com.example.administrator.cheshilishop.fragment.BookingEndFragment;
-import com.example.administrator.cheshilishop.fragment.BookingVerifiedFragment;
+import com.example.administrator.cheshilishop.fragment.ActivityOneFragment;
+import com.example.administrator.cheshilishop.fragment.ActivityTwoFragment;
+import com.example.administrator.cheshilishop.fragment.ServericeAllFragment;
+import com.example.administrator.cheshilishop.fragment.ServericeEndFragment;
+import com.example.administrator.cheshilishop.fragment.ServericeVerifiedFragment;
 import com.example.administrator.cheshilishop.widget.TopbarIndicator;
 
 import java.util.ArrayList;
@@ -24,19 +26,18 @@ import java.util.List;
 import butterknife.ButterKnife;
 
 /**
- * 预约管理
- * Created by Administrator on 2017/8/2.
+ * 作者：Ayase on 2017/11/8 10:14
+ * 邮箱：ayase@ayase.cn
  */
-public class BookingManagementActivity extends BaseActivity{
 
+public class ActivityManagementActivity extends BaseActivity {
     private TopbarIndicator ti_indicator;
     private ViewPager vp_financial;
-    private List<String> type = Arrays.asList("全部","已预约","已验证");
+    private List<String> type = Arrays.asList("活动列表","我的活动");
     private BookingAdapter adapter;
     private List<Fragment> mFragmentList = new ArrayList<Fragment>();
-    private BookingAllFragment aFragment;
-    private BookingEndFragment eFragment;
-    private BookingVerifiedFragment vFragment;
+    private ActivityOneFragment oneFragment;
+    private ActivityTwoFragment twoFragment;
 
     @Override
     protected void loadViewLayout(Bundle savedInstanceState) {
@@ -65,7 +66,7 @@ public class BookingManagementActivity extends BaseActivity{
         topbar_iv_right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(BookingManagementActivity.this,FuWuActivity.class);
+                Intent intent = new Intent(ActivityManagementActivity.this,FuWuActivity.class);
                 startActivity(intent);
             }
         });
@@ -73,22 +74,20 @@ public class BookingManagementActivity extends BaseActivity{
 
     @Override
     protected void processLogic() {
-        topbar_tv_title.setText("预约管理");
+        topbar_tv_title.setText("活动管理");
         Resources resource = getResources();
         ColorStateList csl = resource.getColorStateList(R.color.colorPrimaryDark);
         topbar_iv_right.setTextColor(csl);
-        aFragment = new BookingAllFragment();
-        eFragment = new BookingEndFragment();
-        vFragment = new BookingVerifiedFragment();
-        mFragmentList.add(aFragment);
-        mFragmentList.add(eFragment);
-        mFragmentList.add(vFragment);
+        oneFragment = new ActivityOneFragment();
+        twoFragment = new ActivityTwoFragment();
+        mFragmentList.add(oneFragment);
+        mFragmentList.add(twoFragment);
 
         adapter = new BookingAdapter(this.getSupportFragmentManager(), mFragmentList);
         vp_financial.setAdapter(adapter);
         vp_financial.setCurrentItem(0);
 
-        ti_indicator.setVisibleTabCount(3);
+        ti_indicator.setVisibleTabCount(2);
         ti_indicator.setTitles(type);
         ti_indicator.setViewpager(vp_financial);
     }

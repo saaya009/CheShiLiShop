@@ -204,6 +204,16 @@ public class DateUtil {
 	}
 
 	/*
+* 将时间戳转换为时间
+*/
+	public static String stampToDate6(String time){
+		Long Time = new Long(time);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String date = sdf.format(new Date(Time*1000));
+		return date;
+	}
+
+	/*
     * 将时间戳转换为时间
     */
 	public static String stampToDate3(String time){

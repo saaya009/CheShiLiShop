@@ -73,6 +73,7 @@ public class UrlUtils {
         return url;
     }
 
+
     /**
      * 获取用户数据
      */
@@ -352,6 +353,26 @@ public class UrlUtils {
     public static String updateNickName() {
         String url = null;
         Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/LeagueInfo/UpdateNickName").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
+
+    /**
+     * 获取活动列表1
+     */
+    public static String queryCampaignList() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/Product/Campaign/QueryCampaignList").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
+
+    /**
+     * 获取活动列表1
+     */
+    public static String queryMyLeagueList() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/StoreService/QueryMyLeagueList").buildUpon();
         url = uribBuilder.build().toString();
         return url;
     }

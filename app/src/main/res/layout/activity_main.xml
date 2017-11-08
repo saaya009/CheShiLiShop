@@ -176,7 +176,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp"
-                        android:text="服务管理"
+                        android:text="产品管理"
                         android:textColor="@color/black"
                         android:textSize="17dp"/>
                 </LinearLayout>
@@ -202,14 +202,14 @@
                         android:layout_height="35dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="25dp"
-                        android:src="@mipmap/icon_tag"/>
+                        android:src="@mipmap/icon_time"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp"
-                        android:text="服务预约"
+                        android:text="预约管理"
                         android:textColor="@color/black"
                         android:textSize="17dp"/>
 
@@ -240,6 +240,68 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp"
                         android:text="我的钱包"
+                        android:textColor="@color/black"
+                        android:textSize="17dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginTop="2px"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/layout_server"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="25dp"
+                        android:src="@mipmap/icon_calendar"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:text="服务管理"
+                        android:textColor="@color/black"
+                        android:textSize="17dp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="2px"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray"/>
+
+                <LinearLayout
+                    android:id="@+id/layout_activity"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="25dp"
+                        android:src="@mipmap/icon_present"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:text="活动管理"
                         android:textColor="@color/black"
                         android:textSize="17dp"/>
                 </LinearLayout>

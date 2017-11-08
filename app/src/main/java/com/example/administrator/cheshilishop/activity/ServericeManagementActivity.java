@@ -15,6 +15,9 @@ import com.example.administrator.cheshilishop.adapter.BookingAdapter;
 import com.example.administrator.cheshilishop.fragment.BookingAllFragment;
 import com.example.administrator.cheshilishop.fragment.BookingEndFragment;
 import com.example.administrator.cheshilishop.fragment.BookingVerifiedFragment;
+import com.example.administrator.cheshilishop.fragment.ServericeAllFragment;
+import com.example.administrator.cheshilishop.fragment.ServericeEndFragment;
+import com.example.administrator.cheshilishop.fragment.ServericeVerifiedFragment;
 import com.example.administrator.cheshilishop.widget.TopbarIndicator;
 
 import java.util.ArrayList;
@@ -27,16 +30,16 @@ import butterknife.ButterKnife;
  * 预约管理
  * Created by Administrator on 2017/8/2.
  */
-public class BookingManagementActivity extends BaseActivity{
+public class ServericeManagementActivity extends BaseActivity{
 
     private TopbarIndicator ti_indicator;
     private ViewPager vp_financial;
-    private List<String> type = Arrays.asList("全部","已预约","已验证");
+    private List<String> type = Arrays.asList("全部","未服务","已服务");
     private BookingAdapter adapter;
     private List<Fragment> mFragmentList = new ArrayList<Fragment>();
-    private BookingAllFragment aFragment;
-    private BookingEndFragment eFragment;
-    private BookingVerifiedFragment vFragment;
+    private ServericeAllFragment aFragment;
+    private ServericeEndFragment eFragment;
+    private ServericeVerifiedFragment vFragment;
 
     @Override
     protected void loadViewLayout(Bundle savedInstanceState) {
@@ -65,7 +68,7 @@ public class BookingManagementActivity extends BaseActivity{
         topbar_iv_right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(BookingManagementActivity.this,FuWuActivity.class);
+                Intent intent = new Intent(ServericeManagementActivity.this,FuWuActivity.class);
                 startActivity(intent);
             }
         });
@@ -73,13 +76,13 @@ public class BookingManagementActivity extends BaseActivity{
 
     @Override
     protected void processLogic() {
-        topbar_tv_title.setText("预约管理");
+        topbar_tv_title.setText("服务管理");
         Resources resource = getResources();
         ColorStateList csl = resource.getColorStateList(R.color.colorPrimaryDark);
         topbar_iv_right.setTextColor(csl);
-        aFragment = new BookingAllFragment();
-        eFragment = new BookingEndFragment();
-        vFragment = new BookingVerifiedFragment();
+        aFragment = new ServericeAllFragment();
+        eFragment = new ServericeEndFragment();
+        vFragment = new ServericeVerifiedFragment();
         mFragmentList.add(aFragment);
         mFragmentList.add(eFragment);
         mFragmentList.add(vFragment);

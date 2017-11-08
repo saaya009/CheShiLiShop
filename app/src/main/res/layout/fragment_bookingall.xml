@@ -49,6 +49,7 @@
         app:wave_color="@android:color/transparent">
 
         <ListView
+            android:divider="@null"
             android:id="@+id/lv_Booking"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>

@@ -74,26 +74,36 @@ public class FuWuAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         if (!TextUtils.isEmpty(list.get(position).ID)) {
-            holder.mTvTel.setText("订单编号"+list.get(position).OrderID);
-            holder.mTvStatus.setText("已服务");
+            holder.mTvTel.setText("订单编号" + list.get(position).OrderID);
+            switch (list.get(position).Status) {
+                case "1":
+                    holder.mTvStatus.setText("已服务");
+                    break;
+                case "0":
+                    holder.mTvStatus.setText("未服务");
+                    break;
+            }
+
             holder.mTvOrdernumber.setText(list.get(position).ServiceID);
             holder.mTvShopname.setText(list.get(position).ProductName);
             holder.mTvMoney.setText("¥ " + list.get(position).AllMoney);
-            if (!TextUtils.isEmpty(list.get(position).ProductDescri)){
-            JSONObject descri = null;
-            try {
-                descri = new JSONObject(list.get(position).ProductDescri);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            if (!TextUtils.isEmpty(list.get(position).ProductDescri)) {
+                JSONObject descri = null;
+                try {
+                    descri = new JSONObject(list.get(position).ProductDescri);
+                    String imgs = descri.getString("imgs");
+                    int index = imgs.indexOf(",");
+                    if (index != -1) {
+                        imgs = imgs.substring(0, index);
+                        Glide.with(context)
+                                .load(UrlUtils.BASE_URL + "/Img/" + imgs)
+                                .into(holder.mImgLogo);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
             holder.mTvService.setText(list.get(position).StoreName);
-            if (!TextUtils.isEmpty(list.get(position).Imgs)) {
-                Glide.with(context)
-                        .load(UrlUtils.BASE_URL + "/Img/" + list.get(position).ProductImg)
-                        .into(holder.mImgLogo);
-            }
         }
         return convertView;
 

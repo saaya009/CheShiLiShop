@@ -149,6 +149,14 @@ public class FuWuDataActivity extends BaseActivity {
                         } else {
                             mTvStatus.setText("");
                         }
+                        switch (service.Status){
+                            case "1":
+                                mTvType.setText("已服务");
+                                break;
+                            case "0":
+                                mTvType.setText("未服务");
+                                break;
+                        }
                         mTvNumber.setText("x1");
                         mTvNumber2.setText("共1件商品");
                         mTvMobile.setText(service.UserMobile);
