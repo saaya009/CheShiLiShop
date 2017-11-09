@@ -80,10 +80,10 @@ public class ActivityOneFragment extends Fragment {
         lv_Booking.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> view, View view1, int i, long l) {
-                Intent intent = new Intent(getActivity(), FuWuDataActivity.class);
-                intent.putExtra("ServiceID",list.get(i).ID);
-                intent.putExtra("type",9);
-                startActivity(intent);
+//                Intent intent = new Intent(getActivity(), FuWuDataActivity.class);
+//                intent.putExtra("ServiceID",list.get(i).ID);
+//                intent.putExtra("type",9);
+//                startActivity(intent);
             }
         });
 

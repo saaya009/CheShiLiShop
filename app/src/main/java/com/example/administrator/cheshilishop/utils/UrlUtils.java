@@ -376,4 +376,14 @@ public class UrlUtils {
         url = uribBuilder.build().toString();
         return url;
     }
+
+    /**
+     * 更新店铺活动协议说明
+     */
+    public static String updateStoreCampaignAgreement() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/Campaign/UpdateStoreCampaignAgreement").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
 }

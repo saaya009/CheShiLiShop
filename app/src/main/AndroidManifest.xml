@@ -108,6 +108,7 @@
         <activity android:name=".activity.FuWuActivity"/>
         <activity android:name=".activity.FuWuDataActivity"/>
         <activity android:name=".activity.RegActivity"/>
+        <activity android:name=".activity.ActivityDataActivity"/>
         <activity android:name=".activity.MyWalletActivity"/>
         <activity android:name=".activity.SetNameActivity"/>
         <activity android:name=".activity.ServericeManagementActivity"/>

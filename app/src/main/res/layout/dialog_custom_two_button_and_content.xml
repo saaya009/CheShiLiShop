@@ -36,8 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_margin="20dp"
             android:text="您将收到短信验证码"
             android:textColor="#666666"
             android:textSize="16.0sp" />

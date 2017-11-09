@@ -13,6 +13,7 @@ import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.TopView;
 import com.example.administrator.cheshilishop.bean.ServiceBean;
+import com.example.administrator.cheshilishop.dialog.TwoButtonAndContentCustomDialog;
 import com.example.administrator.cheshilishop.net.RestClient;
 import com.example.administrator.cheshilishop.utils.DateUtil;
 import com.example.administrator.cheshilishop.utils.ToastUtils;
@@ -134,7 +135,7 @@ public class FuWuDataActivity extends BaseActivity {
                     String Status = jsonObject.getString("Status");
                     if ("0".equals(Status)) {
                         String data = jsonObject.getString("Data");
-                        ServiceBean service = JSON.parseObject(data, ServiceBean.class);
+                        final ServiceBean service = JSON.parseObject(data, ServiceBean.class);
                         mTvMobile.setText(service.UserMobile);
                         if (!TextUtils.isEmpty(service.ProductImg)) {
                             Glide.with(context)
@@ -142,14 +143,14 @@ public class FuWuDataActivity extends BaseActivity {
                                     .into(mImgLogo);
                         }
                         mTvShopname.setText(service.ProductName);
-                        mTvMoney.setText("¥ "+service.AllMoney);
-                        if (!"null".equals(service.ProductDescri)) {
+                        mTvMoney.setText("¥ " + service.AllMoney);
+                        if (!TextUtils.isEmpty(service.ProductDescri)) {
                             JSONObject descri = new JSONObject(service.ProductDescri);
                             mTvStatus.setText(descri.getString("title"));
                         } else {
                             mTvStatus.setText("");
                         }
-                        switch (service.Status){
+                        switch (service.Status) {
                             case "1":
                                 mTvType.setText("已服务");
                                 break;
@@ -160,15 +161,73 @@ public class FuWuDataActivity extends BaseActivity {
                         mTvNumber.setText("x1");
                         mTvNumber2.setText("共1件商品");
                         mTvMobile.setText(service.UserMobile);
-                        mTvOrdernum.setText("订单编号："+service.OrderID);
+                        mTvOrdernum.setText("订单编号：" + service.OrderID);
                         mTvService.setText(service.ID);
                         mTvOrdertime.setText(DateUtil.stampToDate(service.AddTime));
                         mTvBookingtime.setVisibility(View.GONE);
                         mTvAmount.setText(service.AllMoney);
                         mTvName.setText(service.UserRealName);
-                        mTvTimes.setText("已完成第"+service.ServiceNum+"次服务");
-                        mTvOffer.setText("¥ "+(Float.parseFloat(service.AllMoney) - Float.parseFloat(service.OrderOutPocket)));
-                        mTvPreferential.setText("¥ "+service.OrderOutPocket);
+                        mTvTimes.setText("已完成第" + service.ServiceNum + "次服务");
+                        mTvOffer.setText("¥ " + (Float.parseFloat(service.AllMoney) - Float.parseFloat(service.OrderOutPocket)));
+                        mTvPreferential.setText("¥ " + service.OrderOutPocket);
+                        if ("0".equals(service.CamStatus)) {//弹出活动协议
+                            final String xieyi = "甲方:上海车势力信息科技有限公司\n" +
+                                    "乙方:" + service.StoreName + "\n" +
+                                    "\n" +
+                                    "车势力汽车服务\n" +
+                                    "玻璃水补充协议\n" +
+                                    "\n" +
+                                    "1、客户在享受“免费领取2瓶玻璃水”服务前，需向乙方出示二维码。\n" +
+                                    "2、由乙方在商户端扫描登记，如果需要输入密码，乙方根据返回信息判断客户能否享受汽车免费领取玻璃水服务。\n" +
+                                    "3、对不符合条件的（手机号码不一致、密码错误等）不得享受免费领取玻璃水服务。\n" +
+                                    "4、对于因通信线路或系统出现故障，导致不能正常进行登记时，乙方应立即致电400-011-2789或0531-85523333核实客户信息并告知甲方，且要求客户在《车势力汽车会员服务登记表》手工登记并签名，并将《登记表》于次日扫描给甲方，甲方逐一落实。";
+                            TwoButtonAndContentCustomDialog dialog2 = new TwoButtonAndContentCustomDialog(
+                                    FuWuDataActivity.this, R.style.Translucent_NoTitle) {
+                                @Override
+                                public void doConfirm() {
+                                    super.doConfirm();
+                                    RequestParams params = new RequestParams();
+                                    params.add("WToken", CheShiLiShopApplication.wtoken);
+                                    params.add("StoreID", service.StoreID);
+                                    params.add("CampaignID", service.CampaignID);
+                                    params.add("Agreement", xieyi);
+                                    RestClient.post(UrlUtils.updateStoreCampaignAgreement(), params, FuWuDataActivity.this, new AsyncHttpResponseHandler() {
+                                        @Override
+                                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                            try {
+                                                String result = new String(responseBody);
+                                                Log.d("预约详情", result);
+                                                JSONObject jsonObject = new JSONObject(result);
+                                                String Status = jsonObject.getString("Status");
+                                                if ("0".equals(Status)) {
+                                                    ToastUtils.show(FuWuDataActivity.this, "同意活动协议");
+                                                }
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                        }
+
+                                        @Override
+                                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                                        }
+                                    });
+                                }
+
+
+                                @Override
+                                public void setCancel(String cancel) {
+                                    super.setCancel(cancel);
+                                    finish();
+                                }
+                            };
+                            dialog2.show();
+                            dialog2.setContent(xieyi);
+                            dialog2.setTitle("活动协议");
+                            dialog2.setCancel("取消");
+                            dialog2.setConfirm("同意");
+                        }
                     } else {
                         ToastUtils.show(FuWuDataActivity.this, "辨认失败");
                         finish();

@@ -33,6 +33,8 @@ public class ServiceBean implements Serializable {
     public String ServiceCount;
     public String AllMoney;
     public String StoreName;
+    public String CampaignID;
+    public String CamStatus;
 
 
 }
