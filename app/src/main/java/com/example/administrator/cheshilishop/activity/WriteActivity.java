@@ -45,10 +45,11 @@ import com.example.administrator.cheshilishop.utils.ToastUtils;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
 import com.example.administrator.cheshilishop.widget.TimePickerView;
 import com.example.administrator.cheshilishop.widget.TimePickerView2;
-import com.lljjcoder.city_20170724.CityPickerView;
-import com.lljjcoder.city_20170724.bean.CityBean;
-import com.lljjcoder.city_20170724.bean.DistrictBean;
-import com.lljjcoder.city_20170724.bean.ProvinceBean;
+import com.lljjcoder.bean.CityBean;
+import com.lljjcoder.bean.DistrictBean;
+import com.lljjcoder.bean.ProvinceBean;
+import com.lljjcoder.citywheel.CityConfig;
+import com.lljjcoder.citywheel.CityPickerView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -249,7 +250,7 @@ public class WriteActivity extends BaseActivity {
             @Override
             public void onTimeSelect(Date date) {
                 mTvExpired.setText(getTime(date));
-                expired = (date.getTime() + "").substring(0,(date.getTime() + "").length()-3);
+                expired = (date.getTime() + "").substring(0, (date.getTime() + "").length() - 3);
             }
         });
 
@@ -296,38 +297,60 @@ public class WriteActivity extends BaseActivity {
                 pvTime.show();
                 break;
             case R.id.tv_city://选择所在地
-                CityPickerView cityPicker = new CityPickerView.Builder(WriteActivity.this)
-                        .textSize(20)
-                        .title("    ")
-                        .backgroundPop(0xa0000000)
-                        .titleBackgroundColor("#ffffff")
-                        .titleTextColor("#FFFFFF")
-                        .backgroundPop(0xa0000000)
-                        .confirTextColor("#3F51B5")
-                        .cancelTextColor("#3F51B5")
-                        .textColor(Color.parseColor("#000000"))
+                CityConfig cityConfig = new CityConfig.Builder(WriteActivity.this)
+                        .title("选择地区")
+                        .titleBackgroundColor("#E9E9E9")
+                        .textSize(18)
+                        .titleTextColor("#585858")
+                        .textColor("#000000")
+                        .confirTextColor("#0000FF")
+                        .cancelTextColor("#000000")
+                        .province("江苏")
+                        .city("常州")
+                        .district("新北区")
+                        .visibleItemsCount(5)
                         .provinceCyclic(true)
-                        .cityCyclic(false)
-                        .districtCyclic(false)
-                        .visibleItemsCount(7)
-                        .itemPadding(10)
-                        .onlyShowProvinceAndCity(false)
+                        .cityCyclic(true)
+                        .districtCyclic(true)
+                        .itemPadding(5)
+                        .setCityInfoType(CityConfig.CityInfoType.BASE)
+                        .setCityWheelType(CityConfig.WheelType.PRO_CITY_DIS)
                         .build();
+                CityPickerView cityPicker = new CityPickerView(cityConfig);
                 cityPicker.show();
+//
+//                //监听方法，获取选择结果
+//                cityPicker.setOnCityItemClickListener(new CityPickerView.OnCityItemClickListener() {
+//                    @Override
+//                    public void onSelected(ProvinceBean province, CityBean city, DistrictBean district) {
+//
+//                        if (!TextUtils.isEmpty(district.getId())) {
+//                            Log.d("选择地区", district.getId());
+//                            mTvCity.setText(province.getName() + city.getName() + district.getName());
+//                            ProvinceID = province.getId();
+//                            CityID = city.getId();
+//                            CountyID = district.getId();
+//                        }
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancel() {
+//
+//                    }
+//                });
+
 
                 //监听方法，获取选择结果
                 cityPicker.setOnCityItemClickListener(new CityPickerView.OnCityItemClickListener() {
                     @Override
                     public void onSelected(ProvinceBean province, CityBean city, DistrictBean district) {
 
-                        if (!TextUtils.isEmpty(district.getId())) {
-                            Log.d("选择地区", district.getId());
-                            mTvCity.setText(province.getName() + city.getName() + district.getName());
-                            ProvinceID = province.getId();
-                            CityID = city.getId();
-                            CountyID = district.getId();
-                        }
-
+                        Log.d("选择地区", district.getId());
+                        mTvCity.setText(province.getName() + city.getName() + district.getName());
+                        ProvinceID = province.getId();
+                        CityID = city.getId();
+                        CountyID = district.getId();
                     }
 
                     @Override
@@ -537,7 +560,7 @@ public class WriteActivity extends BaseActivity {
         }
         try {
             params.put("Img", new File(path), "image/png");
-            params.put("CerImg",new File(path2),"image/png");
+            params.put("CerImg", new File(path2), "image/png");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -572,7 +595,7 @@ public class WriteActivity extends BaseActivity {
         } else {
             params.add("OpenTime", "");
         }
-        params.add("OpenArea", mEtYingyemianji.getText().toString().trim()+choose);
+        params.add("OpenArea", mEtYingyemianji.getText().toString().trim() + choose);
         final LoadingDialog dialog = new LoadingDialog(WriteActivity.this);
         dialog.show();
         RestClient.post(UrlUtils.addStore(), params, this, new AsyncHttpResponseHandler() {
@@ -587,7 +610,7 @@ public class WriteActivity extends BaseActivity {
                     if ("0".equals(Status)) {
                         JSONObject data = jsonObject.getJSONObject("Data");
                         Intent intent = new Intent(WriteActivity.this, ExamineActivity.class);
-                        intent.putExtra("id",data.getString("ID"));
+                        intent.putExtra("id", data.getString("ID"));
                         startActivity(intent);
                         finish();
                     } else if ("-1".equals(Status)) {
