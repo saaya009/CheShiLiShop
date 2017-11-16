@@ -3,10 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CheShiLiShop.iml" filepath="$PROJECT_DIR$/CheShiLiShop.iml" />
-      <module fileurl="file://F:\CheShiLiShop\CheShiLiShop.iml" filepath="F:\CheShiLiShop\CheShiLiShop.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://F:\CheShiLiShop\app\app.iml" filepath="F:\CheShiLiShop\app\app.iml" />
-      <module fileurl="file://F:\CheShiLiShop\citypickerview\citypickerview.iml" filepath="F:\CheShiLiShop\citypickerview\citypickerview.iml" />
     </modules>
   </component>
 </project>

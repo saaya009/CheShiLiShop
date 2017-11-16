@@ -225,6 +225,16 @@ public class UrlUtils {
     }
 
     /**
+     * 更新商家
+     */
+    public static String updateStore() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/Store/UpdateStore").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
+
+    /**
      * 增加商家图片(虚拟文件夹
      */
     public static String addStoreImage() {
