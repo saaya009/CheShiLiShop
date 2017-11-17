@@ -1,82 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
-    <RelativeLayout
-        android:background="@drawable/bg_store_style"
+
+    <LinearLayout
         android:id="@+id/layout_store"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="140dp">
-        
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/bg_store_style"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="140dp">
+
+            <TextView
+                android:id="@+id/tv_type"
+                android:layout_width="50dp"
+                android:layout_height="25dp"
+                android:background="@color/colorPrimaryDark"
+                android:gravity="center"
+                android:text="连锁店"
+                android:textColor="@color/white"
+                android:textSize="13dp"/>
+
+            <ImageView
+                android:id="@+id/img_right"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@mipmap/icon_point"/>
+
+            <TextView
+                android:id="@+id/tv_shenhe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:text="审核中"
+                android:textSize="16dp"/>
+
+            <ImageView
+                android:id="@+id/img_shenhe"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_toLeftOf="@id/tv_shenhe"
+                android:src="@mipmap/icon_time2"/>
+
+            <ImageView
+                android:id="@+id/img_store"
+                android:layout_width="75dp"
+                android:layout_height="30dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"/>
+
+            <TextView
+                android:id="@+id/tv_store"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/img_store"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="卡诺嘉一站式汽车维护"
+                android:textColor="@color/black"
+                android:textSize="16dp"/>
+
+            <TextView
+                android:id="@+id/tv_Address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_store"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="山东济南历下区高新区奥体西路158号"
+                android:textSize="14dp"/>
+
+        </RelativeLayout>
         <TextView
-            android:id="@+id/tv_type"
-            android:background="@color/colorPrimaryDark"
-            android:gravity="center"
-            android:text="连锁店"
-            android:textSize="13dp"
-            android:textColor="@color/white"
-            android:layout_width="50dp"
-            android:layout_height="25dp"/>
+            android:background="@color/gray"
+            android:layout_width="match_parent"
+            android:layout_height="1px"/>
 
-        <ImageView
-            android:id="@+id/img_right"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_alignParentRight="true"
-            android:src="@mipmap/icon_point"
-            android:layout_width="18dp"
-            android:layout_height="18dp"/>
-        <TextView
-            android:layout_marginRight="8dp"
-            android:textSize="16dp"
-            android:id="@+id/tv_shenhe"
-            android:layout_marginTop="8dp"
-            android:layout_alignParentRight="true"
-            android:text="审核中"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        <RelativeLayout
+            android:id="@+id/layout_default"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
 
-        <ImageView
-            android:layout_toLeftOf="@id/tv_shenhe"
-            android:id="@+id/img_shenhe"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:src="@mipmap/icon_time2"
-            android:layout_width="18dp"
-            android:layout_height="18dp"/>
-        
-        <ImageView
-            android:id="@+id/img_store"
-            android:layout_marginTop="30dp"
-            android:layout_centerHorizontal="true"
-            android:layout_width="75dp"
-            android:layout_height="30dp"/>
+            <ImageView
+                android:id="@+id/img_default"
+                android:layout_marginLeft="10dp"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/icon_round_check"
+                android:layout_width="20dp"
+                android:layout_height="20dp"/>
 
-        <TextView
-            android:id="@+id/tv_store"
-            android:textSize="16dp"
-            android:textColor="@color/black"
-            android:text="卡诺嘉一站式汽车维护"
-            android:layout_marginTop="20dp"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/img_store"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/tv_Address"
-            android:textSize="14dp"
-            android:text="山东济南历下区高新区奥体西路158号"
-            android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/tv_store"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tv_default"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/img_default"
+                android:layout_centerVertical="true"
+                android:textColor="@color/black"
+                android:text="当前店面"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_change"
+                android:layout_marginRight="10dp"
+                android:drawableLeft="@mipmap/post"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="5dp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/black"
+                android:text="编辑"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
+
+        </RelativeLayout>
+
+    </LinearLayout>
 </LinearLayout>

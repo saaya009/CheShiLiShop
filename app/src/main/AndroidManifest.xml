@@ -114,6 +114,9 @@
         <activity android:name=".activity.ServericeManagementActivity"/>
         <activity android:name=".activity.AccountListActivity"/>
         <activity android:name=".activity.ActivityManagementActivity"/>
+        <activity android:name=".activity.ChangeStoreActivity"/>
+        <activity android:name=".activity.UpdateImageActivity"/>
+
         <!-- ShareSDK的activity -->
         <activity
             android:name="com.mob.tools.MobUIShell"

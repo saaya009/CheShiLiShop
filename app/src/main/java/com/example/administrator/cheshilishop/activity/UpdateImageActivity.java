@@ -24,10 +24,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.administrator.cheshilishop.BaseActivity;
 import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.TopView;
+import com.example.administrator.cheshilishop.bean.StoreBean;
 import com.example.administrator.cheshilishop.dialog.SelectImgPopupWindow;
 import com.example.administrator.cheshilishop.net.RestClient;
 import com.example.administrator.cheshilishop.photochoose.CropImageActivity;
@@ -112,6 +114,8 @@ public class UpdateImageActivity extends BaseActivity {
     private String path5 = "";
     private String path6 = "";
 
+    private StoreBean mStore;
+
     private Map<Integer, String> map = new HashMap<Integer, String>();
 
     @Override
@@ -152,7 +156,18 @@ public class UpdateImageActivity extends BaseActivity {
 
     @Override
     protected void processLogic() {
+        mStore = (StoreBean) getIntent().getSerializableExtra("store");
+        load();
+    }
 
+    /**
+     * 加载数据
+     */
+    private void load() {
+        Glide.with(this).load(UrlUtils.BASE_URL + "/Img/" + mStore.CerImg).into(mImg1);
+        Glide.with(this).load(UrlUtils.BASE_URL + "/Img/" + mStore.Img).into(mImg3);
+        commit(1, mStore.CerImg);
+        commit(3, mStore.Img);
     }
 
     @Override
@@ -160,7 +175,7 @@ public class UpdateImageActivity extends BaseActivity {
         switch (paramView.getId()) {
             case R.id.layout_img1:
                 img = 1;
-                selectImgPopupWindow = new SelectImgPopupWindow(context, itemOnClick);
+                selectImgPopupWindow = new SelectImgPopupWindow(this, itemOnClick);
                 selectImgPopupWindow.showAtLocation(findViewById(R.id.layout_main),
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
@@ -219,13 +234,24 @@ public class UpdateImageActivity extends BaseActivity {
                 mLayoutImg6.setEnabled(true);
                 break;
             case R.id.btn_save:
-                sava(img);
+                sava(path,1);
+                sava(path3,3);
+                sava(path4,4);
+                sava(path5,5);
                 break;
         }
     }
 
     //上传图片
-    private void sava(final int img) {
+    private void sava(String path,final int img) {
+        if (path.length()==0 && img!=1){
+            if (img==5){
+                finish();
+            }
+            return;
+        }else if (path.length()==0 && img==1){
+            ToastUtils.show(context,"营业执照不能为空");
+        }
         final RequestParams params = new RequestParams();
         try {
             params.put("Img[]", new File(path), "image/png");
@@ -233,7 +259,7 @@ public class UpdateImageActivity extends BaseActivity {
             e.printStackTrace();
         }
         params.add("WToken", CheShiLiShopApplication.wtoken);
-        params.add("ID", CheShiLiShopApplication.storeID);
+        params.add("ID",mStore.ID);
         RestClient.post(UrlUtils.addStoreImage(), params, UpdateImageActivity.this, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -250,10 +276,9 @@ public class UpdateImageActivity extends BaseActivity {
                     } else if ("-1".equals(Status)) {
                         Intent intent = new Intent(UpdateImageActivity.this, LoginActivity.class);
                         startActivity(intent);
-
                         finish();
                     } else {
-                        ToastUtils.show(UpdateImageActivity.this, jsonObject.getString("Data"));
+                        ToastUtils.show(UpdateImageActivity.this, jsonObject.getString("上传错误"));
                     }
 
                 } catch (JSONException e) {
@@ -271,10 +296,10 @@ public class UpdateImageActivity extends BaseActivity {
     /**
      * 提交图片
      */
-    private void commit(int img,String imgUrl) {
+    private void commit(final int img, String imgUrl) {
         RequestParams params = new RequestParams();
         params.add("WToken", CheShiLiShopApplication.wtoken);
-        params.add("ID", CheShiLiShopApplication.storeID);
+        params.add("ID", mStore.ID);
         switch (img){
             case 1:
                 params.add("Type","3");
@@ -293,7 +318,9 @@ public class UpdateImageActivity extends BaseActivity {
                     JSONObject jsonObject = new JSONObject(result);
                     String Status = jsonObject.getString("Status");
                     if ("0".equals(Status)) {
-                        JSONObject data = jsonObject.getJSONObject("Data");
+                        if (img==5){
+                            finish();
+                        }
 
                     } else if ("-1".equals(Status)) {
                         Intent intent = new Intent(UpdateImageActivity.this, LoginActivity.class);

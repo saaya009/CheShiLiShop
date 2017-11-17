@@ -188,10 +188,8 @@ public class SetStoreActivity extends BaseActivity {
                     JSONObject jsonObject = new JSONObject(result);
                     String Status = jsonObject.getString("Status");
                     if ("0".equals(Status)) {
-                        ToastUtils.show(SetStoreActivity.this,"更改成功");
                         CheShiLiShopApplication.storeID = id;
                         getData();
-                        finish();
                     }
 
                 } catch (JSONException e) {
@@ -203,7 +201,7 @@ public class SetStoreActivity extends BaseActivity {
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 RequestParams errParams = new RequestParams();
                 errParams.add("LogCont",new String(responseBody));
-                errParams.add("Url",UrlUtils.queryServiceAppointDetail());
+                errParams.add("Url",UrlUtils.updateDefaultStore());
                 errParams.add("PostData",params.toString());
                 errParams.add("WToken",CheShiLiShopApplication.wtoken);
                 RestClient.post(UrlUtils.insertErrLog(), errParams, SetStoreActivity.this, new AsyncHttpResponseHandler() {

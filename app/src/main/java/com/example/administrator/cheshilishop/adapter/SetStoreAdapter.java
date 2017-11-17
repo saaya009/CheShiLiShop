@@ -1,6 +1,7 @@
 package com.example.administrator.cheshilishop.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.text.TextUtils;
@@ -8,12 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
+import com.example.administrator.cheshilishop.activity.ChangeStoreActivity;
 import com.example.administrator.cheshilishop.activity.UserInfoActivity;
 import com.example.administrator.cheshilishop.bean.StoreBean;
 import com.example.administrator.cheshilishop.utils.UrlUtils;
@@ -45,7 +48,7 @@ public class SetStoreAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
@@ -58,6 +61,10 @@ public class SetStoreAdapter extends BaseAdapter {
             holder.tv_shenhe = convertView.findViewById(R.id.tv_shenhe);
             holder.tv_Address = convertView.findViewById(R.id.tv_Address);
             holder.layout_store = convertView.findViewById(R.id.layout_store);
+            holder.img_default = convertView.findViewById(R.id.img_default);
+            holder.tv_default = convertView.findViewById(R.id.tv_default);
+            holder.tv_change = convertView.findViewById(R.id.tv_change);
+            holder.layout_default = convertView.findViewById(R.id.layout_default);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -81,10 +88,13 @@ public class SetStoreAdapter extends BaseAdapter {
                 ColorStateList csl = resource.getColorStateList(R.color.pickerview_wheelview_textcolor_out);
                 holder.tv_shenhe.setTextColor(csl);
                 holder.layout_store.setEnabled(false);
+                holder.layout_default.setVisibility(View.GONE);
                 break;
             case "1"://审核通过
+                holder.layout_default.setVisibility(View.VISIBLE);
                 break;
             case "2"://审核zhong
+                holder.layout_default.setVisibility(View.GONE);
                 holder.img_shenhe.setVisibility(View.VISIBLE);
                 holder.img_right.setVisibility(View.GONE);
                 holder.img_shenhe.setImageResource(R.mipmap.icon_time2);
@@ -99,8 +109,12 @@ public class SetStoreAdapter extends BaseAdapter {
 
         if (list.get(position).ID.equals(CheShiLiShopApplication.storeID)) {
             holder.layout_store.setBackgroundResource(R.drawable.bg_store_style2);
+            holder.tv_default.setText("当前店面");
+            holder.img_default.setImageResource(R.mipmap.icon_round_check);
             holder.img_right.setVisibility(View.VISIBLE);
         } else {
+            holder.tv_default.setText("设为当前店面");
+            holder.img_default.setImageResource(R.mipmap.round);
             holder.layout_store.setBackgroundResource(R.drawable.bg_store_style);
             holder.img_right.setVisibility(View.GONE);
         }
@@ -126,6 +140,15 @@ public class SetStoreAdapter extends BaseAdapter {
                 break;
         }
 
+        holder.tv_change.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ChangeStoreActivity.class);
+                intent.putExtra("id",list.get(position).ID);
+                context.startActivity(intent);
+            }
+        });
+
         return convertView;
     }
 
@@ -137,6 +160,10 @@ public class SetStoreAdapter extends BaseAdapter {
         private TextView tv_Address;
         private TextView tv_type;
         private TextView tv_shenhe;
-        private RelativeLayout layout_store;
+        private LinearLayout layout_store;
+        private ImageView img_default;
+        private TextView tv_default;
+        private TextView tv_change;
+        private RelativeLayout layout_default;
     }
 }

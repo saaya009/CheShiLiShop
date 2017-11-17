@@ -66,6 +66,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -202,7 +204,7 @@ public class ChangeStoreActivity extends BaseActivity {
 
     @Override
     protected void loadViewLayout(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_write);
+        setContentView(R.layout.activity_write2);
         ButterKnife.bind(this);
     }
 
@@ -213,7 +215,7 @@ public class ChangeStoreActivity extends BaseActivity {
 
     @Override
     protected TopView getTopViews() {
-        return new TopView(topbar_iv_back, topbar_tv_title,topbar_iv_right);
+        return new TopView(topbar_iv_back, topbar_tv_title, topbar_iv_right);
     }
 
     @Override
@@ -493,6 +495,9 @@ public class ChangeStoreActivity extends BaseActivity {
                 bottomDialog3.show();
                 break;
             case R.id.topbar_iv_right://修改图片
+                Intent intent = new Intent(ChangeStoreActivity.this, UpdateImageActivity.class);
+                intent.putExtra("store",mStore);
+                startActivity(intent);
                 break;
         }
     }
@@ -913,7 +918,10 @@ public class ChangeStoreActivity extends BaseActivity {
         mEtBanknum.setText(mStore.BankNo);
         mEtBank.setText(mStore.BankCompany);
         mTvCity.setText(mStore.AddressNames);
-        mEtYingyemianji.setText(mStore.OpenArea);
+//        String regex = "\\d*";
+//        Pattern p = Pattern.compile(regex);
+//        Matcher m = p.matcher(mStore.OpenArea);
+//        mEtYingyemianji.setText(m.group());
     }
 
     public static String getTime(Date date) {
