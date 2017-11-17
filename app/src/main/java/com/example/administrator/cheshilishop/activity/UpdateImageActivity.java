@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.ReceiverCallNotAllowedException;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
@@ -15,6 +16,7 @@ import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -23,16 +25,30 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.administrator.cheshilishop.BaseActivity;
+import com.example.administrator.cheshilishop.CheShiLiShopApplication;
 import com.example.administrator.cheshilishop.R;
 import com.example.administrator.cheshilishop.TopView;
 import com.example.administrator.cheshilishop.dialog.SelectImgPopupWindow;
+import com.example.administrator.cheshilishop.net.RestClient;
 import com.example.administrator.cheshilishop.photochoose.CropImageActivity;
+import com.example.administrator.cheshilishop.utils.ToastUtils;
+import com.example.administrator.cheshilishop.utils.UrlUtils;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cz.msebera.android.httpclient.Header;
 
 /**
  * 更新商家图片
@@ -95,6 +111,8 @@ public class UpdateImageActivity extends BaseActivity {
     private String path4 = "";
     private String path5 = "";
     private String path6 = "";
+
+    private Map<Integer, String> map = new HashMap<Integer, String>();
 
     @Override
     protected void loadViewLayout(Bundle savedInstanceState) {
@@ -200,7 +218,102 @@ public class UpdateImageActivity extends BaseActivity {
                 mImgClose6.setVisibility(View.GONE);
                 mLayoutImg6.setEnabled(true);
                 break;
+            case R.id.btn_save:
+                sava(img);
+                break;
         }
+    }
+
+    //上传图片
+    private void sava(final int img) {
+        final RequestParams params = new RequestParams();
+        try {
+            params.put("Img[]", new File(path), "image/png");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        params.add("WToken", CheShiLiShopApplication.wtoken);
+        params.add("ID", CheShiLiShopApplication.storeID);
+        RestClient.post(UrlUtils.addStoreImage(), params, UpdateImageActivity.this, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    String result = new String(responseBody);
+                    Log.d("上传图片", result);
+                    JSONObject jsonObject = new JSONObject(result);
+                    String Status = jsonObject.getString("Status");
+                    if ("0".equals(Status)) {
+                        JSONObject data = jsonObject.getJSONObject("Data");
+                        JSONArray imgUrl = data.getJSONArray("ImgUrl");
+                        map.put(img, imgUrl.getString(0));
+                        commit(img, imgUrl.getString(0));
+                    } else if ("-1".equals(Status)) {
+                        Intent intent = new Intent(UpdateImageActivity.this, LoginActivity.class);
+                        startActivity(intent);
+
+                        finish();
+                    } else {
+                        ToastUtils.show(UpdateImageActivity.this, jsonObject.getString("Data"));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+    }
+
+    /**
+     * 提交图片
+     */
+    private void commit(int img,String imgUrl) {
+        RequestParams params = new RequestParams();
+        params.add("WToken", CheShiLiShopApplication.wtoken);
+        params.add("ID", CheShiLiShopApplication.storeID);
+        switch (img){
+            case 1:
+                params.add("Type","3");
+                break;
+            default:
+                params.add("Type","1");
+                break;
+        }
+        params.add("ImgUrl",imgUrl);
+        RestClient.post(UrlUtils.updateStoreImg(), params, UpdateImageActivity.this, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    String result = new String(responseBody);
+                    Log.d("上传图片", result);
+                    JSONObject jsonObject = new JSONObject(result);
+                    String Status = jsonObject.getString("Status");
+                    if ("0".equals(Status)) {
+                        JSONObject data = jsonObject.getJSONObject("Data");
+
+                    } else if ("-1".equals(Status)) {
+                        Intent intent = new Intent(UpdateImageActivity.this, LoginActivity.class);
+                        startActivity(intent);
+
+                        finish();
+                    } else {
+                        ToastUtils.show(UpdateImageActivity.this, jsonObject.getString("Data"));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
     }
 
 

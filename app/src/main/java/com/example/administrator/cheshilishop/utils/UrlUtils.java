@@ -396,4 +396,15 @@ public class UrlUtils {
         url = uribBuilder.build().toString();
         return url;
     }
+
+    /**
+     * 图片修改
+     */
+    public static String updateStoreImg() {
+        String url = null;
+        Uri.Builder uribBuilder = Uri.parse(BASE_URL + "/League/Store/UpdateStoreImg").buildUpon();
+        url = uribBuilder.build().toString();
+        return url;
+    }
+
 }
